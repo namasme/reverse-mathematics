@@ -1,0 +1,120 @@
+\documentclass[a4paper,11pt]{memoir}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{listings}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{kpfonts}
+\usepackage[backend=biber, sorting=none]{biblatex}
+\addbibresource{bibliography/bibliography.bib}
+
+\usepackage{variables}
+
+\usepackage{chapterheader}
+
+\usepackage{subfiles}
+
+\usepackage{subcaption}
+
+%\decimalpoint
+
+\usepackage{dcolumn}
+\newcolumntype{.}{D{.}{\esperiod}{-1}} \makeatletter
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{afterpage}
+\usepackage{float}
+\def\layersep{2.5cm}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{upgreek}
+\usepackage{enumerate}% http://ctan.org/pkg/enumerate
+
+\usepackage{longtable}
+\usepackage{xcolor}
+
+\usepackage[pdfborder={000}]{hyperref} %referencia
+\usepackage{booktabs}
+
+\hypersetup{
+  pdfauthor = {\AuthorName (nachomas@correo.ugr.es)},
+  pdftitle = {\ProjectTitle},
+  pdfsubject = {},
+  pdfkeywords = {palabra_clave1, palabra_clave2, palabra_clave3, ...},
+  pdfproducer = {pdflatex},
+  colorlinks = True,
+  linkcolor = darkgray,
+  citecolor = blue
+}
+
+\usepackage{url}
+\usepackage{colortbl,longtable}
+
+\pagestyle{fancy} \fancyhf{} \fancyhead[LO]{\leftmark}
+\fancyhead[RE]{\rightmark} \fancyhead[RO,LE]{\textbf{\thepage}}
+\renewcommand{\chaptermark}[1]{\markboth{\textbf{#1}}{}}
+\renewcommand{\sectionmark}[1]{\markright{\textbf{\thesection. #1}}}
+
+\setlength{\headheight}{1.5\headheight}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{corollary}{Corollary}[chapter]
+
+\newcommand{\bigrule}{\titlerule[0.5mm]}
+
+% number systems
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+
+% arithmetical hierarchy classifications
+\newcommand{\esigma}[2]{$\Sigma_{#1}^{#2}$}
+\newcommand{\fapi}[2]{$\Pi_{#1}^{#2}$}
+\newcommand{\re}{\esigma{1}{0}}
+\newcommand{\core}{\fapi{1}{0}}
+\newcommand{\rec}{$\Delta_1^0$}
+
+% Para conseguir que en las páginas en blanco no ponga cabecerass
+\makeatletter
+\def\clearpage{%
+  \ifvmode \ifnum \@dbltopnum =\m@ne \ifdim \pagetotal <\topskip
+  \hbox{} \fi \fi \fi
+  \newpage
+  \thispagestyle{empty} \write\m@ne{} \vbox{} \penalty -\@Mi }
+\makeatother
+
+\begin{document}
+
+\subfile{prefaces/cover}
+
+\subfile{prefaces/spanish_abstract}
+
+\subfile{prefaces/english_abstract}
+
+\subfile{prefaces/licensing}
+
+\tableofcontents
+
+\subfile{chapters/01_introduction.tex}
+
+\subfile{chapters/02_arithmetic.tex}
+
+\nocite{*}
+
+\printbibliography
+
+\appendix
+
+\end{document}

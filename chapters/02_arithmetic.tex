@@ -1,0 +1,492 @@
+\documentclass[../main.tex]{memoir}
+
+\begin{document}
+
+\chapter{Arithmetic and arithmetization}
+
+Our first step will be to define the basic environment of our forthcoming efforts, namely, the formal system of \textbf{second order arithmetic} or $Z_2$. A quick word of caution, though: from now on we are going to be discussing \textit{sets} (of natural numbers). Note, however, that, albeit somewhat confusing, this terminology does not bear any relation to set theory, it will be just a commodity. Indeed, sets can be succesfully emulated in our logical framework using predicates, i.e., whenever we write $x \in S$ we actually mean that $x$ satisfies the predicate $S$, or, more succintly, $S(x)$ holds. This is to say that there is no need for any underlying set theory in our metatheory (in fact, it would probably be harmful, as we will see later). The reason for this naming convention is to provide a common language that strongly suggests the relation between what can be described using logic and computability theory.
+
+We will need some prior definitions to accomplish the goal of this section. The language of second-order arithmetic, $L_2$, consists of:
+
+\begin{itemize}
+    \item an infinite number of symbols for numeric variables, denoted by lower case latin letters $i, j, k, ...$ and intended to range over $\omega = \{0, 1, 2, ...\}$
+    \item an infinite number of symbols for set variables, denoted by upper case latin letters: $X, Y, Z, ...$ and intended to range over subsets of $\omega$,
+    \item the constant symbols $0$ and $1$,
+    \item the symbols $+$ and $\cdot$ for addition and multiplication, respectively,
+    \item the symbols $=$ and $<$ for equality and "less than",
+    \item the symbol $\in$ for membership, and
+    \item the usual symbols for second order logic, viz.: $\land, \lor, \neg, \implies, \iff, \forall, \exists$
+\end{itemize}
+
+Based on that, we define:
+
+\begin{description}
+    \item[Numerical terms] the constants $0$ and $1$, and $t_1 + t_2$ and $t_1 \cdot t_2$ whenever $t_1$ and $t_2$ are both numerical terms themselves
+    \item[Atomic formulas] $t_1 = t_2$ and $t_1 < t_2$ whenever $t_1$ and $t_2$ are both numerical terms, and $t \in X$ when $t$ is a numerical term and $X$ a set variable
+    \item[Formulas] built from atomic formulas using propositional connectives ($\land, \lor, \neg, \implies, \iff$) and quantifiers ($\exists n (\varphi)$ and $\forall n (\uppsi)$)
+\end{description}
+
+We will also allow the introduction of parentheses at any given point if they respect the syntactical rules (e.g., $((1 + 1) = t)$ is a valid expression, while $1 + ) 1$ or $($ are not). Finally, a variable not bound by any previous quantifiers will be called a \textbf{free variable}, and a formula with no free variables will be called a \textbf{sentence}. \\
+
+We shall also use some common abbreviations in order to alleviate the verbosity of the language. For example, $2$ should be understood to represent $1 + 1$, $3$ is just $1 + 1 + 1$, and so on. $t \not\in X$ will mean $\neg(t \in X)$. Operators such as $+, \cdot, \land$, etc. are left associative, i.e., $\varphi \land \uppsi \land \theta$ stands for $(\varphi \land \uppsi) \land \theta$. \\
+
+Next, we need to discuss the concept of a \textbf{model} or \textbf{structure}, of our language. A model for $L_2$ is a septuple $M = (|M|, S_M, +_M, \cdot_M, 0_M, 1_M, <_M)$, where $|M|$ is a \textit{set} (in a metatheoretical sense, so we cannot speak about its nature from within our theory) which serves as the range of the number variables, $S_M$ is a set of subsets of $|M|$ serving as the range of the set variables, $+_M$ and $\cdot_M$ represent the operations of addition and product on $|M|$, $0_M$ and $1_M$ are distinguished elements of $|M|$, and $<_M$ is a binary relation on $|M|$. Thus, the interpretation of an $L_2$ formula in $M$ is straight-forward. \\
+
+The intended model for $L_2$ will be no other than
+\[
+  (\omega, \mathcal{P}(\omega), +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})
+\]
+
+This is called the \textbf{full} or \textbf{standard} semantics. We can, nonetheless, also consider \textit{Henkin} semantics, where we allow $S_M$ to be an arbitrary, non-empty subset of $\mathcal{P}(\omega)$. These semantics give rise to different, simpler (coarser) models that help us in our purpose of determining different axiomatic systems.
+
+The formal system of \textbf{second order arithmetic}, $Z_2$, consists of (the universal closure of) the following axioms -- which are $L_2$ formulas:
+
+\begin{enumerate}[(i)]
+\item basic axioms
+  \begin{itemize}
+  \item $n + 1 \neq 0$
+  \item $m + 1 = n + 1 \implies m = n$
+  \item $m + 0 = m$
+  \item $m + (n + 1) = (m + n) + 1$
+  \item $m \cdot 0 = 0$
+  \item $m \cdot (n + 1) = (m \cdot n) + m$
+  \item $\neg(m < 0)$
+  \item $m < n + 1 \iff (m < n \lor m = n)$
+  \end{itemize}
+\item induction axiom
+  $$(0 \in X \land \forall n (n \in X \implies (n + 1) \in X)) \implies \forall n (n \in X)$$
+\item comprehension scheme
+  $$\exists X \forall n (n \in X \iff \varphi(n))$$
+  where $\varphi(n)$ is any $L_2$-formula in which $X$ does not occur freely.
+\end{enumerate}
+
+Note that in the comprehension scheme $\varphi(n)$ may contain free variables other than $n$, and they will be called \textbf{parameters}. For example, if we consider $\varphi(n) = n \not\in Y$, we can form the axiom
+
+$$ \forall Y \exists X \forall n (n \in X \iff n \not\in Y) $$
+
+which asserts the existence of the complement of a set.
+
+Finally, we define the formal system of second order arithmetic, $Z_2$, to be the formal system in $L_2$ consisting of the axioms of second order arithmetic and all formulas of $L_2$ deducible from the arithmetic axioms by the usual logical axioms and rules of inference. \\
+
+Now that we have established the limits of second order arithmetic, we turn our attention to \textit{subsystems} of it, that is, formal systems in the language of $L_2$ whose axioms are theorems of $Z_2$. Those in which we are interested, namely RCA$_0$, WKL$_0$ and ACA$_0$, consist of the basic axioms, a stronger version of the induction axiom (concretely \re-induction), and a weaker comprehension scheme. Note that, even though they have a stronger version of the axiom of induction, they are effectively subsystems because that induction axiom is a consequence of the $Z_2$ induction axiom and comprehension scheme. We will explore this subject in more detail in later sections.
+
+\section{Arithmetical definability and arithmetical hierarchy}
+
+\begin{definition}
+  A formula $\varphi$ is said to be \re if it is equivalent to
+  \[
+    \exists x_1 (\exists x_2 (\ldots (\exists x_n \uppsi(x_1, x_2, \ldots, x_n)))))
+  \]
+  where $\uppsi$ is quantifier-free, for appropriate $n$ and $\uppsi$.
+\end{definition}
+
+\begin{definition}
+  A formula $\varphi$ is said to be \core if it is equivalent to
+  \[
+    \forall x_1 (\forall x_2 (\ldots (\forall x_n \uppsi(x_1, x_2, \ldots, x_n)))))
+  \]
+  where $\uppsi$ is quantifier-free, for appropriate $n$ and $\uppsi$.
+\end{definition}
+
+\begin{definition}
+  A formula $\varphi$ is said to be \esigma{n + 1}{0} if it is equivalent to
+  \[
+    \exists x_1 (\exists x_2 (\ldots (\exists x_m \uppsi(x_1, x_2, \ldots, x_m)))))
+  \]
+  where $\uppsi$ is \fapi{n}{0} itself, for appropriate $m, n$ and $\uppsi$.
+\end{definition}
+
+\begin{definition}
+  A formula $\varphi$ is said to be \fapi{n + 1}{0} if it is equivalent to
+  \[
+    \forall x_1 (\forall x_2 (\ldots (\forall x_m \uppsi(x_1, x_2, \ldots, x_m)))))
+  \]
+  where $\uppsi$ is \esigma{n}{0}, for appropriate $m, n$ and $\uppsi$.
+\end{definition}
+
+In these definitions, $x_1, x_2, \ldots, x_n$ are numerical variables and not set variables. In intuitive terms, a \esigma{n}{0} formula is one equivalent to a formula that begins with some existential quantifiers and alternates between existential and universal quantifiers $n - 1$ times. \fapi{n}{0} formulas are analogous but beginning with a universal quantifier. Now we make a definition that will be useful in later stages:
+
+\begin{definition}
+  A formula $\varphi$ is said to be $\Delta_{n}^{0}$ if it is both \esigma{n}{0} and \fapi{n}{0}.
+\end{definition}
+
+A special case of quantifiers is that of \textbf{bounded quantifiers}, viz.: $\exists (n < m), \forall (n < m)$, where $n$ is a number variable and $m$ a numerical term that does not contain $n$. These quantifiers do not change the language since they can be represented in terms of \textit{normal}, henceforth \textbf{unbounded}, quantifiers. For example, $\exists (n < m) (\varphi(n)) \iff \exists n (n < m \land \varphi(n))$ shows the equivalence for the case of the existential quantifier. In a similar vein, we define a formula $\varphi$ to be a \textit{bounded quantifier formula} when all of its quantifiers are bounded. A bounded quantifier formula is a \esigma{0}{0} formula. Since \esigma{0}{0} $ = $ \fapi{0}{0}, a bounded quantifier formula is also a \fapi{0}{0} and thus a $\Delta_{0}^{0}$. Intuitively, having to check for a finite number of cases does not increase the complexity of a formula, so we assign it the least possible classification. \\
+
+Finally, we define \textbf{arithmetical} formulas:
+
+\begin{definition}
+  A formula $\varphi$ of $L_2$ is said to be arithmetical if it contains no set quantifiers.
+\end{definition}
+
+Examples of arithmetical formulas include the basic axioms of $Z_2$. An example of a non-arithmetical formula is the comprehension scheme of $Z_2$. Note that, even though they cannot contain set quantifiers, they \textbf{can} contain set variables. For example, $\varphi(n) := n \in Y \land \exists m (n = 2 \cdot m)$ identifies the even numbers of a (unknown, but otherwise fixed) set $Y$. \\
+
+\begin{definition}
+  A formula $\varphi$ is said to be in \textbf{prenex form} if all of its quantifiers appear at the front
+\end{definition}
+
+\begin{theorem}
+  Every formula of $L_2$ is (logically) equivalent to a (possibly syntactically different) $L_2$ formula in prenex form
+\end{theorem}
+\begin{proof}
+  First note the following equivalences:
+
+  \begin{align*}
+    \varphi \iff \uppsi & \iff (\varphi \implies \uppsi) \land (\uppsi \implies \varphi) \\
+    \varphi \implies \uppsi & \iff (\neg \varphi) \lor \uppsi \\
+    \varphi \land \uppsi & \iff \neg (\neg \varphi \lor \neg \uppsi) \\
+  \end{align*}
+
+  In other words, $\{\neg, \lor\}$ is a \textbf{functionally complete} set of Boolean connectives. Now notice that we can \textit{push inwards} these connectives when in presence of quantifiers via these equivalences:
+
+  \begin{align*}
+    \neg (\exists x (\varphi) & \iff \forall x (\neg \varphi) \\
+    \neg (\forall x (\varphi) & \iff \exists x (\neg \varphi) \\
+    \varphi \lor \exists x (\uppsi(x)) & \iff \exists y (\varphi \lor \uppsi(y)) \\
+    \varphi \lor \forall x (\uppsi(x)) & \iff \forall y (\varphi \lor \uppsi(y)) \\
+  \end{align*}
+
+  Where, in the two last instances, we can replace the bounded variable $x$ if needed by a variable $y$ not occuring in $\varphi$. By repeatedly applying these rules to a formula $\varphi$, we achieve the following equivalence:
+
+  \[
+    \varphi \iff Q_1 x_1 (Q_2 x_2 (\ldots (Q_n x_n (\uppsi(x_1, x_2, \ldots, x_n)))))
+  \]
+
+  Where $Q_1, Q_2, \ldots, Q_n$ are quantifier symbols (either $\exists$ or $\forall$) and $\uppsi$ is quantifier-free.
+\end{proof}
+
+Thanks to the prenex form, we can be sure that every arithmetical formula is assigned a classification in terms of its membership to \esigma{n}{0} or \fapi{n}{0}, for suitable $n$. Note that, since the addition of \textit{unused} quantifiers doesn't affect the equivalence, once a formula is either \esigma{n}{0} or \fapi{n}{0} then it is also \esigma{m}{0} \textbf{and} \fapi{m}{0} for every $m > n$. Hence, we will only be concerned with the minimum $n$, since every other classification follows immediately. \\
+
+Of course, we can extend this notion to sets:
+
+\begin{definition}
+  A set $X$ is said to be \textbf{arithmetically definable}, or arithmetical, if there is a formula $\varphi$ such that $\forall n (n \in X \iff \varphi(n))$. In this case, we also say that $X$ is defined by $\varphi$.
+\end{definition}
+
+\begin{definition}
+  A set $X$ is said to be \esigma{n}{0} (respectively \fapi{n}{0}) if it is defined by a \esigma{n}{0} (respectively \fapi{n}{0}) formula.
+\end{definition}
+
+The \textbf{arithmetical hierarchy} is the classification of arithmetically definable sets with respect to the \textit{complexity} of the (simplest) formula that describes them. In the next section we will explore the astounding relationship between this concept and computability theory.
+
+\section{The axiom system RCA$_0$}
+
+Before proceeding any further, we need to establish the ground upon which we will base all of our work, namely, the axiom system RCA$_0$, the base system to which we alluded in the introduction.
+
+The formal system RCA$_0$ in the language $L_2$ consists of the following axioms:
+
+\begin{enumerate}
+\item the basic axioms of $Z_2$,
+\item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
+\item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
+\end{enumerate}
+
+Recursive comprehension is also usually defined as
+\[
+  \forall n (\varphi(n) \iff \uppsi(n)) \implies \exists X \forall n (n \in X \iff \varphi(n))
+\]
+where $\varphi$ is \re, $\uppsi$ is \core and $X$ does not occur freely in $\varphi$. \\
+
+Based on this, we define the \textit{inner} natural numbers, $\Bbb{N}$, as the (unique) set such that $\forall n (n \in \Bbb{N} \iff n = n)$, which obviously implies $\forall n (n \in \Bbb{N})$. Now we state an important fact about this \textit{newly} found system that will be needed for the upcoming definitions:
+
+\begin{theorem}
+  \label{thm:natural-properties}
+  We can prove in RCA$_0$ that $(\Bbb{N}, +, \cdot, 0, 1, <)$ is a commutative ordered semiring with cancellation
+\end{theorem}
+\begin{proof}
+  The complete proof relies on proving 25 statements that verify the claim made in the statement of the theorem, such as $m \cdot (n + p) = m \cdot n + m \cdot p$ (distributive property of the product over addition) or $m + p = n + p \implies m = n$ (cancellation law). The proofs of these statements are a rather mechanical and uninteresting exercise of induction. For more details we refer to \cite{simpson}.
+\end{proof}
+
+The fundamentals about natural numbers have been mostly already established with these definition and the last theorem. Even though the study of the properties of natural numbers can be interesting, we want to show the possibilities of RCA$_0$ to work in different areas of mathematics by \textit{embedding} them into the natural numbers. Most notably, we will be concerned with the classical theorems of analysis. \\
+
+Before getting to the real numbers, however, we must first find how to work with the integers, for example, in RCA$_0$. The most common and simple algebraic way to construct the integers from the natural numbers is to consider ordered pairs of naturals to represent substraction, and then define an equivalence relationship and take the quotient. Unfortunately, the lack of set theory in our environment prevents us from using $\Bbb{N} \times \Bbb{N}$ since we have not defined the cartesian product, so we must come up with a different approach to formalize it. In order to do this, we make the following definition:
+
+\begin{definition}
+  The \textbf{pairing function}, or map, is defined by $(i, j) := (i + j)^2 + i$
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:square-gte-id}
+  $\forall n (n^2 \ge n)$
+\end{lemma}
+\begin{proof}
+  We proceed by induction. Define $\varphi(n) := n^2 \ge n$.
+  \begin{itemize}
+  \item For $n = 0$, it is obvious that $0 \cdot 0 = 0 \ge 0$, so $\varphi(0)$ holds.
+  \item For $n = 1$, we can see that $1 \cdot 1 = 1 \ge 1$, so $\varphi(1)$ holds and thus $\varphi(0) \implies \varphi(1)$.
+  \item Now assume $n^2 \ge n$ for $n \ge 1$. Then, by lemma \ref{lemma:square-gte-id}, $(n + 1)^2 > n(n + 1) > n^2 \ge n$. Therefore $\varphi(n) \implies \varphi(n + 1)$.
+  \end{itemize}
+
+  Finally, applying \re  induction we obtain the desired result $\forall n (n^2 \ge n)$.
+\end{proof}
+
+\begin{corollary}
+  \label{corollary:nonnegative-square}
+  $\forall n (n^2 \ge 0)$
+\end{corollary}
+
+There are two important properties of the pairing function that we can prove in RCA$_0$:
+
+\begin{theorem}
+  \label{thm:pairing-properties}
+\item $i \le (i, j) \land j \le (i, j)$
+\item $(i, j) = (i', j') \implies (i = i' \land j = j')$
+\end{theorem}
+\begin{proof}
+  The first part of the theorem is a direct application of lemma \ref{lemma:square-gte-id} and corollary \ref{corollary:nonnegative-square}. For the second part, we reproduce the proof in \cite{simpson}.
+  If $k = (i, j)$, then there exists a unique $m: m^2 \le k < (m + 1)^2$. To show that $m$ exists we consider $m = (i + j)$. Indeed, $((i + j) + 1)^2 = (i + j)^2 + 2(i + j) + 1 > (i + j)^2 + i = k$ and obviously $(i + j)^2 \le (i + j)^2 + i$. For uniqueness, assume $m' \neq m$ verifies the conditions too.
+
+  \begin{itemize}
+  \item If $m < m'$ then $m' = m + p + 1$ for some $p$. Therefore $k \ge m'^2 = (m + p + 1)^2 \ge (m + 1)^2 > k$.
+  \item Similarly, if $m' < m$ then $m = m' + p' + 1$, so $k < (m' + 1)^2 \le (m' + p' + 1)^2 = m^2 \le k$.
+  \end{itemize}
+
+  By using the monotonocity of $n^2$ we can derive a contradiction in either case. We can then conclude $m = m'$ and it is trivial to check that
+  \[
+    (i, j) = i + m^2 = k = i' + m^2 = (i', j')
+  \]
+  since we can reuse $m$ because $(i, j) = (i', j')$. It follows that $i = i' \land j = j'$, thereby completing the proof.
+\end{proof}
+
+The first one is rather technical but nonetheless important and we will need it shortly. The second one simply states, intuitively, that $(\cdot, \cdot)$ is an injection from $\Bbb{N} \times \Bbb{N}$ to $\Bbb{N}$. Remarkably, this is what allows us to formalize $\N \times \N$ via recursive comprehension as the (unique) set $X$ such that
+\[
+  n \in X \iff \exists (i \le n) \exists (j \le n) ((i, j) = n)
+\]
+
+In fact, this same trick can be used to define $A \times B$ for any sets $A, B$ in RCA$_0$. \\
+
+The fact that the pairing function is injective also means that if we consider the number $(i, j)$ we can outright use $i$ and $j$ for whatever purpose and do not need to worry about well-definedness, i.e., other possible representatives of the number yielding different results. With that in mind, we define the following operations and relations on $\N \times \N$:
+
+\begin{itemize}
+\item $(m, n) +_{\Z} (p, q) := (m + p, n + q)$
+\item $(m, n) -_{\Z} (p, q) := (m + q, n + p)$
+\item $(m, n) \cdot_{\Z} (p, q) := (m \cdot p + n \cdot q, m \cdot q + n \cdot p)$
+\item $(m, n) <_{\Z} (p, q) \iff m + q < n + p$
+\item $(m, n) =_{\Z} (p, q) \iff m + q = n + q$
+\end{itemize}
+
+It is easily checked that $<_{\Z}$ is an order relation and $=_{\Z}$ an equivalence relation on $\N \times \N$.
+
+\begin{definition}
+We say that a natural number $n$ is an \textbf{integer} if it is the least element in its equivalence class induced by $=_{\Z}$, that is, $\forall m (m =_{\Z} n \implies m > n)$.
+\end{definition}
+
+We define $\Z \subset \N \times \N \subset \N$ as the set of all integer numbers. We can show in RCA$_0$ that $\Z$ exists, since
+
+\[
+  n \in \Z \iff \exists (i \le n) \exists (j \le n) \forall (p \le n) \forall (q \le n) (n = (i, j) \land (n =_{\Z} (p, q) \implies n < (p, q))
+\]
+
+Risking notational ambiguity, we define the previous operations on $\Z$, dropping the subscript, in the natural way. For example, for $a, b \in \Z$ we define $a + b := c$ where $c \in \Z$ is the unique integer such that $a +_{\Z} b =_{\Z} c$. We are confident that context will be enough to determine the meaning of the symbols in each case.
+
+We can prove the following in RCA$_0$:
+
+\begin{theorem}
+  $(\Z, +, -, \cdot, 0 = (0, 0), 2 = (1, 0), <)$ is an ordered, commutative, integral domain.
+\end{theorem}
+\begin{proof}
+  We skip the details since the full proof is quite laborious and does not really add much insight. It will suffice to show, for example, that it is indeed an integral domain, that is, $(m \neq 0 \land n \neq 0) \implies m \cdot n \neq 0$.
+
+  Let $m = (i, j), n = (p, q) \in \Z$ such that $m \neq 0, n \neq 0$. We want to show that $m \cdot n \neq 0$. This is equivalent to $m \cdot_{\Z} n =_{\Z} (ip + qj, iq + pj) \neq_{\Z} 0$, which, in turn, is equivalent to $ip + qj \neq iq + pj$. Assume to the contrary that it is the case that $ip + qj = iq + pj$. If either $i = j$ or $p = q$ the equality holds trivially, but then either $m = 0$ or $n = 0$, so we reach a contradiction. We may then assume both $i \neq j \land p \neq q$. By trichotomy, we have $i \neq j \implies i < j \lor j < i$, and similarly for $p$ and $q$. We assume $m < n$ and $p < q$ and the proof for the other cases is analogous. Then, by theorem \ref{thm:natural-properties} we have $\exists k (i + k + 1 = j)$ and $\exists t (p + t + 1 = q)$. We rename $k' := k + 1, t' := t + 1$ and note that $k', t' > 0$. Finally, we have:
+
+  \begin{align*}
+    jp + jq & = jq + jp \\
+    (i + k')p + jq & = (i + k')q + jp \\
+    k'p & = k'q
+  \end{align*}
+
+  Where we have used commutativity of addition, distributivity of the product, and the assumption that $ip + qj = iq + pj$ together with the cancellative law. Again, we have:
+
+  \begin{align*}
+    k'q & = k'q \\
+    k'(p + t') & = k'q \\
+    k't' & = 0 \\
+  \end{align*}
+
+  But then, noting that $0 = 0 \cdot t'$ and $0 < t' \implies t' \neq 0$ we can conclude $(t' \neq 0 \land 0 < k') \implies 0 = 0 \cdot t' < k't'$. Since, by theorem \ref{thm:natural-properties}, $\forall n \neg(n < n)$ we have reached a contradiction. Therefore one of our original assumptions must be wrong, and either $i = j$ or $p = q$ or, equivalently, $m = 0$ or $n = 0$. This concludes our (sketch of) proof.
+\end{proof}
+
+We can also show $\Z^+$, the positive integers, exists as
+
+\[
+  n \in \Z^+ \iff (n \in \Z \land 0 <_{\Z} n) \iff \exists (i \le n) \exists (j \le n) (n \in \Z \land n = (i, j) \land (j < i))
+\]
+
+Hence, $\Z \times \Z^+$ exists, and we can define the following operations and relations on it:
+
+\begin{itemize}
+\item $(p, q) +_{\Q} (r, s) := (p \cdot s + q \cdot r, q \cdot s)$
+\item $(p, q) -_{\Q} (r, s) := (p \cdot s - q \cdot r, q \cdot s)$
+\item $(p, q) \cdot_{\Q} (r, s) := (p \cdot r, q \cdot s)$
+\item $(p, q) /_{\Q} (r, s) := (p \cdot s, q \cdot r)$ whenever $r \in \Z^+$
+\item $(p, q) <_{\Q} (r, s) \iff p \cdot s < r \cdot q$
+\item $(p, q) =_{\Q} (r, s) \iff p \cdot s = r \cdot q$
+\end{itemize}
+
+Again, $<_{\Q}$ and $=_{\Q}$ can be easily shown to be an order and equivalence relation respectively.
+
+\begin{definition}
+  We say that a natural number $n \in \Z \times \Z^+$ is a rational number if it is the least element in its equivalence class induced by $=_{\Q}$, that is
+  \[
+    \forall m ((m \in \Z \times \Z^+ \land m =_{\Q} n) \implies m > n)
+  \]
+\end{definition}
+
+We define $\Q \subset \Z \times \Z^+ \subset \Z \times \Z \subset (\N \times \N) \times (\N \times \N) \subset \N \times \N \subset \N$ as the set of all rational numbers. It exists because
+
+\begin{align*}
+  n \in \Q & \iff \exists (i \le n) \exists (j \le n) \forall (p \le n) \forall (q \le n) ( \\
+           & \quad i \in \Z \land j \in \Z^+ \land n = (i, j) \land \\
+           & \quad ((p \in \Z \land q \in \Z^+ \land n =_{\Q} (p, q)) \implies n < (p, q)) \\
+           & )
+\end{align*}
+
+ Similar to what we did with the integers, we drop the subscript and define the operations and relations on $\Q$. We can prove the following in RCA$_0$:
+
+\begin{theorem}
+  $(\Q, +, -, \cdot, /, 0 = (0, 0) = ((0, 0), (0, 0)), 18 = (2, 2) = ((1, 0), (1, 0)), <)$ is an ordered field.
+\end{theorem}
+
+\begin{definition}
+  The \textbf{absolute value} of a rational number $q$, denoted by $|q|$, is defined as follows:
+  \begin{equation}
+    |q| := \left\{
+    \begin{array}{lr}
+      q & \text{if } 0 \le q \text{,} \\
+      -q & \text{if } q < 0
+    \end{array}
+    \right.
+  \end{equation}
+\end{definition}
+
+\begin{definition}
+  A \textbf{sequence} of rational numbers is defined as a function $f: \N \to \Q$. We will usually denote the sequence as $\{q_i: i \in \N\}$ where $q_i = f(i)$.
+\end{definition}
+
+\begin{definition}
+  A \textbf{real number} is defined to be a sequence of rational numbers $\{q_i: i \in \N\}$ verifying $\forall i \forall k (|q_i - q_{i + k}| < 2^{-i})$.
+\end{definition}
+
+\begin{definition}
+  Two real numbers $\{q_i: i \in \N\}$ and $\{r_i: i \in \N\}$ are said to be \textbf{equal} if $\forall i (|q_i - r_i| \le 2^{1 - i})$.
+\end{definition}
+
+It is somewhat more difficult but still provable in RCA$_0$ that this notion of equality induces an equivalence relation on real numbers. We cannot, however, consider the quotient under this equivalent relation because of the limitations of the language (for more details see \cite{simpson}). Furthermore, we cannot even construct the set of all such representatives of real numbers in RCA$_0$, since we are restricted to the (monadic) second order arithmetic language, $L_2$. This means that we can quantify over \textbf{unary relations}, otherwise referred to as \textbf{sets}, and not over arbitrary functions or relations. Nonetheless, we may informally use $\R$ to denote the set of all real numbers, even though it does not formally exist within RCA$_0$. In that case, $x \in \R$ should be understood as $x$ is a real number, or $\forall x \in \R (\ldots)$ as $\forall x (x \text{ is a real number } \implies \ldots)$. \\
+
+\begin{definition}
+  Let $x = \{q_i: i \in \N\}, y = \{r_i: i \in \N\}$ be two real numbers. Then $x + y := \{q_{i + 1} + r_{i + 1}: i \in \N\}$.
+\end{definition}
+
+\begin{theorem}
+  If $x = \{q_i: i \in \N\}$ and $y = \{r_i: i \in \N\}$ are real numbers, then so is $x + y$.
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    |(q_{i + 1} + r_{i + 1}) - (q_{i + k + 1} + r_{i + k + 1})|
+    & = |(q_{i + 1}) - q_{i + k + 1}) + (r_{i + 1} - r_{i + k + 1})| \\
+    & \le |(q_{i + 1}) - q_{i + k + 1})| + |(r_{i + 1} - r_{i + k + 1})| < 2^{-i - 1} + 2^{-i - 1} = 2^{-i}
+  \end{align*}
+\end{proof}
+
+\begin{definition}
+  Let $x = \{q_i: i \in \N\}$ be a real number. Then $-x := \{-q_i: i \in \N\}$.
+\end{definition}
+
+\begin{theorem}
+  If $x$ is a real number then so is $-x$.
+\end{theorem}
+\begin{proof}
+  It suffices to note that $|-q_i - (-q_{i + k})| = |q_{i + k} - q_i| = |q_i - q_{i + k}| < 2^{-i}$.
+\end{proof}
+
+\begin{definition}
+  Let $x, y$ be two real numbers. Then $x - y := x + (-y)$.
+\end{definition}
+
+\begin{definition}
+  Let $x = \{q_i: i \in \N\}, y = \{r_i: i \in \N\}$ be two real numbers. Then $x \cdot y := \{q_{k + i} \cdot r_{k + i}: i \in \N\}$, where $k$ is the minimum value such that $2^k \ge |q_0| + |r_0| + 2$.
+\end{definition}
+
+\begin{theorem}
+    If $x = \{q_i: i \in \N\}$ and $y = \{r_i: i \in \N\}$ are real numbers, then so is $x \cdot y$.
+\end{theorem}
+\begin{proof}
+  \begin{align*}
+    |q_{k + i}r_{k + i} - q_{k + i + j}r_{k + i + j}| \\
+    & = |(q_{k + i}r_{k + i} - q_{k + i}r_{k + i + j}) + (q_{k + i}r_{k + i + j} - q_{k + i + j}r_{k + i + j})| \\
+    & \le |q_{k + i}| \cdot |r_{k + i} - r_{k + i + j}| + |r_{k + i + j}||q_{k + i} - q_{k + i + j}| \\
+    & < |q_{k + i}| \cdot 2^{-k-i} + |r_{k + i + j}| \cdot 2^{-k-i} \\
+    & \le (|q_0| + 1) \cdot 2^{-k-i} + (|r_0| + 1) \cdot 2^{-k-i} \\
+    & = (|q_0| + |r_0| + 2) \cdot 2^{-k-i} \\
+    & < 2^{-i}
+  \end{align*}
+\end{proof}
+
+\begin{lemma}
+  If $x = \{q_i: i \in \N\} \neq 0$ is a real number, then $\exists k \forall i (q_{k + i} \neq 0)$.
+\end{lemma}
+\begin{proof}
+  Since $x \neq 0$ it follows that that $\exists k |q_k - 0| = |q_k| > 2^{1 - k}$. Assume $q_{k + i} = 0$ for some $i$. Then $|q_k| = |q_k - q_{k + i}| < 2^{-k} < 2^{1 - k} < |q_k|$, which is a contradiction.
+\end{proof}
+
+\begin{definition}
+  Let $x = \{q_i: i \in \N\}, y = \{r_i: i \in \N\}$ be two real numbers. Then
+  \[
+     x < y \iff x \lneq y \iff \exists k \exists r \forall i (x_{k + i} + 2^{-r} < y_{k + i} + 2^{1 - k - i})
+  \]
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:separation}
+  If $x = \{q_i: i \in \N\} > 0$ is a real number, then $\exists k \exists t \forall i (q_{k + i} > 2^{-t})$.
+\end{lemma}
+\begin{proof}
+  Since $0 < \{q_i: i \in \N\}$ we have that $\exists k \exists r \forall i (0 + 2^{-r} < q_{k + i} + 2^{1 - k - i})$. For $i > r + 2$ we have $2^{-r} < q_{k + i} + 2^{1 - k - i} \le q_{k + i} + 2^{1 - i} < q_{k + i} + 2^{- r - 1} \implies 2^{- r - 1} < q_{k + i}$, with $t = r + 1$.
+\end{proof}
+
+\begin{definition}
+  \label{def:reciprocal}
+  If $x = \{q_i: i \in \N\} > 0$ is a real number, then $\frac{1}{x} := \{\frac{1}{q_{k' + i}}: i \in \N\}$, where $k' = k + 2t + 1$ and $k, t$ are as in lemma \ref{lemma:separation}.
+\end{definition}
+
+\begin{theorem}
+  If $x > 0$ is a real number, then so is $\frac{1}{x}$.
+\end{theorem}
+\begin{proof}
+  Let $k'$ be as in definition \ref{def:reciprocal}. Then:
+
+  \begin{itemize}
+  \item $|q_{k' + i} - q_{k' + i + j}| < 2^{-k' - i}$, because $x$ is a real number
+  \item $q_{k' + i} \cdot q_{k' + i + j} > 2^{-t} \cdot 2^{-t} = 2^{-2t}$, because $x > 0$
+  \end{itemize}
+
+  Then $\left| \frac{1}{q_{k' + i}} - \frac{1}{q_{k' + i + j}} \right| = \frac{|q_{k' + i} - q_{k' + i + j}|}{|q_{k' + i} \cdot q_{k' + i + j}|} < \frac{|q_{k' + i} - q_{k' + i + j}|}{ 2^{-2t} } < \frac{ 2^{-k' - i} }{ 2^{-2t} } = 2^{2t - k' - i} < 2^{-i}$.
+\end{proof}
+
+\begin{definition}
+  If $x < 0$ is a real number, then $\frac{1}{x} := - \frac{1}{-x}$
+\end{definition}
+
+\begin{definition}
+  Let $y \neq 0$ and $x$ be real numbers. Then $\frac{x}{y} := x \cdot \frac{1}{y}$.
+\end{definition}
+
+We state the following theorem without proof because of the sheer ammount of work required to prove it.
+
+\begin{theorem}
+  Let $x \neq 0$ be a real number. Then $\frac{x}{x} = 1$.
+\end{theorem}
+
+It is possible to prove in RCA$_0$:
+
+\begin{theorem}
+  $(\R, +, -, \cdot, /, 0, 1, <, =)$ is an Archimedean ordered field.
+\end{theorem}
+
+We thus conclude this section having presented the construction and arithmetic of the natural, integer, rational and real numbers, understood as we have defined them. Now it is time to take an unexpected detour towards the study of computability theory.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:

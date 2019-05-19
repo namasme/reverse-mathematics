@@ -1,0 +1,34 @@
+\documentclass[../main.tex]{book}
+
+\begin{document}
+
+\chapter{Introduction}
+
+%\textit{When the theorem is proved from the right axioms, the axioms can be proved from the theorem} \\
+%--- \textbf{Harvey Friedman}
+
+In the beginning, there was $\omega$. Or, at least, that is what we will assume for the remainder of this text. \\
+
+For any attempt at tackling the problem of the foundations of mathematics, a decision must be made as to which undeniable primitives shall the rest of the mathematics be built upon. In our case, we will call $\omega$ the standard natural numbers with their usual elements, operations and, more generally, properties. Note, however, that this will be an object of our metatheory and, as such, we will try our best to define it inside the logical framework we will work with. \\
+
+Keeping that in mind, the purpose of this work is to give a gentle introduction to the basic results in the reverse mathematics field/program, whose origins date back to 1975, when Harvey Friedman published his seminal paper "Some Systems of Second Order Arithmetic and Their Use" \cite{friedman}. \\
+
+As pointed by the quote at the beginning of the section (which in fact appeared in the aforementioned paper), reverse mathematics deals with the relationship between axioms and theorems. It turns out that, more often than not, the theorems not only follow from the axioms but also imply them, so they are, in fact, equivalent (for suitable theorems and axioms, that is). \\
+
+Alas, we need to tread carefully and be specific about what we mean by \textit{equivalence}. From a logical, proof-theoretic standpoint any two true statements are logically equivalent because they are both true. We will need to develop a base system and then show that, from its point of view, some extension of it is equivalent to some other theorem. Our base system should be powerful enough to be capable of expressing interesting concepts (e.g., $f$ is a continuous function), but also weak enough that the theorems we wish to consider do not already follow from it. Thus, the general procedure for an equivalence claim will be as follows: \\
+
+\begin{enumerate}
+\item Show that our base system $B$, when augmented to the \textit{target} system $S$, can prove the theorem $T$. This would be the classical direction, in which theorems follow from axioms.
+\item Then, arguing from $B$, prove that the theorem $T$ actually implies the extra axiom(s) in $S$. This is the \textit{novelty}, where we show that the proper axiom is indeed needed by $T$.
+\end{enumerate}
+
+The base system that will be used to show the equivalences is called \textit{recursive comprehension axiom}, or RCA$_0$, for reasons that will become clear later. This will turn out to be, indeed, a very weak system, capable only of proving basic results such as the intermediate value theorem or the Baire category theorem. This is not to say that those theorems are unimportant or trivial, of course, only that they do not require as much or as strong conditions as some others to be proven. However, its expressive power is enough to be able to deal with countable rings and fields, separable metric spaces, functional analysis and even logic itself. \\
+
+Later on, we will present the systems of WKL$_0$, for weak König's lemma, and ACA$_0$, for \textit{arithmetical comprehension axiom}. These three systems, and others that we will only briefly mention but not actually work with, are essentially equal except for a set (in a sense we will soon explain) existence axiom. In fact, they are actually of strictly increasing strength, which roughly means that if we succeed in showing the equivalence between a theorem and one of these systems, we can get a sense of how strong a theorem is when comparing it to some other, already classified theorems. To be more specific, we will see that monotone convergence is not provable in RCA$_0$ but it is in ACA$_0$. So, in that sense, monotone convergence is \textit{stronger} than the intermediate value theorem.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
