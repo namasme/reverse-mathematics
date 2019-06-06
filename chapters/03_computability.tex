@@ -1,0 +1,774 @@
+\documentclass[../main.tex]{memoir}
+
+\begin{document}
+
+\chapter{Computability}
+
+The theory of computability, or recursion theory, as it was originally named, dates back to the decade of the 1930s and has such prominent figures among its founders as Alan Turing, Emil Post, Kurt Gödel, Alonzo Church or Stephen Kleene. In this chapter we will establish the basic foundations of what later came to be a fully fledged branch of both mathematics and computer science, lying on the edge of both worlds for obvious reasons. More importantly, we will start to highlight the relation between what we just saw in the last chapter and the computable realm. \\
+
+\section{Models of computation and the Church-Turing thesis}
+
+Informally, a model of computation is a collection of definitions and rules that abstractly specify how to perform a \textit{computation}. Since there exist so many, wildly different models of computation it is close to impossible to state the former sentence so that it makes sense for all of them. Some models are more natural, such as finite state automata, Turing machines or unlimited register machines (URM), in that they can be conceptualized as an actual mechanical device that performs certain tasks to produce a result. Others, like Church's $\lambda$-calculus, SKI combinators, partial recursive functions or elementary formal systems (due to Raymond Smullyan), \textit{feel} a little alien at first sight since they are more abstract (the aforementioned machine-like nature is not obvious at all). This may explain why almost all modern \textit{computers} (which is also a vague term) resemble Turing machines and not a computer for, say, $\lambda$-calculus. \\
+
+\begin{remark}
+  Please note that these models (of computation) do not bear any relation to the \textbf{logical} models of a theory that we introduced in the previous chapter and will continue to discuss in later chapters.
+\end{remark}
+
+However practical these models may be, though, they are still all interesting from a theoretical point of view. Their most interesting theoretical property is their \textbf{power}, i.e., the range of functions they can compute. It turns out that not all of them are equivalent, e.g. Turing machines are strictly more powerful than finite state automatas, although in practice, when a model is powerful enough it is actually equivalent to (or just as powerful as) the most powerful models we know of yet. \\
+
+In the following subsections we will give an overview of the models of partial recursive functions and Turing machines -- one because of its historical importance, one because of its dominance --, and present the well-known Church-Turing thesis.
+
+\subsection{Recursive functions}
+
+Our first approximation to the computability theory will be that of the recursive functions, since it is arguably the most \textit{mathematical} of them. For the time being, we will call $\N$ what we previously called $\omega$, i.e., the ideal, infinite set of natural numbers that we are used to. We then define:
+
+\begin{definition}[Initial functions]
+  \label{def:initial-functions}
+  The following functions are \textbf{primitive recursive}:
+
+  \begin{itemize}
+  \item The \textbf{zero function}, $Z: \N \to \N$, defined by
+    \[ Z(n) := 0 \forall n \]
+  \item The \textbf{successor function}, $S: \N \to \N$, defined by
+    \[ S(n) := n + 1 \forall n \]
+  \item The \textbf{projection functions}, $\pi_i^k: \N^k \to \N$, defined by
+    \[ \pi_i^k(x_1, x_2, \ldots, x_i, \ldots, x_k) = x_i \]
+    for $k \ge 1$ and $1 \le i \le k$
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Composition]
+  Let $f: \N^k \to \N, g_i: \N^m \to \N$ for $1 \le i \le k$ be primitive recursive functions. The \textbf{composition} of $f$ with $g_1, \ldots, g_k$ is the function $h: \N^m \to \N$, defined by
+  \[ h(x_1, \ldots, x_m) := f(g_1(x_1, \ldots, x_m), \ldots, g_k(x_1, \ldots, x_m)) \]
+  We say that $h$ is primitive recursive.
+\end{definition}
+
+\begin{definition}[Primitive recursion]
+  Let $f: \N^k \to \N, g: \N^{k + 2} \to \N$ be primitive recursive functions. The \textbf{primitive recursion} of $f$ and $g$ is the function $h: \N^{k + 1} \to \N$, defined by
+  \begin{align*}
+    h(0, x_1, \ldots, x_k) & := f(x_1, \ldots, x_k) \\
+    h(n + 1, x_1, \ldots, x_k) & := g(n, h(n, x_1, \ldots, x_k), x_1, \ldots, x_k)
+  \end{align*}
+  We say that $h$ is primitive recursive.
+\end{definition}
+
+\begin{remark}
+  Intuitively, the primitive recursion of $f$ and $g$ acts like a \texttt{for} loop starting at $i = 0$ and finishing at $i = n + 1$. The arguments $x_1, \ldots, x_k$ are a set of initial conditions immutable by $f$ and $g$. When $i = 0$, the initial calculation $f(x_1, \ldots, x_k)$ is performed. From then on, the function $g$ is fed the current value of $i$, the result of the last iteration, and the original, immutable arguments $x_1, \ldots, x_k$.
+\end{remark}
+
+An example of a primitive recursive function is the addition function, $+: \N \times \N \to \N$.
+
+\begin{theorem}
+  Addition is primitive recursive.
+\end{theorem}
+\begin{proof}
+  Let $f(x) := \pi_1^1(x) = x, g(x, y, z) := S(\pi_2^3(x, y, z)) = S(y)$. It suffices to note:
+  \begin{align*}
+    +(0, m) & := f(m) = m \\
+    +(n + 1, m) & := g(n, +(n, m), m) = S(+(n, m))
+  \end{align*}
+  So $+(n, m) \equiv n + m$ verifies all the properties of addition and it is clearly primitive recursive.
+\end{proof}
+
+We could proceed in this fashion and show that most of the functions we are used to are, indeed, primitive recursive. In fact, the mathematical community was quite satisfied with this definition of \textit{computability}. It was not until 1928 when a young Willhelm Ackermann, a student of Hilbert's, first published \cite{ackermann} his discovery of a recursive, non-primitive recursive function aptly named Ackermann's function. We present a variation of the original formulation due to Rózsa Péter and Raphael Robinson, which is nowadays the most common way to define it:
+
+\begin{definition}[Ackermann's function]
+  \begin{equation*}
+    A(m, n) := \left\{
+      \begin{array}{lr}
+        n + 1 & \text{if } m = 0 \text{,} \\
+        A(m - 1, 1) & \text{if } m > 0 \text{ and } n = 0 \text{,} \\
+        A(m - 1, A(m, n - 1)) & \text{if } m > 0 \text{ and } n > 0 \\
+      \end{array} \right.
+  \end{equation*}
+\end{definition}
+
+At this point there are two main questions worth discussing:
+
+\begin{enumerate}
+\item Why is this function not primitive recursive? The proof is technical and arduous, but the main idea is to show that the function $A(n, n)$ dominates any primitive recursive function $f$, i.e., eventually grows (much) faster than $f$. That, of course, rules out the possibility of $A(n, n)$ being primitive recursive, since then it would need to dominate itself. As to why it dominates all primitive recursive functions, a possible proof is to show that the set of functions that are dominated by $A(n, n)$ includes the initial functions (easy), and that it is closed under composition and primitive recursion (intricate).
+\item What do we mean when we say $A(m, n)$ is \textit{recursive}? The answer to this question is somewhat more discouraging: there is not a formal, completely satisfying definition of recursive (or computable) function. Of course, one can formally define the computable functions to be the $\mu$-recursive functions, as we will shortly see. Alternatively, there also exist Turing computable functions, computable functions in the sense of $\lambda$-calculus, etc. It turns out all of these definitions yield \textbf{exactly} the same class of computable functions so, by lack of a counterexample, we assume that any reasonable model of computation will be equivalent to all the ones we already know, and hence will not alter our notion of computable functions. Furthermore, the custom is to dispense with the formalities of choosing a particular model of computation and showing it can compute a given function, instead invoking the concept of \textbf{effectively computable} function, whose definition as ``Any function for which there is an intuitively effective process for computing its values'' is even vaguer. We will revisit this topic later in this chapter.
+\end{enumerate}
+
+It could also be asked why did we not begin by defining ($\mu$-)recursive functions. First of all, starting with primitive recursive functions is more historically accurate. On a more practical side, we will lose some properties when we transition to recursive functions. Most notably, primitive recursive functions are \textbf{total}, i.e., they produce a resulting value for any possible input. This will not necessarily be the case with recursive functions, which may be \textbf{partial}.
+
+\begin{definition}
+  A function $f$ is defined for $n$ if it produces a result when (or it allows to be) fed with input $n$. We write this as $f(n) \halts$. Otherwise, we write $f(n) \diverges$.
+\end{definition}
+
+\begin{definition}
+  A (partial) function $f$ is \textbf{total} if $\forall n (f(n) \halts)$.
+\end{definition}
+
+\begin{definition}
+  All primitive recursive functions are defined to be (total) recursive.
+\end{definition}
+
+\begin{definition}[$\mu$-operator]
+  Let $g(x_1, \ldots, x_n, m)$ be a partial recursive function. Then so is
+  \[ f(x_1, \ldots, x_n) := \mu m [g(x_1, \ldots, x_n, m) = 0] \]
+  where
+  \begin{equation*}
+    \mu m [g(x_1, \ldots, x_n, m) = 0] = k \overset{\Delta}{\iff}
+    \begin{array}{r@{}l}
+      g(x_1, \ldots, & x_n, k) = 0 \\
+      & \land \\
+      \forall (m < k) (g(x_1, \ldots, x_n, m) & \halts \land g(x_1, \ldots, x_n, m) \neq 0)
+    \end{array}
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  Intuitively, the $\mu$ operator performs a search looking for the least $m$ such that $g(x_1, \ldots, x_n, m) \halts$ and is equal to $0$. Notice that such an $m$ may well not exist (e.g. consider $g(x, m) = x + m + 1$, then $\forall n (f(n) \diverges)$). It is also worth noting that $= 0$ does not play any important role, we may define the $\mu$ operator for arbitrary (recursive) relations with a distinguished parameter as Kleene originally did. \cite{kleene}
+\end{remark}
+
+\begin{definition}
+  A function $f$ is \textbf{partial recursive} if it is primitive recursive or can be defined from partial recursive functions using (a finite number of applications of) the composition rule, the primitive recursive rule and the $\mu$ operator. \\
+  A partial recursive function that is also total is simply called \textbf{recursive}.
+\end{definition}
+
+In other words, the partial recursive functions are the smallest class of functions that includes the initial functions and is closed under composition, primitive recursion and the $\mu$ operator. Similarly, we can define recursive sets and relations:
+
+\begin{definition}[Recursive sets]
+  Let $S$ be a set and denote by $\chi_S$ its indicator or characteristic function, that is:
+
+  \begin{equation*}
+    \chi_S(x) := \left\{
+    \begin{array}{lr}
+      1 & \text{if } x \in S \text{,} \\
+      0 & \text{if } x \not\in S \\
+    \end{array}\right.
+  \end{equation*}
+
+  $S$ is said to be recursive if $\chi_S$ is.
+\end{definition}
+
+\begin{definition}[Recursive relations]
+  Let $R(x_1, \ldots, x_k)$ be a relation and denote by $\chi_R$ its indicator or characteristic function, that is:
+
+  \begin{equation*}
+    \chi_R(x_1, \ldots, x_k) := \left\{
+    \begin{array}{lr}
+      1 & \text{if } R(x_1, \ldots, x_k) \text{holds,} \\
+      0 & \text{if } R(x_1, \ldots, x_k) \text{does not hold} \\
+    \end{array}\right.
+  \end{equation*}
+
+  $R$ is said to be recursive if $\chi_R$ is.
+\end{definition}
+
+Analogously, $S$ (respectively $R$) is said to be primitive recursive if $\chi_S$ (respectively $\chi_R$) is. (Partial) recursive relations are also \textit{logically closed}, in the sense that if $P$ and $Q$ are (partial) recursive then so are $\neg P$, $P \land Q$ and $P \lor Q$. The analogous for sets is also true, so if $X, Y$ are (partial) recursive sets then so are $\N \setminus X, X \cap Y$ and $X \cup Y$.
+
+\subsection{Turing machines}
+
+Turing machines are probably the epitome of models of computation. The intuition is that of a mechanical device with an infinite readable and writable tape subdivided in discrete cells in which the input, the intermediate steps and the final result are all written. The device is equipped with a head, which performs the reading and writing, scans the contents of a cell, outputs a symbol to the same cell and moves either left or right for the next step. Finally, the machine possesses a (finite) set of internal states through which it can jump. These, in the original formulation of Turing, are intended to represent the mental states of an actual human performing the computation. Formally:
+
+\begin{definition}
+  \label{def:turing-machine}
+  We define a Turing machine $M$ as a septuple $(Q, \Gamma, b, \Sigma, \delta, q_0, F)$, where:
+
+  \begin{itemize}
+  \item $Q$, the set of \textbf{states} of $M$, is finite and non-empty,
+  \item $\Gamma$, the \textbf{tape alphabet}, is a finite, non-empty set of symbols,
+  \item $b \in \Gamma$ is the \textbf{blank symbol},
+  \item $\Sigma \subseteq \Gamma \setminus \{b\}$ is the set of \textbf{input symbols},
+  \item $\delta: (Q \setminus F) \times \Gamma \to Q \times \Gamma \times \{L, R\}$ is the \textbf{transition (partial) function},
+  \item $q_0 \in Q$ is the \textbf{initial state}, and
+  \item $F \subseteq Q$ is the set of \textbf{final} or \textbf{accepting} states.
+  \end{itemize}
+\end{definition}
+
+$M$ \textbf{halts} whenever $\delta$ is not defined for the current state and tape symbol. If $M$ is in state $q \in Q$ when it halts, we say $M$ \textbf{accepts} if $q \in F$ and $M$ \textbf{rejects} otherwise. This definition is adapted from Hopcroft and Ullman's ``Introduction to Automata Theory, Languages and Computation'' \cite{hopcroft}.
+
+We will not deal here with the details, but any introductory course to this topic shows how a great number of modifications can be made to the definition of a Turing machine without changing its \textit{computational power}, that is, the class of functions they can compute. Common examples include multi-track Turing machines, multi-tape Turing machines, two-way infinite tapes, two-dimensional tapes, and, perhaps most notably, non-deterministic Turing machines. This already somewhat suggests that Turing machines are the best we can expect to achieve in terms of computational power, based on a loose definition of \textit{computability} that ultimately depends on our human condition.
+
+\begin{definition}
+A Turing machine $M$ is said to compute function $f$ when, for every $n \in \N$, if $M$ takes input $n$ it halts and outputs $f(n)$. We then say $f$ is Turing computable and $f = \varphi_M$.
+\end{definition}
+
+This definition can be formalized in many different ways. A rather natural one is to consider $b = 0, \Sigma = \{0, 1\}$ and specify that $M$ has input $n$ if its tape starts with $n + 1$ consecutive $1$s from the initial position of the head -- this is to ensure we can always start by reading a $1$. If $f$ receives multiple parameters, say $n_1, \ldots, n_k$, the tape should start with $n_1 + 1$ consecutive $1$s, followed by a $0$ and then $n_2 + 1$ consecutive $1$s and so on. Similarly, $M$ outputs $n$ if there are exactly $n$ (possibly non-consecutive) $1$s left on the tape when it halts. We do not make distinction in this case between accepting and rejecting states. In these conditions we can prove the following:
+
+\begin{theorem}
+  The initial functions are Turing computable.
+\end{theorem}
+\begin{proof}
+  \begin{itemize}
+  \item The easiest case is that of the successor function, $S$. Since we already have $n + 1$ ones in the tape we can halt immediately and the output is correct.
+  \item For the zero function, $Z$, we define the following transition function
+    \[
+      \delta(q_0, 1) = (q_0, 0, R),
+    \]
+    which indeed erases all occurring $1$s in the tape.
+  \item The projection functions, $\pi_i^n$, follow this scheme:
+    \begin{align*}
+      \delta(q_k, 1) & = (q_{k'}, 0, R), \\
+      \delta(q_{k'}, 1) & = \left\{
+        \begin{array}{lr}
+          (q_{k'}, 1, R) & \text{if } k = i \text{,} \\
+          (q_{k'}, 0, R) & \text{if } k \neq i
+        \end{array} \right.\\
+      \delta(q_{k'}, 0) & = (q_{k + 1}, 0, R),
+    \end{align*}
+    renaming the initial state to $q_1$.
+  \end{itemize}
+\end{proof}
+
+We can also prove, with some additional effort, that substitution, primitive recursion and the $\mu$ operator can be \textit{emulated} with Turing machines, so the closure properties of the partial recursive functions hold for Turing computable functions. Formally:
+
+\begin{theorem}
+  All partial recursive functions are Turing computable.
+\end{theorem}
+
+The converse also holds:
+
+\begin{theorem}
+  All Turing computable functions are partial recursive.
+\end{theorem}
+\begin{proof}
+  The details of the proof are tedious, but the main idea is to encode Turing machines with numbers in a \textbf{recursive} fashion. We also need to encode the \textit{instantaneous description} of the machine, i.e., a description of the computation at any given point from which one can resume the process. To describe the whole state of the computation at any step it suffices to give the internal state, the symbol the head is reading, the word (as in a string of symbols) to the left of the current symbol and the word to the right. Assuming the states are numbered and the tape alphabet is binary, we have a natural interpretation of all the items in terms of numbers. Then we just need to show that:
+
+  \begin{enumerate}
+  \item The (code for the) initial configuration is a recursive function of the numerical input,
+  \item the (code for the) configuration at each step is a partial recursive function of the (code for the) configuration of the previous step, and
+  \item the machine output is a recursive function of the (code for the) machine's halting configuration.
+  \end{enumerate}
+
+  Therefore, the composition of all of them is a partial recursive function that acts exactly as the machine.
+\end{proof}
+
+\subsection{The Church-Turing thesis}
+
+We conclude this section by stating the well-known Church-Turing thesis, which we will consider a definition:
+
+\begin{definition}[Church-Turing thesis]
+  Every function for which there is an intuitively effective process for computing its values can be shown to be computable.
+\end{definition}
+
+This statement needs some interpretation. First of all, when we say that the function is ``computable'' we mean Turing computable, or partial recursive, or the analogous for any other equivalent model of computation. Since so many of them are equivalent, it seems the notion of computability transcends any particular model and is agnostic of them. This relates to the first half of the sentence, where we mention ``intuitively effective process''. If we regard the Church-Turing thesis as no more than a plain definition, then this would just define ``intuitively effective process'', but it actually goes in the other direction: we assume that we, as humans, know how to distinguish intuitively between a process that performs a computation and one that could not possibly succeed at it. Then the thesis reads: if we can think of some process that intuitively can perform certain computation, it surely must be formalizable as, say, a Turing machine. In light of this it is now obvious why so many different models are equivalent, although for some of them the ``intuitive'' part requires some convincing. Of course this is circular argument, but it gives us confidence that our understanding of computation is good enough.
+
+\section{The limits of computation}
+
+In the previous section we have established the fundamentals facts about computability. However, perhaps the most interesting topics arise when the requirements are relaxed and \textit{uncomputable} objects are allowed. In this section we will study these objects -- that range from numbers to sets, trees or functions -- and give precise definitions of what we mean by uncomputable as well as results about their uncomputability.
+
+\subsection{Recursive enumerability}
+
+The weakest modification we can think of is that of recursive enumerability, in which, intuitively, we only ask for definitive answers for the positive cases, but allow the other cases to be unanwered. Formally:
+
+\begin{definition}
+  A set $X$ is \textbf{recursively enumerable} (abbreviated \textbf{r.e.}) if there exists some Turing machine that, for every input $n$, accepts if and only if $n \in X$, but may either reject or not halt if $n \not\in X$. Equivalently, $X$ is r.e. if there exists some Turing machine that \textit{enumerates} the elements of $X$, that is, outputs exactly those $n$ such that $n \in X$, but may never stop doing so (if $X$ is infinite).
+\end{definition}
+
+\begin{remark}
+  \label{remark:re-equivalence}
+  The equivalence of both definitions is natural when one has enough experience with the subject, but may be a little surprising for a newcomer. The argument goes along these lines:
+
+  \begin{itemize}
+  \item Assume the first definition holds. We can then proceed by stages, so in the first stage we execute one step of the machine for input $1$. In the second stage we perform the second step of the machine for input $1$ and the first for input $2$. In the third stage, the third step of the machine for input $1$, the second for input $2$ and the third for input $3$ are executed. Whenever we reach a step for some input $n$ in which the machine accepts, we can stop working on that $n$ and output it, effectively listing it as a member of $X$. Since we assumed the machine always stops for those $n$ such that $n \in X$, we can be sure that eventually all such $n$ will be output or, in other words, listed. If $n \not\in X$ the machine will either never stop (so it will not appear in the list) or reject, in which case we obviously do not output that number.
+  \item Now assume the second part of the definition holds. For every possible $n$, we can start scanning the list and stop whenever we find it. Since the list contains all possible $n \in X$, we can be sure that we will eventually find it somewhere in the list. Alternatively, if $n \not\in X$, we will keep hopelessly looking for $n$ in the list, never to find it, so the machine will never halt.
+  \end{itemize}
+
+  Note that for this proof we have relied on the Church-Turing thesis by giving an effectively computable process by which a solution for one of the problems becomes, computably, a solution for the other one, without having actually, explicitly constructed a Turing machine (or a partial recursive function, for that matter) that performs this task. This is a nice commodity since it both eases the process of proving a statement and also provides more insight to the reader as to \textit{how} and \textit{why} the proof works. Unfortunately, the details are lost, but they should be easily reconstructable from the main ideas exposed. \\
+
+  Also, note that due to the equivalence of Turing machines and partial recursive functions the second definition may also be regarded as a machine that performs the computation $f(0), f(1), f(2), \ldots$ for some computable function $f$ and lists those values $f(n)$ such that $f(n) \halts$. This gives us yet another useful characterization for r.e. sets, by which a set $X$ is r.e. if and only if there exists some partial recursive function $f$ such that
+  \[ X = \{f(0), f(1), f(2), \ldots\} = \text{range}(f). \]
+  In fact, there is a stronger version of this equivalence by which a \textbf{non-empty} set is r.e. if and only if it is the range of a primitive recursive function, but the weak version will be enough for us.
+\end{remark}
+
+Of course, all computable sets are r.e. since we can effectively decide for each possible candidate whether it is contained in the set or not. A natural question is whether this class of sets includes some non-computable ones, since otherwise the definition would be redundant. The fact that we have a different name for this concept already suggest that they are indeed a proper superclass, as we shall see shortly. First, we will see another classical result that shows that computability and recursive enumerability are actually very much related:
+
+\begin{theorem}
+  \label{thm:complementation}
+  A set $X$ is computable if and only if both $X$ and $\overline{X} := \N \setminus X$ are r.e.
+\end{theorem}
+\begin{proof}
+  The forward direction is quite trivial since we already know that $X$ being computable implies being r.e. For the complement, note that since $X$ is computable we can also effectively decide which $n$s are \textbf{not} in $X$, so it is r.e. too (in fact computable).
+
+  For the backwards implication, we can devise a machine that lists both $X$ and $\overline{X}$ separately, so that for any input $n$ we just need to run it long enough that $n$ will appear in either the list of $X$ or $\overline{X}$, and then answer accordingly.
+\end{proof}
+
+Another interesting result is a particularization of the equivalence discussed in remark \ref{remark:re-equivalence}. First we need a definition:
+
+\begin{definition}
+  A total function $f$ is said to be \textbf{increasing} if
+  \[ \forall n (f(n) < f(n + 1)). \]
+\end{definition}
+
+Then we have the following:
+
+\begin{lemma}
+  An infinite set $X$ is computable if and only if it is the range of an increasing function.
+\end{lemma}
+\begin{proof}
+  \begin{itemize}
+  \item Assume $X$ is computable, so $n \in X$ is a computable relation. Then we can define:
+    \begin{align*}
+      f(0) & = \mu n [n \in X], \\
+      f(m + 1) & = \mu n [n > f(m) \land n \in X].
+    \end{align*}
+    Thus $f$ is obviously increasing and its range coincides with $X$. Note that in this case we have applied the remark made when we first defined the $\mu$ operator about how we can replace $g(x_1, \ldots, x_k, n) = 0$ with an arbitrary computable relation. If we wanted to stick to the original definition, we might have considered $g = \chi_{\overline{X}}$.
+  \item Assume now $X$ is indeed the range of some increasing function $f$. To determine whether $n \in X$ or not, we just need to compute the first $n + 1$ values of $f$, since they come in increasing order, and check for $n$ among those values. Formally,
+    \[ n \in X \iff \exists (m \le n) (f(m) = n). \]
+  \end{itemize}
+\end{proof}
+
+% TODO: number TMs
+% TODO: halting problem undecidable
+
+Then we have the following useful result:
+
+\begin{theorem}[Enumeration theorem]
+  $\varphi_k(n)$ is a partial recursive function, say $f$, of $k$ and $n$ such that, for each $k$, $f(k, \cdot) = \varphi_k$.
+\end{theorem}
+\begin{proof}
+  Given $k$, we just need to find $\varphi_k$, which we can do \textbf{computably}, and then compute $\varphi_k(n)$.
+\end{proof}
+
+The $f$ from the last theorem is, in fact, the novelty Turing introduced in his 1936 paper ``On computable numbers, with an application to the Entscheidungsproblem'' \cite{oncomputablenumbers}: the \textbf{universal Turing machine}.
+
+\begin{theorem}[Universal Turing machine]
+  There exists a Turing machine $U$ which, if given input $(e, n)$, simulates the $e$-th Turing machine with input $n$. In other words, $\forall e \forall n (\varphi_U((e, n)) = \varphi_e(n))$.
+\end{theorem}
+
+Back to our quest of finding a recursive enumerable but non-computable set, we only need one more previous definition:
+
+\begin{definition}
+  The halting problem asks, given $e, n \in \N$, whether $\varphi_e(n) \halts$. Calling $T_e$ the $e$-th Turing machine, the halting set of $T_e$, $W_e$, is defined as the set of inputs that make it halt. Equivalently, $W_e$ is the domain of $\varphi_e$.
+  \[ W_e := \{n : \varphi_e(n) \halts\}. \]
+  The halting problem for $T_e$ is said to be \textbf{solvable} if $W_e$ is computable.
+\end{definition}
+
+It turns out that this lets us enumerate recursively enumerable sets (as confusing as that may sound):
+
+\begin{theorem}[The normal form theorem for r.e. sets]
+  A set $X$ is r.e. if and only if $X = W_e$ for some $e$.
+\end{theorem}
+\begin{proof}
+  \begin{itemize}
+  \item If $X$ is r.e. then define the following partial recursive function:
+    \begin{equation*}
+      \varphi(n) := \left\{
+        \begin{array}{lr}
+          0 & \text{if } n \in X \text{,} \\
+          \text{undefined} & \text{if } n \not\in X
+        \end{array}\right.
+    \end{equation*}
+    Alternatively, it may be easier to visualize the construction of a Turing machine that, given $n$, emulates the machine $M_X$ that checks whether $n \in X$. If it ever stops and confirms that $n \in X$, the new machine outputs $0$. Otherwise, either $M_X$ never halts or it halts and rejects, in which case we can simply add an infinite loop to our machine.
+  \item Suppose now $X = W_e$ for some $e \in \N$. To show $X$ is r.e. we can build $M_X$ by simulating $T_e$ on input $n$. If $T_e$ ever halts we confirm $n \in X$, otherwise we do not answer.
+  \end{itemize}
+\end{proof}
+
+\begin{remark}
+  This theorem gives us yet another characterization of r.e. sets as exactly the class of sets that are the domain of some partial recursive function.
+\end{remark}
+
+And now for something completely different:
+
+\begin{theorem}
+  \label{thm:re-not-r-set}
+  There exists a r.e. set $K$ that is not computable.
+\end{theorem}
+\begin{proof}
+  Define $K_0 = \{(e, n): n \in W_e \}$. This set is r.e. because, given $m$, we can computably decide whether $m = (e, n)$ for some $e, n \in \N$. In that case, retrieve them and computably simulate $T_e$ with input $n$. If $T_e$ ever halts, then confirm $(e, n) = m \in K_0$. Otherwise, we do not answer. \\
+  Now define $K = \{n: n \in W_n\}$. This set is isomorphic to the diagonal of $K_0$, since
+  \[ n \in K \iff n \in W_n \iff (n, n) \in K_0. \]
+  Therefore, $K$ is r.e. because we can adapt the algorithm for $K_0$ to an algorithm for $K$.
+  If $K$ were to be computable, by theorem \ref{thm:complementation} $\overline{K}$ should be r.e. too, and thus $\overline{K} = W_e$ for some $e$. Now, does $e \in \overline{K}$?
+  \[ e \in W_e \iff e \in \overline{K} \iff e \not\in K \iff e \not\in W_e \]
+  So we reach a contradiction in both cases. Therefore $\overline{K}$ \textbf{cannot} be r.e., and so $K$ is not computable.
+\end{proof}
+
+Remember the definition of the halting problem? We just found an example of a r.e. set that is not computable. But, being a r.e. set it must be the halting set of some Turing machine. In general:
+
+\begin{corollary}
+  The halting problem of a given Turing machine is \textbf{not} decidable.
+\end{corollary}
+
+This does not mean that Turing machines cannot have recursive halting sets, as there are plenty of trivial counterexamples to that statement. What it claims is that we cannot possible devise a Turing machine (or an algorithm, for that matter) that, given a Turing machine and an input, decides whether the machine will halt or not for that input. \\
+
+% TODO: enumeration of total recursive functions, self reference and universal machine
+
+\section{Reducibility}
+
+By this point we already know we can pose problems for which there is no possible \textit{computable} solution. However, a natural question to ask is whether all such unsolvable problems are \textit{equally unsolvable}, or \textit{equally hard}. Similar to what happens with infinite cardinals in set theory, some problems are harder than others. Intuitively, a problem $A$ is harder than a problem $B$ if we can describe a process by which, assuming a solution for problem $A$ we can get a solution for problem $B$, in which case we say $B$ is reducible to $A$. This notion can be formalized in several ways, but we will only present two of the most popular alternatives: \textbf{many-one reducibility} and \textbf{Turing reducibility}.
+
+\subsection{Many-one reducibility}
+
+\begin{definition}
+  \label{def:m-red}
+  Let $A$ and $B$ be sets of natural numbers. We say $B$ is \textbf{many-one reducible} or \textbf{$m$-reducible} to $A$ (written $B \le_m A$) if there exists some total recursive function $f$ such that:
+  \[ \forall n (n \in B \iff f(n) \in A). \]
+\end{definition}
+
+This definition gives us a rather natural notion of reducibility together with a simple mathematical definition. We can outright proceed to prove some facts about it.
+
+\begin{lemma}
+  For any sets $A$ and $B$, we have $A \le_m B \iff \overline{A} \le_m \overline{B}$.
+\end{lemma}
+\begin{proof}
+  Assume $A \le_m B$ and let $f$ be the computable function that witnesses the reducibility. Then
+  \[ n \in \overline{A} \iff \neg (n \in A) \iff \neg (f(n) \in B) \iff f(n) \in \overline{B}, \]
+  so $f$ itself proves that $\overline{A} \le_m \overline{B}$. It follows from our argument that if $g$ witnesses $\overline{A} \le_m \overline{B}$ then it also proves $A \le_m B$, thus completing our proof.
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:mreducibility-monotone}
+  \begin{enumerate}
+  \item If $A \le_m B$ and $B$ is computable, then so is $A$.
+  \item If $A \le_m B$ and $B$ is r.e., then so is $A$.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  In both cases, let $f$ be the computable function that proves the reducibility. Then $\chi_A = \chi_B \circ f$.
+  \begin{enumerate}
+  \item If $B$ is computable then $\chi_B$ is total recursive, so $\chi_A$ is total recursive and therefore $A$ is computable.
+  \item If $B$ is r.e. then $\chi_B$ is partial recursive, so $\chi_A$ is partial recursive and therefore $A$ is r.e.
+  \end{enumerate}
+\end{proof}
+
+This still suits our intuition that reducibility respects \textit{difficulty}. Considering the particular recent example of the set we found to be r.e. but not computable we can prove the following:
+
+\begin{lemma}
+  \label{lemma:k-m-red-k0}
+  $K \le_m K_0$ and thus $K_0$ is r.e. but not computable.
+\end{lemma}
+\begin{proof}
+  Notice that $n \in K \iff n \in W_n \iff (n, n) \in K_0$, so $f(n) = (n, n)$, being a total recursive function, shows that indeed $K \le_m K_0$. Now if $K_0$ was computable, by lemma \ref{lemma:mreducibility-monotone}, we could conclude that $K$ itself is computable too. But we already proved in theorem \ref{thm:re-not-r-set} that $K$ is not computable, so that means $K_0$ is also non-computable.
+\end{proof}
+
+In fact, there is a reason we have considered the set $K_0$ other than being a very natural example: in a sense, $K_0$ is the \textit{hardest} r.e. set that exists. Formally:
+
+\begin{lemma}
+  \label{lemma:k0-complete}
+  A set $A$ is r.e. if and only if $A \le_m K_0$.
+\end{lemma}
+\begin{proof}
+  Since $K_0$ is r.e. we already know $A \le_m K_0$ implies that $A$ is r.e. Assume now $A$ is r.e., so $A = W_e$ for some $e \in \N$. Using the same argument as before:
+  \[ n \in A \iff n \in W_e \iff (e, n) \in K_0. \]
+  Therefore, $f(n) = (e, n)$ shows that $A \le_m K_0$.
+\end{proof}
+
+Thanks to this notion of reducibility we can \textit{almost} actually order sets with respect to their complexity:
+
+\begin{lemma}
+  \label{lemma:m-red-preorder}
+  $\le_m$ is a preorder relation.
+\end{lemma}
+\begin{proof}
+  We need to prove reflexivity and transitivity:
+  \begin{enumerate}
+  \item For reflexivity, taking $f(x) = x$ shows $A \le_m A$ for every $A$.
+  \item For transitivy, assume $A \le_m B$ via $f$ and $B \le_m C$ via g. Then
+    \[ n \in A \iff f(n) \in B \iff g(f(n)) \in C, \]
+    so $h = g \circ f$ is total recursive and shows $A \le_m C$.
+  \end{enumerate}
+\end{proof}
+
+Unfortunately, $\le_m$ is not a \textit{full} order since we cannot distinguish sets only by looking at their upper and lower bounds. Indeed:
+
+\begin{lemma}
+  There exist $A$ and $B$ such that $A \le_m B$ and $B \le_m A$ but $A \neq B$.
+\end{lemma}
+\begin{proof}
+  Any two different computable sets should do. For a concrete example, take $A = 2\N, B = 2\N + 1$ the even and the odd numbers. In both cases $f(n) = n + 1$ proves the inequality, but they are very much not equal.
+\end{proof}
+
+However, we can use a recurring trick in mathematics in which we treat as equal things that are indistinguishable for some construct -- in our case $\le_m$ -- and pretend they are just a single thing. Formally:
+
+\begin{definition}
+  Two sets $A$ and $B$ are said to be \textbf{many-one equivalent} (written $A \equiv_m B$) if $A \le_m B$ and $B \le_m A$.
+\end{definition}
+
+\begin{lemma}
+  $\equiv_m$ is an equivalence relation.
+\end{lemma}
+\begin{proof}
+  Reflexivity and transitivity follow straight from lemma \ref{lemma:m-red-preorder}. For symmetry we have:
+  \[ A \equiv_m B \iff (A \le_m B) \land (B \le_m A) \iff (B \le_m A) \land (A \le_m B)  \iff B \equiv_m A, \]
+  thereby completing our proof.
+\end{proof}
+
+\begin{definition}
+  \label{def:$m$-degree}
+  An equivalence class of $\equiv_m$ is called an \textbf{$m$-degree}. We write $\mathbf{a} = \text{deg}(A)$ where $A$ is any set and $\mathbf{a}$ the $m$-degree to which it belongs. We call $\mathbf{\mathcal{D}}_m := \mathcal{P}(\N) / \equiv_m$ the collection of all $m$-degrees.
+\end{definition}
+
+\begin{remark}
+  To avoid confusion, we shall denote $m$-degrees by boldface, lowercase latin letters, whereas sets are denoted by regular, uppercase latin letters.
+\end{remark}
+
+In light of definition \ref{def:$m$-degree} we can now naturally adapt many-one reducibility to $\mathbf{\mathcal{D}}_m$.
+
+\begin{definition}
+  An $m$-degree $\mathbf{a}$ is said to be reducible to $\mathbf{b}$ (written $\mathbf{a} \le_m \mathbf{b}$) if there exist sets $A, B$ such that $A \in \mathbf{a}$, $B \in \mathbf{b}$ and $A \le_m B$.
+\end{definition}
+
+With this degree ordering we get a lot of interesting algebraic structure on $\mathbf{\mathcal{D}}_m$ -- e.g. $\mathbf{\mathcal{D}}_m$ is a join-semilattice. However, before going too far on this we want to take a step back and reflect on some of the basic properties of $\le_m$. As it stands, our current notion of reducibility is too restrictive: it very accurately distinguishes sets by their \textit{complexity}, but it is a little \textit{too accurate}. In practice it is difficult to show $m$-reducibility too, because of how \textit{thin} the $m$-degrees are.
+
+Intuitively, we would like a set and its complement to be just as difficult: once we know the answers for one we just need to flip them in order to get the answers for the other. $K$ gives us a counterexample to that hope: it is r.e. but its complement is certainly not, so if we want to match our intuition we need to come up with a different kind of reduction. In the next section we will present this new reducibility, called \textbf{Turing reducibility}, which is actually a weaker version of $m$-reducibility, so part of our findings will still be relevant.
+
+Before ending this section, though, it may be worth noting that $m$-reducibility is not by any means the best we can do at classifying sets. A natural variation of $m$-reducibility is $1$-reducibility, where we ask the $f$ from definition \ref{def:m-red} to also be one-to-one. This is a strictly stronger notion of reducibility, though not very practical because of how \textit{similar} the sets need to be in order to apply to the definition.
+
+\section{Turing reducibility, oracle machines and the Turing universe}
+
+For the purposes of this section we first need to define the concept of \textbf{oracle machine}. Intuitively, an oracle is a black box able to compute or solve a problem immediately. Of course, an oracle may just be a Turing machine that computes something (say, $n \mapsto 3n + 5$), but that is not very useful because we could just simulate that machine on an outer Turing machine to get the result. The power of oracles comes when we allow them to perform \textbf{any} computation, even things that cannot possibly be computed by a Turing machine (such as the Busy Beaver function, for example). Most of the times, though, we will be concerned with decision problems, in which an oracle is posed a question and it answers \texttt{YES} or \texttt{NO} in a single computational step. This kind of oracles is easier to formalize but ultimately equivalent to any other oracle. For example, a busy beaver computing machine may be constructed with an oracle that, when input with $(n, m)$, answers \texttt{YES} if and only if $BB(n) = m$. Oracle machines are not physically possible, but they constitute a nice theoretical artifact that allows us to further explore the limits of computability.
+
+\begin{definition}
+  \label{def:oracle-turing-machine}
+  An oracle Turing machine is a septuple $(Q, \Gamma, b, \Sigma, \delta, q_0, F)$ that operates as a two-taped Turing machine with three special states:
+
+  \begin{itemize}
+  \item whenever the machine arrives at state $A$ (for \textit{ask}), the contents of the \textbf{oracle tape} are fed to the oracle,
+  \item if the oracle should answer \texttt{YES}, the machine transitions to state $Y$,
+  \item otherwise, if the oracle's answer is \texttt{NO}, the machine transitions to state $N$.
+  \end{itemize}
+
+  We allow these transitions to be \textit{no-op} in the sense that they do not modify the contents of the tape nor move the reading head.
+\end{definition}
+
+\begin{remark}
+  Intuitively, the machine programmer is allowed to implement \textit{hooks} for the answers of the oracle via transitions from states $Y$ and $N$. The transitions from state $A$ are \textit{hard-coded} by the oracle.
+\end{remark}
+
+By an abuse of notation, we will usually denote an oracle by the set whose membership problem it solves, i.e., an oracle $A$ is such that answers all the questions of the form ``Is $n \in A$'' for some fixed set $A$. We are confident that context will be enough to rule out any possible ambiguity.
+
+Thanks to definition \ref{def:oracle-turing-machine} we arrive at the concept of \textbf{relative Turing computability}:
+
+\begin{definition}
+  A partial function $f$ is $A$-Turing computable if it can be computed by a Turing machine with oracle $A$.
+\end{definition}
+
+Note that the fact that we are restricting oracles to solve membership problems of sets does not really affect the definition, it could be any kind of oracle. We could also completely analogously define relative Turing computability for sets and relations in the way we did in previous sections. In general, we will use the symbol $\le_T$ to denote Turing reducibility between two sets, functions, problems, etc. In the particular case of sets, $A \le_T B$ can be understood as ``if I can effectively decide whether $n \in B$ then I can effectively decide $n \in A$''.
+
+In a similar vein, we can also adapt the Church-Turing thesis to this new realm:
+
+\begin{definition}[Relativised Church-Turing thesis]
+  All formalisations of ``A computable from B'' which are sufficiently reasonable and sufficiently general are equivalent to Turing reducibility, and so can be written $A \le_T B$.
+\end{definition}
+
+Intuitively, in all of the previous definitions, lemmas, etc. we only allowed objects that can be built from scratch using computational rules (such as composition or minimization). Relative computability is exactly the same but building from a \textit{higher point}, e.g. what could we compute if we assume we can somehow solve the halting problem? This intuition can be formalized, but it is nonetheless important to grasp what this new definition is really introducing.
+
+Just as we did with many-one reducibility, we can define Turing equivalence as follows:
+
+\begin{definition}
+  Two sets $A$ and $B$ are said to be \textbf{Turing equivalent} (written $A \equiv_T B$) if $A \le_T B \land B \le_T A$.
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:turing-equivalence}
+  $\equiv_T$ is an equivalence relation.
+\end{lemma}
+\begin{proof}
+  It is trivial to check that Turing reducibility is reflexive, and symmetry follows from the definition of $\equiv_T$. For transitivity, note that reductions are transitive because:
+  \begin{itemize}
+  \item If $A \le_T B$ every question of the form $n \in A$ can be computably decided by knowing the answer to finitely many questions of the form $m_i \in B$,
+  \item If $B \le_T C$ every question of the form $m_i \in B$ can be computably decided by knowing the answer to finitely many questions of the form $k_{ij} \in C$,
+  \end{itemize}
+  So we can \textit{compose} this two statements and assert that if both hold then every question of the form $n \in A$ can be computably decided by knowing the answer to finitely many questions of the form $k_{ij} \in C$, and thus $A \le_T C$.
+\end{proof}
+
+It should be easy enough to see how we can adapt all the theory we have developed up until this point about computability to \textbf{relative} computability. For this reason we will state several useful lemmas without proof, since the generalizations of the proofs we have already seen are quite natural.
+
+\begin{definition}
+  A set $B$ is recursively enumerable in $A$ or $A$-r.e. if we can computably enumerate the members of $B$ using a Turing machine with an oracle for $A$.
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:relative-computability-properties}
+  \begin{itemize}
+  \item If $A \le_T B$ (that is, $A$ is $B$-computable) then $A$ is $B$-r.e.
+  \item We can enumerate the Turing machines with oracle $A$, and hence the $A$-partial recursive functions. We will denote them by $\Phi_e^A$.
+  \item The halting set of $\Phi_e^A$ is $W_e^A$, which we can $A$-recursively enumerate.
+  \item A set $B$ is $A$-r.e. if and only if it is the range of an $A$-partial recursive function and the domain of an $A$-partial recursive function.
+  \end{itemize}
+\end{lemma}
+
+Also:
+
+\begin{lemma}
+  \label{lemma:re-monotonicity}
+  If $X$ is $A$-r.e. and $A \le_T B$, then $X$ is $B$-r.e. too
+\end{lemma}
+\begin{proof}
+  The sketch of the proof is as follows. We know that, given an oracle for $A$, we can recursively enumerate $X$; and given an oracle for $B$ we can computably decide $A$. Therefore, \textit{composing} these two facts as in the proof for lemma \ref{lemma:turing-equivalence}, given an oracle for $B$ we can answer all the questions of the form $n \in A$ that we need to recursively enumerate $X$, so $X$ is $B$-r.e.
+\end{proof}
+
+\begin{definition}
+  \label{def:turing-degree}
+  An equivalence class of $\equiv_T$ is called a \textbf{Turing degree}. We write $\mathbf{a} = \text{deg}(A)$ where $A$ is any set and $\mathbf{a}$ the Turing degree to which it belongs. We call $\mathbf{\mathcal{D}} := \mathcal{P}(\N) / \equiv_T$ the collection of all Turing degrees, also known as the \textbf{Turing universe}.
+\end{definition}
+
+\begin{remark}
+  Note that we have reused part of the notation from $m$-degrees since we will not be working with them anymore, so there will be no ambiguity.
+\end{remark}
+
+\begin{theorem}
+  \begin{enumerate}
+  \item There is a \textbf{least} Turing degree $\mathbf{0}$, the collection of all computable sets,
+  \item Each Turing degree is countably infinite,
+  \item The collection of degrees bounded by a certain Turing degree $\mathbf{a}$, i.e., $\{\mathbf{b} \in \mathbf{\mathcal{D}} : \mathbf{b} \le_T \mathbf{a}\}$, is countable,
+  \item $\mathbf{\mathcal{D}}$ is uncountable
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+  \item A set reducible to a computable set must itself be computable, since oracles for computable sets do not augment the computational capabilities of a Turing machine. The answers the oracle gives might just have been computed by the machine, therefore effectively eliminating the need for the oracle.
+  \item Let $A \in \mathbf{a}$ for some set $A$ and some Turing degree $\mathbf{a}$. Then $\mathbf{a} = \{X \in \mathcal{P}(\N): X \equiv_T A\} \subseteq \{X \in \mathcal{P}(\N): X \le_T A\}$. $X \le_T A$ is equivalent to saying that $X$ is $A$-computable, which implies $X$ is $A$-r.e. But to any $A$-r.e. set $X$ corresponds some (possibly many) $A$-partial recursive function $\Phi_e^A$. Therefore $|\mathbf{a}| \le |\{\Phi_e^A: e \in \N\}| = \aleph_0$, so $\mathbf{a}$ is countable. To see $\mathbf{a}$ is infinite, let $A \in \mathbf{a}$ again. For every $i \in \N$, define:
+    \begin{equation*}
+      A_i := \left\{
+        \begin{array}{lr}
+          A \setminus \{i\} & \text{if } i \in A \text{,} \\
+          A \cup \{i\} & \text{if } i \not\in A
+        \end{array}
+      \right.
+    \end{equation*}
+    Then
+    \[ i \in A_i \iff i \not\in A \iff i \not\in A_j \]
+    for $i \neq j$. In particular, $A_i \neq A_j$ for any $i \neq j$. It is clear that $A_i$ can be computed from $A$. For the reverse implication, assume we have an oracle for $A_i$. Then
+    \begin{equation*}
+      n \in A \iff \left\{
+        \begin{array}{lr}
+          n \in A_i & \text{if } n \neq i \text{,} \\
+          i \not\in A_i & \text{if } n = i
+        \end{array}
+      \right.
+    \end{equation*}
+    So $A_i \equiv_T A$ for every $i \in \N$. Finally, $\{A_i: i \in \N\} \subseteq \mathbf{a}$, so $\mathbf{a}$ is infinite.
+  \item Let $L = \{X \in \mathcal{P}(\N): X \le_T A\}$ for some $A \in \mathbf{a}$. As in the previous proof, $L$ is a subset of the collection of $A$-r.e. sets, so $L$ is countable by the same argument. Now
+    \[ L = \bigcup_{\mathbf{b} \in \{\mathbf{c} \in \mathbf{\mathcal{D}}: \mathbf{c} \le_T \mathbf{a}\}} \mathbf{b} \]
+    and we already now $\mathbf{b}$ is infinite. If there were uncountably many $\mathbf{b}: \mathbf{b} \le_T \mathbf{a}$ then $L$ itself would be uncountable, so $\{\mathbf{b} \in \mathbf{\mathcal{D}}: \mathbf{b} \le_T \mathbf{a}\}$ must be countable.
+  \item $\mathcal{P}(\N) = \bigcup_{\mathbf{a} \in \mathbf{\mathcal{D}}} \mathbf{a}$. Since Turing degrees are countable but $\mathcal{P}(\N)$ is not, $\mathbf{\mathcal{D}}$ itself must be uncountably infinite.
+  \end{enumerate}
+\end{proof}
+
+As we briefly mentioned for $m$-degrees, $\mathbf{\mathcal{D}}$ can be endowed with a (join-)semilattice structure as follows:
+
+\begin{definition}[Turing join]
+  Given two sets $A$ and $B$, their \textbf{recursive} or \textbf{Turing join} is defined as
+  \[ A \oplus B := \{2n: n \in A\} \cup \{2m+1: m \in B\}. \]
+\end{definition}
+
+\begin{lemma}
+  \label{lemma:join-bounds}
+  Let $A, B$ be sets. Then $(A \le_T A \oplus B) \land (B \le_T A \oplus B)$.
+\end{lemma}
+\begin{proof}
+  Assume we are given an oracle for $A \oplus B$. Given $n \in \N$
+  \begin{itemize}
+  \item $n \in A \iff 2n \in A \oplus B$,
+  \item $n \in B \iff 2n + 1 \in A \oplus B$.
+  \end{itemize}
+\end{proof}
+
+\begin{lemma}
+  \label{lemma:join-lub}
+  Let $A, B, C$ be sets such that $A \le_T C, B \le_T C$. Then $A \oplus B \le_T C$.
+\end{lemma}
+\begin{proof}
+  Assume we can compute $A$ and $B$ given an oracle for $C$. Given $m \in \N$, we can computably decide whether $m$ is even or odd and get the corresponding $n$.
+  \begin{itemize}
+  \item If $m$ is even, $m \in A \oplus B \iff n \in A$, which we can computably decide with the oracle $C$,
+  \item If $m$ is odd, $m \in A \oplus B \iff n \in B$, which we can computably decide with the oracle $C$,
+  \end{itemize}
+  So $A \oplus B \le_T C$.
+\end{proof}
+
+\begin{lemma}
+  Let $A, B$ be sets. Then $A \oplus B \equiv_T B \oplus A$.
+\end{lemma}
+\begin{proof}
+  From lemma \ref{lemma:join-bounds}, $(A \le_T A \oplus B) \land (B \le_T A \oplus B)$. Exchanging their places, we get $(A \le_T B \oplus A) \land (B \le_T B \oplus A)$.
+  Using lemma \ref{lemma:join-lub} twice we get both $A \oplus B \le_T B \oplus A$ and $A \oplus B \ge_T B \oplus A$, so we can conclude $A \oplus B \equiv_T B \oplus A$.
+\end{proof}
+
+\begin{definition}
+  Let $\mathbf{a}, \mathbf{b}$ be Turing degrees and $A \in \mathbf{a}, B \in \mathbf{b}$. The \textbf{join} of $\mathbf{a}$ and $\mathbf{b}$ is defined as follows:
+  \[ \mathbf{a} \lor \mathbf{b} := \text{deg}(A \oplus B) = \{X \in \mathcal{P}(\N): X \equiv_T A \oplus B\}. \]
+\end{definition}
+
+\begin{theorem}
+  The Turing join induces a join operation on $\mathbf{\mathcal{D}}$.
+\end{theorem}
+\begin{proof}
+  $\mathbf{a} \lor \mathbf{b}$ is clearly a degree by definition.
+  \begin{itemize}
+  \item $\mathbf{a} \le_T \mathbf{a} \lor \mathbf{b}, \mathbf{b} \le_T \mathbf{a} \lor \mathbf{b}$ follows from lemma \ref{lemma:join-bounds}.
+  \item $(\mathbf{a} \le_T \mathbf{c}) \land (\mathbf{b} \le_T \mathbf{c}) \implies \mathbf{a} \lor \mathbf{b} \le_T \mathbf{c}$ follows from lemma \ref{lemma:join-lub}.
+  \end{itemize}
+  Therefore $\mathbf{a} \lor \mathbf{b}$ is the \textbf{least upper bound} of $\mathbf{a}$ and $\mathbf{b}$ in $\mathbf{\mathcal{D}}$.
+\end{proof}
+
+We are almost ready to define the most important operation on Turing degrees, at least for our purposes. If we go back to lemma \ref{lemma:k0-complete}, we found $K_0$ to be, in terms of $m$-reducibility, the \textit{hardest} possible r.e. set, and it was certainly not computable. We can reproduce the same construction for an arbitrary set $A$, giving:
+
+\begin{definition}
+  $K_0^A := \{(e, n): n \in W_e^A\}.$
+\end{definition}
+
+This is actually the definition of the Turing jump:
+
+\begin{definition}
+  Given a set $A$, the \textbf{Turing jump} of $A$ is defined as:
+  \[ A' := K_0^A = \{(e, n): n \in W_e^A\}. \]
+  This definition can be iterated, so the $(n + 1)$-th Turing jump of $A$ is defined as:
+  \[ A^{(n + 1)} := (A^{(n)})'. \]
+\end{definition}
+
+\begin{theorem}
+  Let $A, B \subseteq N$. Then:
+
+  \begin{enumerate}
+  \item\label{item:a'-a-re} $A'$ is $A$-r.e.
+  \item\label{item:a'-complete} A set $B$ is $A$-r.e. if and only if $B \le_m A'$.
+  \item $A \le_T A'$, but $A' \not\le_T A$.
+  \item\label{item:turing-jump-well-defined} $A \equiv_T B \implies A' \equiv_T B'$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{enumerate}
+  \item Assume we have an oracle for $A$. Then to answer $k \in A'$ we just need to:
+    \begin{enumerate}
+    \item Compute $e, n$ such that $(e, n) = k$ (if they exist),
+    \item compute, using the oracle, $\Phi_e^A(n)$.
+    \end{enumerate}
+    If the computation of $\Phi_e^A(n)$ ever halts it means $(e, n) \in W_e^A$, so $k \in A'$.
+  \item Note that $A' = K_0^A$. Then:
+    \begin{itemize}
+    \item If $B$ is $A$-r.e. by lemma \ref{lemma:relative-computability-properties} we have $B = W_e^A$ for some $e \in \N$. Consider the computable function $f(n) := (e, n)$. Then
+      \[ n \in B \iff n \in W_e^A \iff (e, n) \in K_0^A \iff f(n) \in K_0^A, \]
+      so $B \le_m A'$.
+    \item If $B \le_m A'$ there must exist a computable function $f$ such that $n \in X \iff f(n) \in A'$. But $A'$ is $A$-r.e., so to answer a question of the form $n \in B$ we just need to answer $f(n) \in A'$, which is semidecidable given an oracle for $A$. Hence $B$ is $A$-r.e.
+    \end{itemize}
+  \item The first part is a corollary of the previous item, taking $B = A$ and using that $m$-reducibility implies Turing reducibility.
+    For the second part assume $A' \le_T A$. Using a similar argument to that of theorem \ref{thm:re-not-r-set}, it can be shown that $K^A := \{n: n \in W_n^A\}$ is $A$-r.e. but not $A$-computable. But, again, adapting the argument from lemma \ref{lemma:k-m-red-k0} we get $K^A \le_m K_0^A = A'$ which we know is $A$-r.e. Finally, using that $m$-reducibility implies Turing reducibility
+    \[ K^A \le_T A' \le_T A, \]
+    but that would mean $K^A$ is $A$-computable, which is false. Therefore $A' \not\le_T A$.
+  \item Since $A \equiv_T B$ it follows that $A \le_T B$. By part \ref{item:a'-a-re} we know $A'$ is $A$-r.e., and by lemma \ref{lemma:re-monotonicity} that means it is also $B$-r.e. But then by part \ref{item:a'-complete} $A' \le_m B'$, so $A' \le_T B'$. The reverse inequality follows completely analogously.
+  \end{enumerate}
+\end{proof}
+
+\begin{corollary}
+  By part \ref{item:turing-jump-well-defined} the Turing jump is well-defined on Turing degrees as $\mathbf{a}' := \text{deg}(A')$ for some $A \in \mathbf{a}$.
+\end{corollary}
+
+The structure of the Turing universe is really interesting and has been extensively studied, but unfortunately is beyond our scope. For the interested reader we refer to Cooper's ``Computability theory'' \cite{cooper} for more details and further in-depth references.
+
+\section{Post's theorem}
+
+We have finally arrived at what represents the pinnacle of the connection between computability theory and the arithmetical hierarchy. In order to fully state Post's theorem we just need one additional definition:
+
+\begin{definition}[$m$-completeness]
+  Given a collection $\mathcal{X} \subseteq \mathcal{P}(\N)$, a set $A \in \mathcal{X}$ is said to be $m$-complete for $\mathcal{X}$ (or just $\mathcal{X}$-complete) if $X \le_m A$ for all $X \in \mathcal{X}$.
+\end{definition}
+
+\begin{theorem}[Post's theorem]
+  \begin{enumerate}
+  \item A set $A$ is \esigma{n + 1}{0} if and only if $A$ is r.e. in $\varnothing^{(n)}$ or, in other words, $A \le_m \varnothing^{(n + 1)}$.
+  \item $\varnothing^{(n)}$ is \esigma{n}{0} complete for every $n > 0$.
+  \end{enumerate}
+\end{theorem}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
