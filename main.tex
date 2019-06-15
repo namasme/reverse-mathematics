@@ -60,10 +60,21 @@
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 
 \usepackage{amsthm}
-\newtheorem{theorem}{Theorem}[chapter]
+
+\theoremstyle{definition}
 \newtheorem{definition}{Definition}[chapter]
-\newtheorem{lemma}{Lemma}[chapter]
+
+\theoremstyle{plain}
 \newtheorem{corollary}{Corollary}[chapter]
+
+\theoremstyle{plain}
+\newtheorem{lemma}{Lemma}[chapter]
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
 
 \newcommand{\bigrule}{\titlerule[0.5mm]}
 
