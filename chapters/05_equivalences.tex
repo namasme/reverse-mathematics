@@ -1,0 +1,435 @@
+\documentclass[../main.tex]{memoir}
+
+\begin{document}
+
+\chapter{Some equivalence results over \rca}
+
+In the present chapter we will cover some equivalences that can be proven in \rca\ between some of the theorems mentioned in the previous chapter and the three axiomatic systems we have introduced. In particular, we will show:
+
+\begin{itemize}
+\item \rca\ can prove the intermediate value theorem,
+\item \wkl\ is equivalent to the (sequential) Heine-Borel theorem, the Weierstra{\ss} theorem and uniform continuity of continuous functions on $[0, 1]$ over \rca, and
+\item \aca\ is equivalent to the (sequential) Bolzano-Weierstra{\ss} theorem, sequential least upper bound property, the monotone convergence theorem and the Cauchy convergence criterion over \rca.
+\end{itemize}
+
+\section{\rca}
+
+\subsection{The intermediate value theorem}
+
+Using \Cref{def:continuous-function-rca} for continuous functions, we state:
+
+\begin{theorem}
+  Let $\phi: [0, 1] \to \R$ be a continuous function. If $\phi(0) < 0$ and $\phi(1) > 0$, then there exists some $x$ such that $0 < x < 1$ and $\phi(x) = 0$.
+\end{theorem}
+\begin{proof}
+  If $\phi(q) = 0$ for some $q \in \Q \cap [0, 1]$ we are done, since $q$ obviously exists and satisfies the given conditions. Otherwise, we can assume $\phi$ does not vanish on any rational point in the unit interval. Let
+
+  \[ \varphi(q) \overset{\Delta}{\iff} \exists a \exists r \exists b \exists s ((a, r)\Phi(b, s) \land |q - a| < r \land b + s < 0), \]
+
+  and
+
+  \[ \uppsi(q) \overset{\Delta}{\iff} \forall a \forall r \forall b \forall s (((a, r)\Phi(b, s) \land |q - a| < r) \implies b - s < 0). \]
+
+  Assuming $\phi$ is defined at $q$, it is clear that $\varphi(q) \implies \phi(q) < 0 \implies \uppsi(q)$. For the reverse implications, we study first the necessity of $\varphi$, that is, $\phi(q) < 0 \implies \varphi(q)$. Assume $\neg \varphi(q)$, that is
+
+  \[ \forall a \forall r \forall b \forall s (\neg((a, r)\Phi(b, s)) \lor |q - a| \ge r \lor b + s \ge 0), \]
+
+  which is logically equivalent to
+
+  \[ \forall a \forall r \forall b \forall s ((((a, r)\Phi(b, s)) \land |q - a| < r) \implies b + s \ge 0). \]
+
+  Since $q$ belongs to the domain of $\phi$ the antecedent must be true for some $a, r, b, s$. In that case, $b + s \ge 0$. In fact, we can choose $a, r, b, s$ such that $|\phi(q) - b| < s$ and $s < \varepsilon$ for each $\varepsilon \in \Q^+$. Assume also $\phi(q) < 0$. Then we can take some positive rational number $\varepsilon < \frac{|\phi(q)|}{2}$ to obtain
+
+  \[ b + s = b - s + 2s < \phi(q) + 2s < \phi(q) + 2\varepsilon < \phi(q) + |\phi(q)| = 0. \]
+
+  So we have reached a contradiction, and thus our assumptions must be false, i.e.,
+
+  \[ \neg(\neg\varphi(q) \land \phi(q) < 0) \iff (\varphi(q) \lor \neg(\phi(q) < 0)) \iff (\phi(q) < 0 \implies \varphi(q)). \]
+
+  To show $\uppsi$ is sufficient we proceed in a very similar manner. Assume $\uppsi(q)$ and $\phi(q) > 0$ (since we have ruled out the possibility $\phi(q) = 0$). Take some positive rational $\varepsilon < \frac{\phi(q)}{2}$. It follows that
+
+  \[ b - s = b + s - 2s > \phi(q) - 2s > \phi(q) - 2\varepsilon > \phi(q) - \phi(q) = 0. \]
+
+  Again, we have reached a contradiction, so $\uppsi(q) \implies \phi(q) < 0$. Combining these facts, it is clear that
+
+  \[ \varphi(q) \iff \phi(q) < 0 \iff \uppsi(q), \]
+
+  where $\varphi(q)$ is \re\ and $\uppsi(q)$ is \core. By \rec-comprehension, there exists $\phi^-$, the set of all rationals in $[0, 1]$ where $\phi$ is negative.
+
+  By primitive recursion using parameter $\phi^-$, we define the following sequences:
+
+  \[ a_0 = 0, b_0 = 1, \]
+
+  \[
+    a_n =
+    \begin{cases}
+      c_n & \text{if } c_n \in \phi^-, \\
+      a_n & \text{if } c_n \not\in \phi^-
+    \end{cases}
+  \]
+
+  \[
+    b_n =
+    \begin{cases}
+      b_n & \text{if } c_n \in \phi^-, \\
+      c_n & \text{if } c_n \not\in \phi^-
+    \end{cases}
+  \]
+
+  where $c_n = \frac{a_n + b_n}{2}$. So, the idea is to check at each step whether the image of the midpoint of the current $a_n, b_n$ is negative. We can do this since $c_n \in \Q$ and we have shown $\phi^-$ exists in \rca. It is straightforward to check that
+
+  \begin{itemize}
+  \item $\forall n (\phi(a_n) < 0 < \phi(b_n))$, since we are choosing $a_n$ and $b_n$ to satisfy that condition,
+  \item $\forall n (|b_n - a_n| = 2^{-n})$ since we are halving the length of the interval at each step.
+  \end{itemize}
+
+  By \re-induction, we have:
+
+  \begin{itemize}
+  \item $|a_0 - a_1| \le 2^{-1}$ because $a_1$ is either $0$ or $\frac12$,
+  \item Assume $|a_n - a_{n + 1}| \le 2^{-n - 1}$. If $a_{n + 1} = a_{n + 2}$ the inequality holds. Otherwise,
+    \[ |a_{n + 1} - a_{n + 2}| = \left\lvert a_{n + 1} - \frac{a_{n + 1} - b_{n + 1}}{2} \right\rvert = \left\lvert \frac{b_{n + 1} - a_{n + 1}}{2} \right\rvert = 2^{-n - 2}, \]
+  \end{itemize}
+
+  so $\forall n (|a_n - a_{n + 1}| \le 2^{-n - 1})$. Finally,
+
+  \[ |a_n - a_{n + k}| = \left\lvert \sum_{i = 0}^{k - 1} a_{n + i} - a_{n + i + 1} \right\rvert \le \sum_{i = 0}^{k - 1} |a_{n + i} - a_{n + i + 1}| \le \sum_{i = 0}^{k - 1} 2^{- n - i - 1} < 2^{-n}, \]
+
+  and similarly for $b_n$. Thus we can conclude that both of them represent a real number and in fact they represent the same real number, since $|a_n - b_n| = 2^{-n} < 2^{-n + 1}$. Also, it is obvious that $0 \le a_n < b_n \le 1$. Call $x$ the real number they represent, so $0 \le x \le 1$, and suppose $\phi(x) \ne 0$, say $\phi(x) < 0$. Let $(u, r)\Phi(v, s)$ be such that $|x - u| < r$ and $s < \frac{|\phi(x)|}{2}$. Following the same argument as in our proof of necessity of $\varphi(q)$, we get $v + s < 0$. Now since $b_n$ converges to $x$, we can choose a sufficiently large $n$ such that $|b_n - u| < r$. But then $\phi(b_n) < v + s < 0$, which contradicts our construction of $b_n$. Analogously, we can show that $\neg(\phi(x) > 0)$, so the only remaining possibility is $\phi(x) = 0$. Since $0 \le x \le 1$ but $\phi(0) \ne 0 \ne \phi(1)$, the last requirement of $0 < x < 1$ is also fulfilled.
+\end{proof}
+
+\section{\wkl}
+
+\subsection{Sequential Heine-Borel}
+
+We will subdivide the prove of the equivalence in two different theorems, one showing that weak König's lemma is sufficient and one showing it is necessary.
+
+\begin{theorem}[Weak König's lemma proves Heine-Borel theorem]
+  Given two sequences of real numbers, $c_i, d_i$ such that
+
+  \[ \forall x (0 \le x \le 1 \implies \exists i (c_i < x < d_i)), \]
+
+  then
+
+  \[ \exists n \forall x (0 \le x \le 1 \implies \exists (i < n) (c_i < x < d_i)). \]
+\end{theorem}
+\begin{proof}
+  We will assume that $c_i$ and $d_i$ are sequences of rational numbers for the moment. For each $s \in 2^{<\omega}$, let
+
+  \[ a_s = \sum_{i = 0}^{lh(s) - 1} \frac{s(i)}{2^{i + 1}}, \]
+  \[ b_s = a_s + 2^{-lh(s)}. \]
+
+  Intuitively, we can interpret any finite binary sequence $s \in 2^{<\omega}$ as a binary number $a_s$. Hence, $[a_s, b_s]$ represents a subinterval of the form $[\frac{m}{2^l}, \frac{m + 1}{2^l}]$, where $l$ is the length of $s$. Keeping this in mind, we build a binary tree $T$ where
+
+  \[ s \in T \iff \neg \exists (i \le lh(s)) (c_i < a_s < b_s < d_i). \]
+
+  In other words, we include a vertex of the full binary tree at level $n$ in $T$ whenever the interval it represents is not fully covered by some open interval $(c_i, d_i)$ with $i \le n$. Note that $T$ exists by \esigma{0}{0} comprehension.
+
+  Now imagine there is an infinite path in $T$ that leads to some $0 \le x \le 1$. That would mean that, no matter how far we look in the sequences, the unique subinterval of length $2^{-n}$ of the form $[\frac{m}{2^n}, \frac{m + 1}{2^n}]$ to which $x$ belongs is not completely covered by any $[c_i, d_i]$ for $i \le n$. That means $x$ will not be covered by any $[c_i, d_i]$ with arbitrary $i$. Indeed, let $\pi: \N \to \{0, 1\}$ be a path in $T$, and let
+
+  \[ x := \sum_{k = 0}^{\infty} \frac{\pi(i)}{2^{k + 1}}. \]
+
+  If we denote by $\pi[n]$ the initial segment $\{(0, \pi(0)), \ldots, (n, \pi(n))\}$, it is clear that $a_{\pi[n]} \le x \le b_{\pi[n]}$. Now since we assumed the open intervals $(c_i, d_i)$ cover $[0, 1]$, let $i$ be such that $c_i < x < d_i$. We can find $n$ as large as necessary so that $n > i$ and $2^{-n} < d_i - c_i$. Then $[a_{\pi[n]}, b_{\pi[n]}]$ is an interval of length $2^{-n - 1} < 2^{-n} < d_i - c_i$ that contains $x$, so $c_i < a_{\pi[n]} < b_{\pi[n]} < d_i$. Then $\pi[n] \not\in T$ because the associated interval is covered, so $\pi$ is not an infinite path. By weak König's lemma, that means $T$ is finite.
+
+  Now let $n$ be such that $\forall s (s \in T \implies lh(s) < n)$, i.e., some level after which $T$ has no more vertices, which must exist because $T$ is finite. Then
+
+  \[ \forall s (lh(s) = n \implies s \not\in T \implies \exists (i \le n) (c_i < a_s < b_s < d_i)). \]
+
+  Since all the $[a_s, b_s]$ for $lh(s) = n$ cover $[0, 1]$ and $(c_i, d_i)$ cover each $[a_s, b_s]$, we conclude that the open intervals $(c_i, d_i)$ for $i \le n$ cover $[0, 1]$.
+
+  Finally, assume $c_i$ and $d_i$ are sequences of real numbers. Consider the \re\ formula
+
+  \[ \varphi(q, r) \overset{\Delta}{\iff} q \in \Q \land r \in \Q \land \exists i (c_i < q < r < d_i). \]
+
+  It should be clear that it holds for an infinite number of pairs $q, r$, so it defines an infinite r.e. set (because it is \re) and so there exists a computable function $f: \N \to \Q \times \Q$ such that
+
+  \[ \forall q \forall r (\varphi(q, r) \iff \exists n (f(n) = (q, r)), \]
+
+  i.e., the range of $f$ is the collection of all pairs of rational numbers $q, r$ such that $\varphi(q, r)$. It stands to reason that we can replace $c_i$ and $d_i$ by $q_j$ and $r_j$, where $(q_j, r_j) = f(j)$ and apply the previous proof for rational open intervals.
+\end{proof}
+
+\begin{theorem}[Sequential Heine-Borel proves the weak König's lemma]
+  The sequential Heine-Borel theorem implies the weak König's lemma in \rca.
+\end{theorem}
+\begin{proof}
+  Before proceeding with the actual proof, we give some context and point out the main ideas that will be used. Assuming the sequential Heine-Borel theorem, we will show that a binary tree with no infinite paths must be finite. In order to do this we will rely heavily on the Cantor set, $C$. Indeed, we can interpret an infinite path in the full binary tree $2^{\omega}$ as a unique point in $C$. The idea then is to consider all the intervals that are not in $C$, and a few intervals that cover $C$ that we will choose to suit the given tree. Applying the Heine-Borel theorem, we get a finite collection of intervals that cover $[0, 1]$. This will ultimately imply, because of the construction, that the tree is finite.
+
+  For starters, consider a finite sequence $s \in 2^{<\omega}$. We define
+
+  \[ a_s = \sum_{i = 0}^{lh(s) - 1} \frac{2s(i)}{3^{i + 1}}, \]
+  \[ b_s = a_s + \frac{1}{3^{lh(s)}}. \]
+
+  These represent the intervals that are not eliminated from $C$ by stage $n$, where $n = lh(s)$. In other words, for any $n \in \N$, if we consider all the finite binary sequences $s$ such that $lh(s) = n$ (equivalently, all the paths in the full binary tree to vertices at level $n$), their associated intervals $[a_s, b_s]$ cover $C$. In fact, given some infinite path of the full binary tree $\pi$, the path represents the unique $x \in [0, 1]$ such that $\forall n (a_{\pi[n]} \le x \le b_{\pi[n]})$. However, we need open intervals in order to apply Heine-Borel, so we define
+
+  \[ a'_s = a_s - \frac{1}{3^{lh(s) + 1}}, \]
+  \[ b'_s = b_s + \frac{1}{3^{lh(s) + 1}}. \]
+
+  These intervals still cover $C$ in the sense described before, but they are open. More importantly, they are disjoint for different paths of the same length. Intuitively, we are extending each $[a_s, b_s]$ by a third of its length to the left and to the right. So, for example, $a_{\{(0, 0)\}} = 0, b_{\{(0, 0)\}} = \frac13$ is the left interval in the Cantor set after the first step, where $(\frac13, \frac23)$ is eliminated; whereas $a_{\{(0, 0)\}} = -\frac19, b_{\{(0, 0)\}} = \frac49$. Note that we are using the same notation for open intervals and for the pairing function. We will try to be explicit about what we mean each time, but the reader is free to replace it by the less used notation $]a, b[$ for open intervals.
+
+  Similarly, we define
+
+  \[ \alpha_s := b_{s \frown \{(0, 0)\}} = a_s + \frac{1}{3^{lh(s) + 1}}, \]
+  \[ \beta_s := a_{s \frown \{(0, 1)\}} = a_s + \frac{2}{3^{lh(s) + 1}}. \]
+
+  These represent the endpoints of the subinterval removed from $[a_s, b_s]$ in the next step. For example, $\varnothing$ represents the path to the root of the full binary tree, which is the only node at level $0$. Then $(\alpha_{\varnothing}, \beta_{\varnothing}) = (\frac13, \frac23)$ is the subinterval removed at step $1$.
+
+  Assume now we are given some binary tree $T \subseteq 2^{<\omega}$ with no infinite paths. We call a vertex $u$ of $2^{<\omega}$ a \textbf{fallen leaf} of $T$ if
+  \[u \not\in T \land \forall t (t \subsetneq u \implies t \in T). \]
+  Intuitively, the fallen leaves of $T$ are just the immediate children of the leaves in $T$. By the previous formalization, the set $\widetilde{T}$ of fallen leaves of $T$ exists by \esigma{0}{0} comprehension (note that we can replace the $\forall t$ quantifier by $\forall (t < u)$ since the code for a proper initial segment of a finite sequence is always smaller than the code for the sequence in question. This fact should be self-evident and thus we will not provide a detailed proof of it). Now consider $x \in C$, which is given by an infinite path of the full binary tree $\pi$. Since $T$ contains no infinite path, there exists some $n$ such that $\pi[n] \not\in T$. However, $\pi[0] = \varnothing$ certainly is in $T$. Consider the first $m$ such that $\pi[m] \not\in T$, which exists by minimization ($\mu$ operator) and is greater than $0$. Then $\pi[m]$ is a fallen leaf of $T$, i.e., $\pi[m] \in \widetilde{T}$. Furthermore, $a_{\pi[m]} \le x \le b_{\pi[m]}$, so $x$ is indeed covered by the interval associated to some path $u \in \widetilde{T}$. In fact, we can replace $[a_u, b_u]$ by $(a'_u, b'_u)$ to get an open interval that also contains $x$, since $[a_u, b_u] \subsetneq (a'_u, b'_u)$ for all $u \in 2^{<\omega}$. By the arbitrariness of $x$, we conclude that the sequence of intervals $(a'_u, b'_u): u \in \widetilde{T}$ covers $C$. On the other hand, the intervals $(\alpha_s, \beta_s): s \in 2^{<\omega}$ cover $[0, 1] \setminus C$. We can then merge both sequences to get a single sequence of open intervals that cover $[0, 1]$. Applying now the Heine-Borel theorem, it follows that a finite number of them also cover the unit interval.
+
+  Since the intervals $(a'_u, b'_u)$ have been stretched sideways, they intersect non-trivially some of the $(\alpha_s, \beta_s)$, so we can get rid of some of those intervals and still cover $[0, 1]$. However, none of those intervals $(\alpha_s, \beta_s)$ contain any point in $C$, so we must keep all of the $(a'_u, b'_u)$ in order to cover $C$, and therefore $[0, 1]$. It follows then that $\widetilde{T}$ must be finite. Since $\widetilde{T}$ gives us the same information as $T$, because $s \in T \iff \exists u (u \in \widetilde{T} \land s \subsetneq u)$ it follows that $T$ itself must be finite, thereby completing the proof.
+\end{proof}
+
+\section{\aca}
+
+In this section we will prove the equivalence, over \rca, of a number of theorems of classical analysis and the arithmetical comprehension. We will divide the full proof in subproofs and defer the statement of the full theorem to \Cref{thm:aca-equivalences}. Note that in order to ease the arguments in the proof, but without loss of generality, we will assume that we can always work with the unit interval $[0, 1]$. The generalizations of these results to arbitrary intervals should be straightforward.
+
+\subsection{Consequences of arithmetical comprehension}
+
+\begin{theorem}
+  \label{thm:aca-bw}
+  \aca\ proves the sequential Bolzano-Weierstra{\ss} theorem: given a bounded sequence $\{x_i: i \in \N\}$ of real numbers, there exists a real number $x$ such that
+
+  \begin{enumerate}
+  \item $\forall \varepsilon \exists n_0 \forall n ((\varepsilon > 0 \land n > n_0) \implies x_n < x + \varepsilon)$, i.e., $x$ is an eventual upper bound of $x_n$,
+  \item $\forall \varepsilon \forall n_0 \exists n (\varepsilon > 0 \implies (n > n_0 \land |x_n - x| < \varepsilon))$, i.e., $x$ is the least such upper bound.
+  \end{enumerate}
+
+  Such an $x$ is also usually called the \textbf{limit superior} of $\{x_i: i \in \N\}$, denoted by
+  \[ \limsup_{i \to \infty} x_i. \]
+
+  Furthermore, $\{x_i: i \in \N\}$ has a convergent subsequence, i.e., there exists an strictly increasing function $g: \N \to \N$ such that $\{x_{g(i)}: i \in \N\}$ is a convergent sequence of real numbers.
+\end{theorem}
+\begin{proof}
+
+  Define $\varphi(i, m) \overset{\Delta}{\iff} m < 2^i \land \forall n \exists k (k > n \land m \cdot 2^{-i} \le x_k \le (m + 1) \cdot 2^{-i})$. Intuitively, $\varphi$ determines whether the interval $[\frac{m}{2^{i}}, \frac{m + 1}{2^{i}}]$ contains infinitely many $x_k$. Then:
+
+
+  \[
+    \forall n (
+    n \in f \iff
+    \exists i \exists m \forall p ((i, m) = n \land \varphi(i, m) \land (p > m \implies \neg\varphi(i, m)))
+    ).
+  \]
+
+  $f$ exists by arithmetical comprehension and is the code for a function that, given $i$, computes the largest $m$ such that $\varphi(i, m)$. Consider sequences $a_i = f(i) \cdot 2^{-i}, b_i = a_i + 2^{-i}$. It is straightforward to check that both $\{a_i: i \in \N\}$ and $\{b_i: i \in \N\}$ define real numbers and that they in fact represent the same real number since $\forall i (|a_i - b_i| = 2^{-i})$. We claim that $x = \{a_i: i \in \N\} = \limsup_{i \to \infty} x_i$.
+
+  \begin{enumerate}
+  \item Fix $\varepsilon > 0$ and assume the contrary, that is, $\forall n_0 \exists n (n_0 < n \land x_n \ge x + \varepsilon)$. Consider $k$ so large that $\frac{1}{2^k} < \varepsilon$. Then
+
+    \[ x + \varepsilon \ge a_k + \varepsilon > a_k + \frac{1}{2^k} = b_k, \]
+
+    so
+
+    \[ \forall n_0 \exists n (n_0 < n \land x_n > b_k). \]
+
+    In other words, for every $n_0 > k$ we can find some $n > n_0 > k$ such that $x_n > b_k$. This contradicts the fact that $[a_k, b_k]$ is the rightmost subinterval of length $2^{-k}$ that contains infinitely many $x_i$, by construction. Therefore, our assumption is false and the assertion is proved.
+  \item Similarly $\varepsilon > 0, n_0 > 0$ and assume $\forall n (n > n_0 \implies |x_n - x| \ge \varepsilon)$. Consider $k$ so large that $k > n_0, \frac{1}{2^{k - 1}} < \varepsilon$ and, again, take $n$ as large as necessary so that $x_n \in [a_k, b_k]$. Then
+
+    \[ |x_n - x| = |x_n - a_k + a_k - x| \le |x_n - a_k| + |a_k - x| \le 2^{-k} + |a_k - x| \le 2^{-k} + 2^{-k} = 2^{-k + 1} < \varepsilon, \]
+
+    so our assumption is false and thus we conclude
+    \[ \forall \varepsilon \forall n_0 \exists n (\varepsilon > 0 \implies (n > n_0 \land |x_n - x| < \varepsilon)). \]
+  \end{enumerate}
+
+  We have succesfully proved that $x = \limsup_{i \to \infty} x_i$, but it remains to find a convergent subsequence. Define the following function by minimization:
+
+  \[ g(0) = 0, \]
+  \[ g(n + 1) = \mu m [m > g(n) \land |x - x_m| \le 2^{-n}], \]
+
+  which is total because for every $n$ there are infinitely many $x_m$ satisfying the condition by the construction of $x$. It should now be clear that the sequence $\{x_{g(i)}: i \in \N\}$ converges to $x$.
+\end{proof}
+
+\begin{theorem}
+  \label{thm:aca-lub}
+
+  \aca\ proves the sequential least upper bound property: given a bounded sequence $\{x_i: i \in \N\}$ of real numbers, there exists a real number $x$ such that
+
+  \begin{enumerate}
+  \item $\forall i (x_i \le x)$,
+  \item $\forall \varepsilon \exists i (\varepsilon > 0 \implies x_i + \varepsilon > x)$.
+  \end{enumerate}
+
+  Such an $x$ is also usually called the \textbf{supremum} of $\{x_i: i \in \N\}$, denoted by
+
+  \[ \sup_{i \to \infty} x_i. \]
+\end{theorem}
+\begin{proof}
+  Similar to our previous proof, the idea is to halve the current interval at each step and choose the rightmost one that contains some element of the sequence. The intersection of those intervals (the limit of its endpoints) is the supremum of the sequence.
+
+  Define $\varphi(i, m) \overset{\Delta}{\iff} m < 2^i \land \exists n (m \cdot 2^{-i} \le x_n \le (m + 1) \cdot 2^{-i})$, and the function $f$ analogous to that in \Cref{thm:aca-bw}, gives us the largest $f(i) = m$ such that $\varphi(i, m)$, i.e., the rightmost subinterval of length $2^{-i}$ that contains some element of the sequence. Let $a_i$ and $b_i$ be the endpoints of those intervals. Then both of them represent the same real number $x$. Then
+
+  \begin{enumerate}
+  \item Assume that $x_i > x$ for some $i \in \N$ and take $\varepsilon = x_i - x > 0$. Let $k$ be so large that $\frac{1}{2^k} < \varepsilon$. Then $a_k \le x \le b_k < x_i$. That contradicts the choice of $f(k)$, so our assumption was false. Therefore, $\forall i (x_i \le x)$.
+  \item Fix $\varepsilon > 0$ and consider $k$ so large that $\frac{1}{2^k} < \varepsilon$, $m > k: a_k \le x_m \le b_k$. Then
+
+    \[ x_m \ge a_k = b_k - \frac{1}{2^k} > b_k - \varepsilon \ge x - \varepsilon. \]
+  \end{enumerate}
+
+  This completes our proof that $x$ is indeed the supremum of the sequence.
+\end{proof}
+
+\subsection{Sequential Bolzano-Weierstra{\ss} proves Cauchy convergence criterion}
+
+\begin{theorem}
+  \label{thm:bw-cc}
+  \rca\ proves that the sequential Bolzano-Weierstra{\ss} theorem implies the Cauchy convergence criterion, i.e., given a sequence $\{x_i: i \in \N\}$, if it is Cauchy
+
+  \[ \forall \varepsilon \exists n_0 \forall n ((\varepsilon > 0 \land n > n_0) \implies (|x_{n_0} - x_n| < \varepsilon)), \]
+
+  then it is convergent.
+\end{theorem}
+\begin{proof}
+  Assume the sequence is Cauchy. Take $\varepsilon = 1$ and let $n_0$ be such that the condition holds for said $\varepsilon$. Then $\{x_i: i \in \N\}$ is bounded for $i \le n_0$ because it is finite, and it is also bounded for $i > n_0$ because it is Cauchy. Therefore it is bounded, so we can apply the sequential Bolzano-Weierstra{\ss} theorem. Let $g$ be the increasing function such that $\{x_{g(i)}: i \in \N\}$ is convergent to $x$ and fix some $\varepsilon > 0$. Then:
+
+  \[ \exists i \forall n (n > i \implies |x_{g(n)} - x| < \frac{\varepsilon}{2}, \]
+  \[ \exists n_0 \forall n (n > n_0 \implies |x_n - x_{n_0}| < \frac{\varepsilon}{4}. \]
+
+  Take $m = i + n_0 + 1$ for given $\varepsilon$. It follows that, for $n > m$
+
+  % TODO: fix equation
+  \[ |x - x_n| = |x - x_{g(n)} + x_{g(n)} - x_n| \le |x - x_{g(n)}| + |x_{g(n)} - x_n| < \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0} + x_{n_0} - x_n| \le \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0}| + |x_{n_0} - x_n| < \frac{\varepsilon}{2} + \frac{\varepsilon}{4} + \frac{\varepsilon}{4} = \varepsilon. \]
+
+  Therefore, the original sequence also converges to $x$.
+\end{proof}
+
+\subsection{Cauchy convergence criterion proves monotone convergence}
+
+\begin{theorem}
+  \label{thm:cc-mc}
+  \rca\ proves that the Cauchy convergence criterion implies the monotone convergence theorem, i.e., any bounded, increasing sequence $\{x_i: i \in \N\}$ is convergent.
+\end{theorem}
+\begin{proof}
+  Assume $\{x_i: i \in \N\}$ is given with the aforementioned properties, viz.: bounded and increasing. If it is Cauchy then we can use the Cauchy convergence criterion to show that it must converge, so suppose it is not Cauchy. That means
+
+  \[ \exists \varepsilon \forall n_0 \exists n (\varepsilon > 0 \land n > n_0 \land |x_n - x_{n_0}| \ge \varepsilon). \]
+
+  In fact, since the sequence is increasing we can just write $x_n - x_{n_0} \ge \varepsilon$. Now take some such $\varepsilon > 0$, set $n_0 = 0$ and find the corresponding $n$, say $n_1$, such that $n_1 > n_0 \land x_{n_1} - x_{n_0} \ge \varepsilon$. Having defined $n_k$, we find $n_{k + 1} > n_k$ such that $x_{n_{k + 1}} - x_{n_k} \ge \varepsilon$. Note that we can in fact choose them so that $x_{n_{k + 1}} - x_{n_k} > \varepsilon$, because if they did not exist the sequence would already be convergent.
+
+  We have then found a sequence $\{y_i = x_{n_i}: i \in \N\}$, which is a subsequence of $\{x_i: i \in \N\}$, such that $y_{n + k} - y_n > k \varepsilon$, which obviously cannot be bounded, so $\{x_i: i \in \N\}$ itself cannot be bounded and we have reached a contradiction. Therefore, $\{x_i: i \in \N\}$ must be Cauchy, so it is convergent by the Cauchy convergence criterion and thus the monotone convergence theorem is implied.
+\end{proof}
+
+\subsection{Monotone convergence proves arithmetical comprehension}
+
+We will need a previous lemma for this theorem. This was mentioned in \Cref{remark:aca-re-comprehension} but not proved:
+
+\begin{lemma}
+  \label{lemma:aca-equivalences}
+  The following are equivalent over \rca:
+
+  \begin{enumerate}
+  \item \label{item:aca} arithmetical comprehension axiom,
+  \item \label{item:re-comprehension} \re-comprehension, and
+  \item \label{item:range-existence} For any one-to-one function $f: \N \to \N$ there exists a set $R$ such that
+    \[ \forall n (n \in R \iff \exists m (f(m) = n)), \]
+    i.e., $R$ is the range of $f$ and it exists.
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  \begin{description}
+  \item[\ref{item:aca} $\implies$ \ref{item:re-comprehension}] \textit{A fortiori}.
+  \item[\ref{item:re-comprehension} $\implies$ \ref{item:range-existence}] \textit{A fortiori}.
+  \item[\ref{item:range-existence} $\implies$ \ref{item:re-comprehension}]
+    Let $\varphi(n)$ be a \re\ formula. If there exists some finite set $X$ such that
+
+    \[ \forall n (n \in X \iff \varphi(n)). \]
+
+    Then $X$ is computable so it exists in \rca. Otherwise, let $\varphi(n)$ be equivalent to $\exists j \uppsi(n, j)$ for some \esigma{0}{0} formula $\uppsi$. By \esigma{0}{0} comprehension, let $Y$ be the set of all pairs $(n, j)$ such that $\uppsi(n, j)$ holds, which is infinite. Let $g: \N \to Y$ be a function that enumerates $Y$ in strictly increasing order. Then the range of $\pi_1 \circ g$, where $\pi_1$ denotes the first projection function (i.e., $\forall n \forall j (\pi_1((n, j)) = n)$), is exactly $X$, the set of all $n$ such that $\varphi(n)$ holds.
+  \item[\ref{item:re-comprehension} $\implies$ \ref{item:aca}] Since any arithmetical formula is \esigma{n}{0} for sufficiently large $n$, we just need to prove \re-comprehension implies \esigma{n}{0}-comprehension for every $n$. We proceed by induction:
+
+    \begin{enumerate}
+    \item Obviously, \re-comprehension implies \esigma{0}{0}-comprehension,
+    \item Assume now \re-comprehension implies \esigma{k}{0}-comprehension for some $k \in \omega$. Let $\varphi(n)$ be some \esigma{k + 1}{0} formula. Then $\varphi(n)$ is equivalent to $\exists j \uppsi(n, j)$ for some \fapi{k}{0} formula $\uppsi$, so $\neg \uppsi$ is \esigma{k}{0}. By \esigma{k}{0} comprehension, let $Y$ be the set of all the pairs $(n, j)$ such that $\neg \uppsi(n, j)$ holds. Then, by \re-comprehension, let $X$ be the set of all $n$ such that $\exists j ((n, j) \not\in Y)$. Then $n \in X \iff \varphi(n)$ and we have shown $X$ exists, so \re-comprehension also implies \esigma{k + 1}{0} comprehension.
+    \end{enumerate}
+
+    By induction, this mean \re-comprehension proves \esigma{n}{0}-comprehension for every $n \in \omega$, so \re-comprehension proves arithmetical comprehension.
+  \end{description}
+\end{proof}
+
+We can now prove the theorem:
+
+\begin{theorem}
+  \label{thm:mc-aca}
+  \rca\ proves the monotone convergence theorem implies arithmetical comprehension.
+\end{theorem}
+\begin{proof}
+  Let $f:\N \to \N$ be an injective function. Define the following sequence:
+
+  \[ c_n = \sum_{i = 0}^n 2^{-f(i)}. \]
+
+  Note that $\forall n (0 < c_n < 2 \land c_{n + 1} > c_n)$, so $c_n$ is bounded and strictly increasing. Therefore, by the monotone convergence theorem, there exists a real number $c$ that is the limit of the sequence. Note that, for all $k$,
+
+  \[ \exists i (f(i) = k) \iff \forall n (|c_n - c| < 2^{-k} \implies \exists (i \le n) (f(i) = k), \]
+
+  where the left hand side is \re\ and the right hand side is \core. Therefore, by \rec-comprehension,
+
+  \[ \exists R \forall n (n \in R \iff \exists i (f(i) = n). \]
+
+  In other words, the range of any injective function exists, which by \Cref{lemma:aca-equivalences} implies arithmetical comprehension.
+\end{proof}
+
+\subsection{Sequential least upper bound implies monotone convergence}
+
+\begin{theorem}
+  \label{thm:lub-mc}
+  \rca\ proves the sequential least upper bound property implies the monotone convergence theorem.
+\end{theorem}
+\begin{proof}
+  Let $\{x_i: i \in \N\}$ be a bounded, increasing sequence of real numbers. By the sequential least upper bound property, let $x$ be the supremum of the given sequence. Then:
+
+  \[ \forall i (x_i \le x), \]
+
+  which implies $x - x_i = |x - x_i|$ for every $i$. Furthermore,
+
+  \[ \forall \varepsilon \exists i (\varepsilon > 0 \implies x_i > x - \varepsilon), \]
+
+  which is equivalent to $x - x_i < \varepsilon$. But $x - x_i = |x - x_i|$, so
+
+  \[ \forall \varepsilon \exists i (\varepsilon > 0 \implies |x - x_i| < \varepsilon). \]
+
+  Finally, note that since the sequence is increasing, $|x - x_{i + k}| = x - x_{i + k} \le x - x_i < \varepsilon$, so we conclude:
+
+  \[ \forall \varepsilon \exists n_0 \forall n ((\varepsilon > 0 \land n > n_0) \implies |x - x_n| < \varepsilon). \]
+\end{proof}
+
+\subsection{Theorems equivalent to \aca}
+
+We are finally in position to state the complete theorem:
+
+\begin{theorem}
+  \label{thm:aca-equivalences}
+
+  The following are pairwise equivalent over \rca:
+
+  \begin{enumerate}
+  \item \label{item:aca-2} arithmetical comprehension axiom,
+  \item \label{item:bw} the sequential Bolzano-Weierstra{\ss} theorem,
+  \item \label{item:cc} the Cauchy convergence criterion,
+  \item \label{item:mc} the monotone convergence theorem, and
+  \item \label{item:lub} the sequential least upper bound property.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  \begin{itemize}
+  \item \ref{item:aca-2} $\implies$ \ref{item:bw} is \Cref{thm:aca-bw},
+  \item \ref{item:bw} $\implies$ \ref{item:cc} is \Cref{thm:bw-cc},
+  \item \ref{item:cc} $\implies$ \ref{item:mc} is \Cref{thm:cc-mc}, and
+  \item \ref{item:mc} $\implies$ \ref{item:aca-2} is \Cref{thm:mc-aca}.
+  \end{itemize}
+
+  On the other hand,
+
+  \begin{itemize}
+  \item \ref{item:aca-2} $\implies$ \ref{item:lub} is \Cref{thm:aca-lub},
+  \item \ref{item:lub} $\implies$ \ref{item:mc} is \Cref{thm:lub-mc}, and
+  \item \ref{item:mc} $\implies$ \ref{item:aca-2} is \Cref{thm:mc-aca}.
+  \end{itemize}
+\end{proof}
+
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
