@@ -1,0 +1,426 @@
+\documentclass[../main.tex]{memoir}
+
+\begin{document}
+
+\chapter{The formal systems}
+
+In this chapter we will continue delving into the nuances of \rca as well as present the formal systems of \wkl and \aca. We shall give an overlook of the main possible \textit{constructions}, their models or structures, their first order parts, and theorems and \textit{non-theorems} of each of them.
+
+\section{\rca}
+
+\subsection{The formal system}
+
+We reproduce here the \Cref{def:rca-intro} we made back in \Cref{sec:rca-intro} for the sake of completeness:
+
+\begin{definition}
+  The formal system \rca in the language $L_2$ consists of the following axioms:
+
+  \begin{enumerate}
+  \item the basic axioms of $Z_2$,
+  \item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
+  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
+  \end{enumerate}
+\end{definition}
+
+\subsection{Sequences, functions and continuity}
+
+Real numbers were defined in the first chapter as sequences of rationals with certain properties, which in turn were defined as functions from $\N$ to $\Q$, but we did not actually define what we meant by function. Recalling the construction of the cartesian product of two sets, we define:
+
+\begin{definition}
+  \label{def:function}
+  A function $f:A \to B$ is a subset of $A \times B$ such that, for every $a \in A$, there exists exactly one $b \in B$ verifying $(a, b) \in f$. We denote such a $b$ by $f(a)$.
+\end{definition}
+
+Of course, not every \textit{imaginable} function from $A$ to $B$ is actually realizable in \rca, unless it is already part of the model. For the case of $\N$ and $\Q$, this means that we cannot expect every sequence of rationals to be constructible in \rca or, in other words, there are \textbf{uncomputable reals}. It turns out the only functions that \rca can prove exist, for every model, are precisely computable functions (albeit not all of them, since the graph of a computable function need not be computable).
+
+Similar to real numbers (as sequences of rational numbers), we can define sequences of real numbers.
+
+\begin{definition}
+  A double sequence of rationals is a function $q:\N \times \N \to \Q$, denoted $\{q_{mn}: m \in \N, n \in \N\}$, where $q_{mn} := q(m, n)$.
+
+  A sequence of real numbers is a double sequence of rationals such that, for each $i \in \N$, $\{q_{in}: n \in \N\}$ is a real number. We will often denote this by $\{x_i: i \in \N\}$, where each $x_i$ is to be interpreted as a real number.
+\end{definition}
+
+Finally, we will need to define continuity.
+
+\begin{definition}
+  \label{def:continuous-function-rca}
+  A \textbf{continuous function} is a set $\Phi \subseteq \N \times \Q \times \Q^+ \times \Q \times \Q^+$ verifying:
+
+  \begin{description}
+  \item[Compatibility] $(a, r)\Phi(b, s) \land (a, r)\Phi(b', s') \implies |b - b'| \le s + s'$,
+  \item[Monotonicity] $(a, r)\Phi(b, s) \land (a', r') < (a, r) \implies (a', r')\Phi(b, s)$,
+  \item[Inclusion] $(a, r)\Phi(b, s) \land (b, s) < (b', s') \implies (a, r)\Phi(b', s')$.
+  \end{description}
+
+  where
+
+  \begin{itemize}
+  \item $(a, r)\Phi(b, s) \iff \exists n ((n, a, r, b, s) \in \Phi)$,
+  \item $(a, r) < (a', r') \iff |a - a'| + r < r'$.
+  \end{itemize}
+\end{definition}
+
+Roughly speaking, we are describing a continuous function by a sequence of pairs of balls centered around rational numbers and with positive rational radii. If we are lucky, this will carry enough information so as to completely determine the value of the function at a given point. Formally:
+
+\begin{definition}
+  Given a continuous function $\Phi$, a real number $x$ is said to belong to the \textbf{domain} of $\Phi$ if
+
+  \begin{equation}
+    \label{eq:continuity-at-point}
+    \forall \varepsilon \exists (a, r, b, s) (\varepsilon > 0 \implies ((a, r)\Phi(b, s) \land (|x - a| < r) \land s < \varepsilon)),
+  \end{equation}
+
+  where $\varepsilon \in \Q$ and we have abbreviated the existence quantifiers for $a, r, b, s$ in a single one. In case $x$ is in the domain of $\Phi$, $\Phi(x)$ is defined as the unique (up to real numbers equality) real number $y$ such that
+
+  \begin{equation}
+    \label{eq:separable-image}
+    \forall (a, r, b, s) (((a, r)\Phi(b, s) \land |x - a| < r) \implies |y - b| < s).
+  \end{equation}
+\end{definition}
+
+\begin{remark}
+  Existence of $\Phi(x)$ when $x$ belongs to the domain is provable in \rca using the $\mu$ operator \cite{simpson}, but we will not provide the details here. Uniqueness follows from the fact that $\Q$ is densely ordered, since if we assume $x$ satisfies \Cref{eq:continuity-at-point} and there exist $y, y' \in \Q: y \neq y'$ verifying \Cref{eq:separable-image} we can take $\varepsilon = \frac{|y - y'|}{2} > 0$ in \Cref{eq:continuity-at-point}. Then we get $a, r, b, s$ satisfying $(a, r)\Phi(b, s) \land (|x - a| < r) \land s < \varepsilon$, but by \Cref{eq:separable-image} it follows
+
+  \[ (|y - b| < s) \land (|y' - b| < s) \land (s < \varepsilon = \frac{|y - y'|}{2}), \]
+
+  quickly reaching a contradiction via the triangular inequality. It is also worth noting that all this construction can be adapted to arbitrary complete separable metric spaces (instead of just $\R$) thanks to the fact that these spaces are the completion of a countable set.
+\end{remark}
+
+Continuous functions as presented here share some of the properties of the common continuous functions of analysis, but they also lack some of them (e.g. the image of $[0, 1]$ by a continuous function need not attain a supremum). We will discuss later in this section which results about continuous functions are provable in \rca.
+
+\subsection{Characterization of $\omega$-models}
+
+In this subsection we turn our attention to the models of \rca. In particular, we will be concerned with $\mathbf{\omega}$\textbf{-models}, i.e., models of the form $(\omega, \mathcal{S}, +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})$ where the operations and elements are fixed, but we allow different collections of subsets of $\omega$ over which set variables may range. Just as in the intended model for $L_2$ we had $\mathcal{S} = \mathcal{P}(\omega)$, this is certainly not the case for \rca. The intended model for \rca should have exactly those sets that are definable via the recursive comprehension axiom. Formally:
+
+\begin{theorem}[$\omega$-models of \rca]
+  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \rca if, and only if,
+
+  \begin{enumerate}
+  \item $\mathcal{S} \neq \varnothing$,
+  \item \label{item:join-closure} $A \in \mathcal{S}, B \in \mathcal{S} \implies A \oplus B \in \mathcal{S}$, and
+  \item $A \in \mathcal{S} \land B \le_T A \implies B \in \mathcal{S}$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  We will start by showing these conditions are necessary for all $\omega$-models of \rca.
+
+  \begin{enumerate}
+  \item Taking $\varphi(n) \iff n = n$, which is obviously \rec, gives us $\N$. So $\N \in \mathcal{S} \implies \mathcal{S} \neq \varnothing$.
+  \item Assuming $A$ and $B$ are in the model we can use them as parameters of a formula. Namely, let
+    \[ \varphi(n) \iff \exists (m \le n) ((n = 2m \land m \in A) \lor (n = 2m + 1 \land m \in B)) \]
+    which is a \esigma{0}{0}$ \subset $\esigma{1}{0}$ \cap $\fapi{1}{0} formula. It is clear that $\forall n (n \in A \oplus B \iff \varphi(n))$, so $A \oplus B$ is definable in \rca and so it must be in the model.
+  \item If $B \le_T A$ we know $B$ is computable in $A$ or, in other words, \rec with parameter $A$ (sometimes noted $\Delta_{1}^{0,A}$), so \rca can prove $B$ exists. Therefore, the model must contain it and hence $B \in \mathcal{S}$.
+  \end{enumerate}
+
+  For sufficiency, assume a collection $\mathcal{S}$ with the aforementioned properties. Let $\varphi$ be a $\Delta_{1}^{0}$ formula. If it uses no parameters it defines a computable set, which is Turing reducible to any other set, so it must be in $\mathcal{S}$. If it uses a parameter, the resulting set is computable in the parameter, so for any possible $X \in \mathcal{S}$ we have that $\varphi_X := \{n \in \N: \varphi^X(n)\}$ is computable in $X$, where $\varphi^X$ is $\varphi$ with its parameter interpreted as $X$. Therefore, $\varphi_X \le_T X$, so $\varphi_X \in \mathcal{S}$. Finally, if $\varphi$ uses parameters $A_1, A_2, \ldots, A_k$ then $\varphi^{\{A_i: 1 \le i \le k\}}$ is computable in $A_1 \oplus A_2 \oplus \ldots \oplus A_k$, which is also in $\mathcal{S}$ by \ref{item:join-closure}, so $\varphi^{\{A_i: 1 \le i \le k\}} \le_T A_1 \oplus A_2 \oplus \ldots \oplus A_k$ and thus $\varphi^{\{A_i: 1 \le i \le k\}} \in \mathcal{S}$.
+\end{proof}
+
+\begin{corollary}
+  \label{corollary:rec-model}
+  There exists a \textbf{minimal} model of \rca, REC, consisting of all the computable subsets of $\omega$.
+
+  \[ \text{REC} := \{X \subseteq \omega: X \text{ is recursive}\} \]
+\end{corollary}
+
+\subsection{First order part}
+
+The first order part of a given model $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$ is just the structure $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$, that is, removing the collection of subsets of $|M|$ over which second order formulas are allowed to range, since first order formulas only quantify elements of the model (natural numbers in the case of $\omega$-models). Similarly, first order formulas can only have elements of the model $|M|$ as parameters. We call \re-PA the system resulting from taking first order arithmetic (with the usual axioms for arithmetic) plus \re induction, i.e.,
+
+\[ (\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n (\varphi(n)), \]
+
+where $\varphi$ is any \re\ formula in the language of $L_1$. It is therefore clear that all the axioms of \re-PA are axioms of \rca. Conversely, given a model of \re-PA, $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$ is a model for \rca. In particular, we can consider $\mathcal{S}_M$ to be the collection of subsets of $|M|$ that are definable by a \rec formula allowing parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in \re-PA if, and only if, it is provable in \rca, since by Gödel's completeness theorem
+
+\[ \Sigma_1^0\text{-PA} \vdash \uppsi \iff \Sigma_1^0\text{-PA} \vDash \uppsi \iff \text{RCA}_0 \vDash \uppsi \iff \text{RCA}_0 \vdash \uppsi. \]
+
+Therefore, we can conclude the first order part of \rca is \re-PA.
+
+\subsection{Theorems of \rca}
+
+In this subsection we will just state without proof some of the theorems of \rca.
+
+\begin{theorem}[Theorems of \rca]
+  The following are provable in \rca:
+
+  \begin{enumerate}
+  \item The Baire category theorem,
+  \item the intermediate value theorem,
+  \item Urysohn's lemma for complete separable metric spaces,
+  \item the soundness theorem,
+  \item a weak version of Gödel's completeness theorem,
+  \item existence of an algebraic closure of a countable field, and
+  \item the Banach-Steinhaus uniform boundedness principle.
+  \end{enumerate}
+\end{theorem}
+
+\section{\wkl}
+
+\subsection{The formal system}
+
+\subsubsection{Previous definitions}
+
+For the introduction of the system \wkl we will need some additional definitions that ultimately allow us to present the weak König's lemma. Please note that these definitions are made in \rca, so that we can later use it to prove the equivalence of \wkl to other theorems within \rca.
+
+\begin{definition}
+  A set $X$ is said to be \textbf{finite} if $\exists n \forall i (i \in X \implies i < n)$
+\end{definition}
+
+\begin{theorem}
+  A finite set can be encoded by a natural number.
+\end{theorem}
+\begin{proof}
+  We will not give the details of the proof here since it is rather technical, but they can be consulted in \cite{simpson}. The basic idea is to use Gödel's $\beta$ function to find suitable $k, m, n$ such that $\forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n))$ and thus, in a sense, coding the elements of $X$ thanks to relative primality. The least number of the form $(k, (m, n))$ is called the \textbf{code} of $X$. This, fortunately, is unique in the sense that different sets cannot possibly have the same code, so it is enough to uniquely determine the set it codes.
+\end{proof}
+
+\begin{definition}
+  \label{def:finite-sequence}
+  A \textbf{finite sequence} of natural numbers is a finite set $X$ verifying:
+
+  \begin{enumerate}
+  \item $\forall n \exists i \exists j (n \in X \iff n = (i, j))$,
+  \item $\forall i \forall j \forall k (((i, j) \in X \land (i, k) \in X) \implies j = k)$,
+  \item $\exists l \forall i \exists j ((i, j) \in X \iff i < l)$.
+  \end{enumerate}
+
+  Such an $l$ is unique and is called the \textbf{length} of the sequence. The \textbf{code} for a finite sequence is just its code as a finite set.
+\end{definition}
+
+\begin{theorem}
+  The set of all codes for finite sequences, Seq, exists in \rca.
+\end{theorem}
+\begin{proof}
+  % TODO really?
+  Seq is just the set of all \textit{triples} of the form $(k, (m, n))$ for $k, m, n \in \omega$ since, given $k, m, n$, they necessarily define a finite set by \rec-comprehension
+
+  \[ \exists X \forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n)) \]
+
+  The hard part was to come up with a code for a given set, but every possible code corresponds to some finite set so we have
+
+  \[ \forall x (x \in \text{Seq} \iff \exists (k \le x) \exists (m \le x) \exists (n \le x) (x = (k, (m, n)))) \]
+
+  and thus Seq exists in \rca.
+\end{proof}
+
+\begin{definition}
+  Let $s \in$ Seq be the code for some finite sequence $X$. We define:
+
+  \begin{itemize}
+  \item $lh(s)$ is the \textbf{length} of $s$ or $X$, defined as the $l$ in \Cref{def:finite-sequence}.
+  \item For all $i < lh(s)$, $s(i)$ is the $i$-th element of $X$, i.e., the unique $j$ such that $(i, j) \in X$.
+  \item Given $t$ also in Seq, the \textbf{concatenation} of $s$ and $t$, $s \frown t$, is the code for the finite sequence
+    \[ \{(0, s(0)), (1, s(1)), \ldots, (lh(s) - 1, s(lh(s) - 1)), (lh(s), t(0)), (lh(s) + 1, t(1)), \ldots, (lh(s) + lh(t) - 1, t(lh(t) - 1))\}. \]
+    Therefore, $lh(s \frown t) = lh(s) + lh(t)$.
+  \item $t$ is an \textbf{initial segment} of $s$, written $t \subset s$, whenever $lh(t) \le lh(s) \land \forall (i < lh(t)) (t(i) = s(i))$.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Trees]
+  The \textbf{full binary tree}, denoted $2^{<\omega}$, is the set of all finite sequences whose elements are only $0$ or $1$:
+
+  \[ \forall n (n \in 2^{<\omega} \iff \forall (i \le n) (n \in \text{Seq} \land (i < lh(n) \implies n(i) < 2))). \]
+
+  Hence, $2^{<\omega}$ exists in \rca by \esigma{0}{0}-comprehension.
+
+  A \textbf{binary tree} is a subset $T \subseteq 2^{<\omega}$ satisfying:
+
+  \[ \forall \sigma \forall \tau ((\sigma \in T \land \tau \subset \sigma) \implies \tau \in T). \]
+
+  A binary tree is said to be \textbf{infinite} if it has infinitely many elements. For example, the full binary tree is infinite.
+\end{definition}
+
+Finally, we define paths:
+
+\begin{definition}
+  A \textbf{path} in a given binary tree $T$ is just one of the (codes of the) finite sequences it contains, i.e., some $\sigma \in 2^{<\omega} \cap T = T$.
+
+  An \textbf{infinite path} of $T$ is a function $f: \N \to \{0, 1\}$ such that all the initial segments of the (infinite) sequence it defines are in $T$, i.e.
+  \[ \forall n (\{(0, f(0), (1, f(1)), \ldots, (n, f(n))\} \in T) \]
+\end{definition}
+
+We are at last in position to state the axioms of \wkl
+
+\subsubsection{Axioms}
+
+\begin{definition}
+  The formal system of \wkl in the language $L_2$ consists of the axioms of \rca together with the \textbf{weak König's lemma}: every infinite binary tree has an infinite path.
+\end{definition}
+
+\begin{remark}
+  \label{remark:wkl-formalization}
+  Weak König's lemma can actually be expressed by a formula of $L_2$ (as a scheme with parameter $T$ an infinite binary tree). As a possible formulation, let
+
+  \[ Func(f) \iff \forall i \exists n \forall m ((i, n) \in f \land ((i, m) \in f \implies n = m)) \]
+
+  be a predicate of sets asserting a set is the code of a function. Then the weak König's lemma reads
+
+  \[ \exists \pi \forall n \exists \sigma (Func(\pi) \land ((n, 0) \in \pi \lor (n, 1) \in \pi) \land \sigma \in T \land lh(\sigma) = n + 1 \land \forall(k \le n) (\sigma(k) = \pi(k))). \]
+
+  That is, there exists a function $\pi: \N \to \{0, 1\}$ such that all of its initial segments are in $T$. By definition, $\pi$ is an infinite path of $T$.
+\end{remark}
+
+\subsection{$\omega$-models}
+
+A natural question is whether \wkl is actually more powerful than \rca or, in other words, does weak König's lemma follow from \rca? To answer this question we will actually show that not all models of \rca are models of \wkl. Assuming \rca is \textbf{sound}, i.e., it cannot prove a formula that is not true on every model of \rca, it will follow that \wkl is actually stronger than \rca.
+
+In order to do this, we first need to define recursive separability:
+
+\begin{definition}
+  Given two disjoint sets $A, B$, a \textbf{separating set} is some $C \subseteq \omega$ such that
+
+  \[ \forall n ((n \in A \implies n \in C) \land (n \in B \implies n \not\in C)). \]
+
+  If no such computable $C$ exists, we say $A$ and $B$ are \textbf{recursively inseparable}.
+\end{definition}
+
+\begin{lemma}[Recursively inseparable sets]
+  \label{lemma:recursively-inseparable}
+
+  The sets
+
+  \[ A = \{k: \varphi_k(k) = 0\}, \]
+  \[ B = \{k: \varphi_k(k) = 1\}, \]
+
+  where $\varphi_k$ is the $k^{\text{th}}$ partial computable function, are recursively inseparable.
+\end{lemma}
+\begin{proof}
+  Assume they are recursively separable, i.e., there is some recursive set $C$ that separates both sets. Since $C$ is recursive $\chi_C$ is total computable, so $\chi_C = \varphi_i$ for some $i \in \omega$, so
+
+  \[ i \in A \implies i \in C \iff \chi_C(i) = 1 \iff \varphi_i(i) = 1 \iff i \in B \]
+
+  and, similarly,
+
+  \[ i \in B \implies i \not\in C \iff \chi_C(i) = 0 \iff \varphi_i(i) = 0 \iff i \in A. \]
+
+  But both of them lead to contradiction since $A$ and $B$ are obviously disjoint, so $C$ cannot be recursive and thus $A$ and $B$ are recursively inseparable.
+\end{proof}
+
+Now for the counterexample:
+
+\begin{theorem}[Computable tree with no computable infinite path]
+  \label{thm:wkl-counterexample}
+  There exists an infinite binary tree $T$ whose vertices constitute a computable set but whose infinite paths are all non-computable.
+\end{theorem}
+\begin{proof}
+  We construct $T$ by stages. Letting $A$ and $B$ be as in \Cref{lemma:recursively-inseparable}, it should be clear that both of them are r.e., so we can enumerate them also by stages. We may safely assume that the enumerations of $A$ and $B$ at any given stage $n$ list no numbers larger than $n$. The idea then is to use the result of the enumerations by stage $n$ to computably decide which vertices of the full binary tree at level $n$ we should include in $T$. For example, say by stage six we have found $1, 2, 3 \in A$ and $5 \in B$. Then every sequence of the form $111*0*$ should be put in $T$. Note that when we include new sequences in $T$ that determine level $n$, all of their initial segments have already been included in $T$ in previous stages, since they separated $A$ and $B$ up until that point in time. Therefore $T$ is a binary tree. Also, $T$ is computable for we can decide whether a given finite sequence $\sigma \in T$ by running the computation of $T$ for $lh(\sigma)$ stages.
+
+  Now let $C$ be any separating set of $A$ and $B$, which we already know cannot be recursive. We can identify $C$ with $\chi_C$ and $\chi_C$ with an infinite path of the full binary tree. Note that $C$ being non-computable means that $\chi_C$ will not be computable either, so by $\chi_C$ we mean here the non-computable, total version of the indicator function of $C$. Finally, the initial segments of $\chi_C$ separate $A$ and $B$ up until stage $n$, so they are all in $T$. Therefore, $\chi_C$ is an infinite path of $T$.
+
+  Conversely, assume a given infinite path $\pi$ of $T$ as in \Cref{remark:wkl-formalization}. If $\pi$ does not separate $A$ and $B$, there exists some $n$ such that
+  \[ (\pi(n) = 0 \land n \in A) \lor (\pi(n) = 1 \land n \in B). \]
+
+  In either case, since $n$ is in $A$ or in $B$ it will appear on the enumeration of the corresponding set. When that happens, say at stage $m \ge n$, no finite sequence of length greater than $m$ that is an initial segment of $\pi$ will be in $T$, since by that point it will be known that $\pi$ fails to separate $A$ and $B$. Thus, $\pi$ cannot be an infinite path of $T$ unless it separates $A$ and $B$.
+
+  In sum, the infinite paths of $T$ are precisely those that separate $A$ and $B$, which are known to be recursively inseparable, so the infinite paths of $T$ themselves must be non-computable.
+\end{proof}
+
+If we recall \Cref{corollary:rec-model}, \rca has a minimal model REC consisting of only the computable subsets of $\omega$. By \Cref{thm:wkl-counterexample}, the tree $T$ is computable so $T \in$ REC. However, the infinite paths of $T$ are non-computable so they do not exist in REC. Therefore, if we reason within \rca, $T$ has no infinite path even though $T$ itself is an infinite binary tree, so the weak König's lemma cannot possibly be proven in \rca since it fails in the model REC.
+
+\subsection{First order part}
+
+We have shown how weak König's lemma can be expressed as a second order formula, i.e., one that quantifies over sets. First order theories, however, are not capable of doing so. Intuitively, weak König's lemma is about sequences of elements of a given binary tree, stating that there exists an infinite such sequence with certain properties. However, first order arithmetic cannot even define trees since it has no sets. Since the formal system of \wkl is just \rca plus weak König's lemma, and the latter is not expressible as a first order formula, it follows that the first order part of \wkl is the same as that of \rca, viz. \re-PA.
+
+\subsection{Theorems of \wkl}
+
+In this subsection we will just state without proof some of the theorems of \wkl.
+
+\begin{theorem}[Theorems of \wkl]
+  The following are provable in \wkl:
+
+  \begin{enumerate}
+  \item The \textit{sequential} Heine-Borel covering lemma: every covering of the closed interval $[0, 1]$ by a sequence of open intervals has a finite subcovering,
+  \item every continuous real-valued function on a compact metric space is bounded,
+  \item every continuous real-valued function on a compact metric space is uniformly continuous,
+  \item every continuous real-valued function on $[0, 1]$ is Riemann integrable,
+  \item the Weierstra{\ss} theorem: every continuous real-value function on a compact metric space attains a maximum,
+  \item the Peano existence theorem for solutions of differential equations,
+  \item Gödel's completeness theorem,
+  \item existence of prime ideals in countable commutative rings,
+  \item every countable field of characteristic $0$ has a unique algebraic closure,
+  \item Brouwer's fixed point theorem, and
+  \item the Hahn-Banach theorem for complete separable metric spaces.
+  \end{enumerate}
+\end{theorem}
+
+\section{\aca}
+
+\subsection{The formal system}
+
+\begin{definition}
+  The formal system of \aca in the language $L_2$ consists of the axioms of \rca together with the second order axiom scheme of induction
+
+  \[ (0 \in X \land \forall n (n \in X \implies n + 1 \in X)) \implies \forall n (n \in X), \]
+
+  and the \textbf{arithmetical comprehension axiom}:
+
+  \[ \exists X \forall n (n \in X \iff \varphi(n)), \]
+
+  where $\varphi$ is any arithmetical (i.e., it has no set quantifiers) formula of $L_2$ in which $X$ does not occur freely.
+\end{definition}
+
+\begin{remark}
+  \label{remark:aca-re-comprehension}
+  It turns out that arithmetical comprehension -- or \esigma{0}{1} comprehension, as it is sometimes called -- is actually equivalent to just \re comprehension. Note the swap of the subindex and the superindex: \esigma{0}{1} is, roughly speaking, $\bigcup_{n}$ \esigma{n}{0}, i.e., all of the arithmetical formulas/sets. A proof of this equivalence can be found in \cite{simpson}.
+\end{remark}
+
+\subsection{Characterization of $\omega$-models}
+
+Just as we did for the case of \rca, we will give here a characterization of the $\omega$-models of \aca in terms of computability theory.
+
+\begin{theorem}[$\omega$-models of \aca]
+  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \aca if, and only if,
+
+  \begin{enumerate}
+  \item $\mathcal{S} \neq \varnothing$,
+  \item \label{item:join-closure} $A \in \mathcal{S}, B \in \mathcal{S} \implies A \oplus B \in \mathcal{S}$,
+  \item $A \in \mathcal{S} \land B \le_T A \implies B \in \mathcal{S}$, and
+  \item $A \in \mathcal{S} \implies A' \in \mathcal{S}$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  The proof is similar to that of \rca for the first three items. Turing jump closure is necessary because $A'$ is $A$-r.e., so it is definable by a \re formula with parameter $A$.
+
+  % TODO: double check re join
+  Conversely, assume $\varphi$ is \re, so it defines a set $X$ from parameters $A_1, A_2, \ldots, A_n$. Let $A = A_1 \oplus A_2 \oplus \ldots \oplus A_n$, then $X$ is $A$-r.e. By \Cref{thm:turing-jump-properties}, this means $X \le_m A'$, so $X \le_T A'$ and therefore $X \in \mathcal{S}$. Since \re comprehension implies arithmetical comprehension by \Cref{remark:aca-re-comprehension}, it is enough to prove this for \re formulas.
+\end{proof}
+
+\begin{corollary}
+  \label{corollary:arith-model}
+  There exists a minimal model of \aca, ARITH, consisting of all the arithmetical subsets of $\omega$.
+
+  \[ \text{ARITH} := \{X \subseteq \omega: \exists n (X \le_T \varnothing^{(n)})\} \]
+\end{corollary}
+
+\subsection{First order part}
+
+In this case, the first order part of \aca is the Peano arithmetic, or PA, which in turn is a friendly name for $Z_1$. To see why, first note that all of the axioms of $Z_1$ are either axioms or theorems of \aca, since the first order axiom scheme of induction of $Z_1$ follows from the arithmetical comprehension axiom and the second order axiom scheme of induction. Therefore if any sentence in the language of $L_1, \sigma$, is a theorem of $Z_1$ then it is also a theorem of \aca.
+
+Conversely, consider a model $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ of $Z_1$. Then there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$. In particular, we can consider $\mathcal{S}_M$ to be the collection of sets definable in the $Z_1$ model using parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in PA if, and only if, it is provable in \aca, since by Gödel's completeness theorem
+
+\[ PA \vdash \uppsi \iff PA \vDash \uppsi \iff \text{ACA}_0 \vDash \uppsi \iff \text{ACA}_0 \vdash \uppsi. \]
+
+Therefore, we can conclude the first order part of \aca is PA.
+
+\subsection{Theorems of \aca}
+
+In this subsection we will just state without proof some of the theorems of \aca.
+
+\begin{theorem}[Theorems of \aca]
+  The following are provable in \aca:
+
+  \begin{enumerate}
+  \item the full König lemma, which applies to infinite but finitely branching trees,
+  \item the sequential Bolzano-Weierstra{\ss} theorem,
+  \item the sequential least upper bound property,
+  \item the monotone convergence theorem, and
+  \item the Cauchy convergence criterion.
+  \end{enumerate}
+\end{theorem}
+
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
