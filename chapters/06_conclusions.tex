@@ -1,0 +1,24 @@
+\documentclass[../main.tex]{memoir}
+
+\begin{document}
+
+\chapter{Conclusions and further work}
+
+In this document we have presented the fundamental ideas about reverse mathematics. We started by defining the language and formal system of second order arithmetic, only to take a step back and present the quintessential subsystem \rca, the basis for all of our later work. In doing so we provide a powerful framework in which many of the concepts of \textit{ordinary mathematics} can be expressed, such as functions, sequences, real numbers or continuous functions; yet not powerful enough to prove the theorems we are interested in studying. Thus, by considering increasingly stronger axioms, we trusted that not only would those axioms prove some of the most \textit{common} theorems in mathematics, but that, by carefully choosing said axioms, we would be able to show that the theorems under consideration imply them.
+
+Then we turned our attention to computability theory, showing that it bears a strong relation to the subsystem \rca\ and, in fact, can successfully encode the main ideas of said system in a seemingly independent environment. We developed enough theory to be able to state the cornerstone theorem that relates both realms: the Post theorem.
+
+Finally, we defined the stronger subsystems \wkl\ and \aca, studied some of their properties and went on to proof the claimed equivalences. In particular, we have mainly focused our attention in some of the classical results of analysis, viz.: the intermediate value theorem, the Heine-Borel theorem, the Bolzano-Weierstra{\ss} theorem, the least upper bound property for sequences of real numbers, the monotone convergence theorem and the Cauchy convergence criterion. In this fashion, we have showed that each of this theorems \textit{correspond} to some of the three subsystems, in the sense that we can prove in \rca\ that the axiom implies the theorem and the theorem implies the axiom.
+
+It is in this sense that we conclude that reverse mathematics provides us with a powerful set of tools with which to discern the actual strength of a given theorem, by examining its consequences so as to find the \textit{right axiom} from which it can be proved. Also, it is a useful lens through which to look at the problems of the foundations of mathematics.
+
+Of course, this is by no means a complete work and many interesting topics have not been covered. To begin with, and albeit not inherently useful for the matter at hand, the computability theory chapter might have delved deeper in the rich structure of Turing degrees, showcasing some of its most well-known properties. For example, the fact that no meet operation (compatible with the natural join it has) can be defined is fascinating in and of itself. Also, the study of r.e. degrees and the priority method presents itself as a wonderful opportunity to improve our understanding of the more down-to-earth parts of the computability realm. Finally, even though the necessity of classical logic (and thus of the law of excluded middle) for our work renders all attempts at translating these proofs into programs via the Curry-Howard isomorphism inane, we could have used some proof assistant such as Coq to verify the correctness of our results.
+
+On a more mathematical side, we have extensively used the arithmetical hierarchy to fulfill our needs. However, there is no reason to stop there since the hyperarithmetical hierarchy provides a clear path to follow in an effort to generalize the ideas presented here. Furthermore, we have limited ourselves to three of the main systems of reverse mathematics but there is a lot of theory developed for some stronger systems such as ATR$_0$ (for \textit{arithmetical transfinite recursion} axiom) or \fapi{1}{1}-CA$_0$. These have been intentionally left out in order to provide a more condensed and clearer overview of the reverse mathematics field, and because they are related to lesser known mathematical theorems that do not possess the same sort of appeal to general audiences as the ones presented here involving classical analysis. However, they are related with the Ramsey theorems (certain results in combinatorics) and $\omega$-incompleteness. More explicitly, it turns out that every Ramsey theorem RT$(k)$ for $k \in \omega$ is provable in \aca, but the full theorem $\forall k (\text{RT}(k))$ is not \cite{stillwell}, although it is strong enough to prove arithmetical comprehension. Finally, a deeper development of the model theory of these systems as presented in Simpson's treatise \cite{simpson} would have constituded a nice addition to our study of said systems.
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../main"
+%%% End:
