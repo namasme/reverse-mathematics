@@ -170,15 +170,21 @@ The \textbf{arithmetical hierarchy} is the classification of arithmetically defi
 
 \section{The axiom system RCA$_0$}
 
+\label{sec:rca-intro}
+
 Before proceeding any further, we need to establish the ground upon which we will base all of our work, namely, the axiom system RCA$_0$, the base system to which we alluded in the introduction.
 
-The formal system RCA$_0$ in the language $L_2$ consists of the following axioms:
 
-\begin{enumerate}
-\item the basic axioms of $Z_2$,
-\item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
-\item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
-\end{enumerate}
+\begin{definition}
+  \label{def:rca-intro}
+  The formal system RCA$_0$ in the language $L_2$ consists of the following axioms:
+
+  \begin{enumerate}
+  \item the basic axioms of $Z_2$,
+  \item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
+  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
+  \end{enumerate}
+\end{definition}
 
 Recursive comprehension is also usually defined as
 \[
