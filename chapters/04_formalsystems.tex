@@ -180,6 +180,20 @@ For the introduction of the system \wkl\ we will need some additional definition
   We will not give the details of the proof here since it is rather technical, but they can be consulted in \cite{simpson}. The basic idea is to use Gödel's $\beta$ function to find suitable $k, m, n$ such that $\forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n))$ and thus, in a sense, coding the elements of $X$ thanks to relative primality. The least number of the form $(k, (m, n))$ is called the \textbf{code} of $X$. This, fortunately, is unique in the sense that different sets cannot possibly have the same code, so it is enough to uniquely determine the set it encodes.
 \end{proof}
 
+\begin{theorem}
+  \label{thm:finite-sets-rca}
+  The set of all codes for finite sets, Fin, exists in \rca.
+\end{theorem}
+\begin{proof}
+  Fin is just the set of all \textit{triples} of the form $(k, (m, n))$ for $k, m, n \in \omega$ since, given $k, m, n$, they necessarily define a finite set by \rec-comprehension
+
+  \[ \exists X \forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n)). \]
+
+  Therefore,
+
+  \[ \forall x (x \in \text{Fin} \iff \exists (k \le x) \exists (m \le x) \exists (n \le x) (x = (k, (m, n))). \]
+\end{proof}
+
 \begin{definition}
   \label{def:finite-sequence}
   A \textbf{finite sequence} of natural numbers is a finite set $X$ verifying:
@@ -197,16 +211,11 @@ For the introduction of the system \wkl\ we will need some additional definition
   The set of all codes for finite sequences, Seq, exists in \rca.
 \end{theorem}
 \begin{proof}
-  % TODO really?
-  Seq is just the set of all \textit{triples} of the form $(k, (m, n))$ for $k, m, n \in \omega$ since, given $k, m, n$, they necessarily define a finite set by \rec-comprehension
+  Of course, a code for a finite sequence is also a code for a finite set, so by \Cref{thm:finite-sets-rca} we can use Fin as a parameter to define Seq. Now note that, after appropriately renaming the variables in \Cref{def:finite-sequence}, we can replace all the quantifiers in the definition by their bounded counterparts, using the $k$ from the finite set code to bound them. For example, if $x \in$ Seq then
 
-  \[ \exists X \forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n)) \]
+  \[ \exists (k \le x) \exists (r \le x) (\forall (n \le k) \exists (i \le k) \exists (j \le k) (x = (k, r) \land (n \in X \iff n = (i, j)))). \]
 
-  The hard part was to come up with a code for a given set, but every possible code corresponds to some finite set so we have
-
-  \[ \forall x (x \in \text{Seq} \iff \exists (k \le x) \exists (m \le x) \exists (n \le x) (x = (k, (m, n)))) \]
-
-  and thus Seq exists in \rca.
+  Hence, by bounding all the quantifiers in the three conditions we can conclude that Seq exists by \rec-comprehension.
 \end{proof}
 
 \begin{definition}
