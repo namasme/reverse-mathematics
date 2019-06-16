@@ -412,9 +412,18 @@ Remember the definition of the halting problem? We just found an example of a r.
   The halting problem of a given Turing machine is \textbf{not} decidable.
 \end{corollary}
 
-This does not mean that Turing machines cannot have recursive halting sets, as there are plenty of trivial counterexamples to that statement. What it claims is that we cannot possible devise a Turing machine (or an algorithm, for that matter) that, given a Turing machine and an input, decides whether the machine will halt or not for that input. \\
+This does not mean that Turing machines cannot have recursive halting sets, as there are plenty of trivial counterexamples to that statement. What it claims is that we cannot possibly devise a general Turing machine (or an algorithm, for that matter) that, given any Turing machine and input, decides whether the machine will halt or not for that input. \\
 
-% TODO: enumeration of total recursive functions, self reference and universal machine
+Interestingly, we can ask ourselves a sort of converse for this: we know we can enumerate Turing machines but we cannot decide whether they halt, can we instead enumerate only those machines we know for sure have to halt? This is equivalent to enumerating total recursive functions, and it turns out the answer to the question is no by a certain diagonal argument, for assuming $\{f_i: i \in \N\}$ was an enumeration of said functions, the function $g(n) := f_n(n) + 1$ would be total and computable by construction but could not possibly appear in our listing. Of course, the collection of all total recursive functions \textbf{is} countable; the assertion is that they cannot be \textbf{computably} enumerated.
+
+In fact, the ultimate culprit of this is the universal Turing machine. Generalizing this result, consider a certain class of functions $C$ including a universal function, i.e., a function $U$ in $C$ such that
+
+\begin{enumerate}
+\item for every $f$ in $C$ there exists some natural number $e$ verifying $U(e, n) = f(n)$ for all $n$, and
+\item for every $e$, the function $U_e$ defined by $U_e(n) := U(e, n)$ is in $C$.
+\end{enumerate}
+
+If we further assume that all the functions in $C$ are total and consider the function $f(n) := U(n, n) + 1$, it follows that $f$ cannot be in $C$. Otherwise, and under very mild conditions for closure, it means that $C$ includes some non-total functions. This helps us to improve our intuition about why partial recursive functions are enumerable and have a universal function but (and, in a sense, \textit{because}) they include some non-total functions. On the other hand, primitive recursive functions can be effectively enumerated and are certainly total, but they do not include any \textit{universal primitive recursive} function. Total recursive functions, asking for both totality and universality, lose enumerability.
 
 \section{Reducibility}
 
