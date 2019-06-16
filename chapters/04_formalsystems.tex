@@ -21,7 +21,7 @@ In this chapter we will continue delving into the nuances of \rca\ as well as pr
 We reproduce here the \Cref{def:rca-intro} we made back in \Cref{sec:rca-intro} for the sake of completeness:
 
 \begin{definition}
-  The formal system \rca in the language $L_2$ consists of the following axioms:
+  The formal system \rca\ in the language $L_2$ consists of the following axioms:
 
   \begin{enumerate}
   \item the basic axioms of $Z_2$,
@@ -39,7 +39,7 @@ Real numbers were defined in the first chapter as sequences of rationals with ce
   A function $f:A \to B$ is a subset of $A \times B$ such that, for every $a \in A$, there exists exactly one $b \in B$ verifying $(a, b) \in f$. We denote such a $b$ by $f(a)$.
 \end{definition}
 
-Of course, not every \textit{imaginable} function from $A$ to $B$ is actually realizable in \rca, unless it is already part of the model. For the case of $\N$ and $\Q$, this means that we cannot expect every sequence of rationals to be constructible in \rca or, in other words, there are \textbf{uncomputable reals}. It turns out the only functions that \rca can prove exist, for every model, are precisely computable functions (albeit not all of them, since the graph of a computable function need not be computable).
+Of course, not every \textit{imaginable} function from $A$ to $B$ is actually realizable in \rca, unless it is already part of the model. For the case of $\N$ and $\Q$, this means that we cannot expect every sequence of rationals to be constructible in \rca\ or, in other words, there are \textbf{uncomputable reals}. It turns out the only functions that \rca\ can prove exist, for every model, are precisely computable functions (albeit not all of them, since the graph of a computable function need not be computable).
 
 Similar to real numbers (as sequences of rational numbers), we can define sequences of real numbers.
 
@@ -88,7 +88,7 @@ Roughly speaking, we are describing a continuous function by a sequence of pairs
 \end{definition}
 
 \begin{remark}
-  Existence of $\Phi(x)$ when $x$ belongs to the domain is provable in \rca using the $\mu$ operator \cite{simpson}, but we will not provide the details here. Uniqueness follows from the fact that $\Q$ is densely ordered, since if we assume $x$ satisfies \Cref{eq:continuity-at-point} and there exist $y, y' \in \Q: y \neq y'$ verifying \Cref{eq:separable-image} we can take $\varepsilon = \frac{|y - y'|}{2} > 0$ in \Cref{eq:continuity-at-point}. Then we get $a, r, b, s$ satisfying $(a, r)\Phi(b, s) \land (|x - a| < r) \land s < \varepsilon$, but by \Cref{eq:separable-image} it follows
+  Existence of $\Phi(x)$ when $x$ belongs to the domain is provable in \rca\ using the $\mu$ operator \cite{simpson}, but we will not provide the details here. Uniqueness follows from the fact that $\Q$ is densely ordered, since if we assume $x$ satisfies \Cref{eq:continuity-at-point} and there exist $y, y' \in \Q: y \neq y'$ verifying \Cref{eq:separable-image} we can take $\varepsilon = \frac{|y - y'|}{2} > 0$ in \Cref{eq:continuity-at-point}. Then we get $a, r, b, s$ satisfying $(a, r)\Phi(b, s) \land (|x - a| < r) \land s < \varepsilon$, but by \Cref{eq:separable-image} it follows
 
   \[ (|y - b| < s) \land (|y' - b| < s) \land (s < \varepsilon = \frac{|y - y'|}{2}), \]
 
@@ -99,10 +99,10 @@ Continuous functions as presented here share some of the properties of the commo
 
 \subsection{Characterization of $\omega$-models}
 
-In this subsection we turn our attention to the models of \rca. In particular, we will be concerned with $\mathbf{\omega}$\textbf{-models}, i.e., models of the form $(\omega, \mathcal{S}, +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})$ where the operations and elements are fixed, but we allow different collections of subsets of $\omega$ over which set variables may range. Just as in the intended model for $L_2$ we had $\mathcal{S} = \mathcal{P}(\omega)$, this is certainly not the case for \rca. The intended model for \rca should have exactly those sets that are definable via the recursive comprehension axiom. Formally:
+In this subsection we turn our attention to the models of \rca. In particular, we will be concerned with $\mathbf{\omega}$\textbf{-models}, i.e., models of the form $(\omega, \mathcal{S}, +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})$ where the operations and elements are fixed, but we allow different collections of subsets of $\omega$ over which set variables may range. Just as in the intended model for $L_2$ we had $\mathcal{S} = \mathcal{P}(\omega)$, this is certainly not the case for \rca. The intended model for \rca\ should have exactly those sets that are definable via the recursive comprehension axiom. Formally:
 
 \begin{theorem}[$\omega$-models of \rca]
-  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \rca if, and only if,
+  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \rca\ if, and only if,
 
   \begin{enumerate}
   \item $\mathcal{S} \neq \varnothing$,
@@ -117,8 +117,8 @@ In this subsection we turn our attention to the models of \rca. In particular, w
   \item Taking $\varphi(n) \iff n = n$, which is obviously \rec, gives us $\N$. So $\N \in \mathcal{S} \implies \mathcal{S} \neq \varnothing$.
   \item Assuming $A$ and $B$ are in the model we can use them as parameters of a formula. Namely, let
     \[ \varphi(n) \iff \exists (m \le n) ((n = 2m \land m \in A) \lor (n = 2m + 1 \land m \in B)) \]
-    which is a \esigma{0}{0}$ \subset $\esigma{1}{0}$ \cap $\fapi{1}{0} formula. It is clear that $\forall n (n \in A \oplus B \iff \varphi(n))$, so $A \oplus B$ is definable in \rca and so it must be in the model.
-  \item If $B \le_T A$ we know $B$ is computable in $A$ or, in other words, \rec with parameter $A$ (sometimes noted $\Delta_{1}^{0,A}$), so \rca can prove $B$ exists. Therefore, the model must contain it and hence $B \in \mathcal{S}$.
+    which is a \esigma{0}{0}$ \subset $\esigma{1}{0}$ \cap $\fapi{1}{0} formula. It is clear that $\forall n (n \in A \oplus B \iff \varphi(n))$, so $A \oplus B$ is definable in \rca\ and so it must be in the model.
+  \item If $B \le_T A$ we know $B$ is computable in $A$ or, in other words, \rec with parameter $A$ (sometimes noted $\Delta_{1}^{0,A}$), so \rca\ can prove $B$ exists. Therefore, the model must contain it and hence $B \in \mathcal{S}$.
   \end{enumerate}
 
   For sufficiency, assume a collection $\mathcal{S}$ with the aforementioned properties. Let $\varphi$ be a $\Delta_{1}^{0}$ formula. If it uses no parameters it defines a computable set, which is Turing reducible to any other set, so it must be in $\mathcal{S}$. If it uses a parameter, the resulting set is computable in the parameter, so for any possible $X \in \mathcal{S}$ we have that $\varphi_X := \{n \in \N: \varphi^X(n)\}$ is computable in $X$, where $\varphi^X$ is $\varphi$ with its parameter interpreted as $X$. Therefore, $\varphi_X \le_T X$, so $\varphi_X \in \mathcal{S}$. Finally, if $\varphi$ uses parameters $A_1, A_2, \ldots, A_k$ then $\varphi^{\{A_i: 1 \le i \le k\}}$ is computable in $A_1 \oplus A_2 \oplus \ldots \oplus A_k$, which is also in $\mathcal{S}$ by \ref{item:join-closure}, so $\varphi^{\{A_i: 1 \le i \le k\}} \le_T A_1 \oplus A_2 \oplus \ldots \oplus A_k$ and thus $\varphi^{\{A_i: 1 \le i \le k\}} \in \mathcal{S}$.
@@ -141,7 +141,7 @@ where $\varphi$ is any \re\ formula in the language of $L_1$. It is therefore cl
 
 \[ \Sigma_1^0\text{-PA} \vdash \uppsi \iff \Sigma_1^0\text{-PA} \vDash \uppsi \iff \text{RCA}_0 \vDash \uppsi \iff \text{RCA}_0 \vdash \uppsi. \]
 
-Therefore, we can conclude the first order part of \rca is \re-PA.
+Therefore, we can conclude the first order part of \rca\ is \re-PA.
 
 \subsection{Theorems of \rca}
 
@@ -167,7 +167,7 @@ In this subsection we will just state without proof some of the theorems of \rca
 
 \subsubsection{Previous definitions}
 
-For the introduction of the system \wkl we will need some additional definitions that ultimately allow us to present the weak König's lemma. Please note that these definitions are made in \rca, so that we can later use it to prove the equivalence of \wkl to other theorems within \rca.
+For the introduction of the system \wkl\ we will need some additional definitions that ultimately allow us to present the weak König's lemma. Please note that these definitions are made in \rca, so that we can later use it to prove the equivalence of \wkl\ to other theorems within \rca.
 
 \begin{definition}
   A set $X$ is said to be \textbf{finite} if $\exists n \forall i (i \in X \implies i < n)$
@@ -230,7 +230,7 @@ For the introduction of the system \wkl we will need some additional definitions
 
   \[ \forall n (n \in 2^{<\omega} \iff \forall (i \le n) (n \in \text{Seq} \land (i < lh(n) \implies n(i) < 2))). \]
 
-  Hence, $2^{<\omega}$ exists in \rca by \esigma{0}{0}-comprehension.
+  Hence, $2^{<\omega}$ exists in \rca\ by \esigma{0}{0}-comprehension.
 
   A \textbf{binary tree} is a subset $T \subseteq 2^{<\omega}$ satisfying:
 
@@ -253,7 +253,7 @@ We are at last in position to state the axioms of \wkl
 \subsubsection{Axioms}
 
 \begin{definition}
-  The formal system of \wkl in the language $L_2$ consists of the axioms of \rca together with the \textbf{weak König's lemma}: every infinite binary tree has an infinite path.
+  The formal system of \wkl\ in the language $L_2$ consists of the axioms of \rca\ together with the \textbf{weak König's lemma}: every infinite binary tree has an infinite path.
 \end{definition}
 
 \begin{remark}
@@ -271,7 +271,7 @@ We are at last in position to state the axioms of \wkl
 
 \subsection{$\omega$-models}
 
-A natural question is whether \wkl is actually more powerful than \rca or, in other words, does weak König's lemma follow from \rca? To answer this question we will actually show that not all models of \rca are models of \wkl. Assuming \rca is \textbf{sound}, i.e., it cannot prove a formula that is not true on every model of \rca, it will follow that \wkl is actually stronger than \rca.
+A natural question is whether \wkl\ is actually more powerful than \rca\ or, in other words, does weak König's lemma follow from \rca? To answer this question we will actually show that not all models of \rca\ are models of \wkl. Assuming \rca\ is \textbf{sound}, i.e., it cannot prove a formula that is not true on every model of \rca, it will follow that \wkl\ is actually stronger than \rca.
 
 In order to do this, we first need to define recursive separability:
 
@@ -324,11 +324,11 @@ Now for the counterexample:
   In sum, the infinite paths of $T$ are precisely those that separate $A$ and $B$, which are known to be recursively inseparable, so the infinite paths of $T$ themselves must be non-computable.
 \end{proof}
 
-If we recall \Cref{corollary:rec-model}, \rca has a minimal model REC consisting of only the computable subsets of $\omega$. By \Cref{thm:wkl-counterexample}, the tree $T$ is computable so $T \in$ REC. However, the infinite paths of $T$ are non-computable so they do not exist in REC. Therefore, if we reason within \rca, $T$ has no infinite path even though $T$ itself is an infinite binary tree, so the weak König's lemma cannot possibly be proven in \rca since it fails in the model REC.
+If we recall \Cref{corollary:rec-model}, \rca\ has a minimal model REC consisting of only the computable subsets of $\omega$. By \Cref{thm:wkl-counterexample}, the tree $T$ is computable so $T \in$ REC. However, the infinite paths of $T$ are non-computable so they do not exist in REC. Therefore, if we reason within \rca, $T$ has no infinite path even though $T$ itself is an infinite binary tree, so the weak König's lemma cannot possibly be proven in \rca\ since it fails in the model REC.
 
 \subsection{First order part}
 
-We have shown how weak König's lemma can be expressed as a second order formula, i.e., one that quantifies over sets. First order theories, however, are not capable of doing so. Intuitively, weak König's lemma is about sequences of elements of a given binary tree, stating that there exists an infinite such sequence with certain properties. However, first order arithmetic cannot even define trees since it has no sets. Since the formal system of \wkl is just \rca plus weak König's lemma, and the latter is not expressible as a first order formula, it follows that the first order part of \wkl is the same as that of \rca, viz. \re-PA.
+We have shown how weak König's lemma can be expressed as a second order formula, i.e., one that quantifies over sets. First order theories, however, are not capable of doing so. Intuitively, weak König's lemma is about sequences of elements of a given binary tree, stating that there exists an infinite such sequence with certain properties. However, first order arithmetic cannot even define trees since it has no sets. Since the formal system of \wkl\ is just \rca\ plus weak König's lemma, and the latter is not expressible as a first order formula, it follows that the first order part of \wkl\ is the same as that of \rca, viz. \re-PA.
 
 \subsection{Theorems of \wkl}
 
@@ -357,7 +357,7 @@ In this subsection we will just state without proof some of the theorems of \wkl
 \subsection{The formal system}
 
 \begin{definition}
-  The formal system of \aca in the language $L_2$ consists of the axioms of \rca together with the second order axiom scheme of induction
+  The formal system of \aca\ in the language $L_2$ consists of the axioms of \rca\ together with the second order axiom scheme of induction
 
   \[ (0 \in X \land \forall n (n \in X \implies n + 1 \in X)) \implies \forall n (n \in X), \]
 
@@ -375,22 +375,21 @@ In this subsection we will just state without proof some of the theorems of \wkl
 
 \subsection{Characterization of $\omega$-models}
 
-Just as we did for the case of \rca, we will give here a characterization of the $\omega$-models of \aca in terms of computability theory.
+Just as we did for the case of \rca, we will give here a characterization of the $\omega$-models of \aca\ in terms of computability theory.
 
 \begin{theorem}[$\omega$-models of \aca]
-  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \aca if, and only if,
+  A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \aca\ if, and only if,
 
-  \begin{enumerate}
+  \begin{enumerate}[label=(\roman*), ref=(\roman*)]
   \item $\mathcal{S} \neq \varnothing$,
-  \item \label{item:join-closure} $A \in \mathcal{S}, B \in \mathcal{S} \implies A \oplus B \in \mathcal{S}$,
+  \item \label{item:join-closure-aca} $A \in \mathcal{S}, B \in \mathcal{S} \implies A \oplus B \in \mathcal{S}$,
   \item $A \in \mathcal{S} \land B \le_T A \implies B \in \mathcal{S}$, and
   \item $A \in \mathcal{S} \implies A' \in \mathcal{S}$.
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  The proof is similar to that of \rca for the first three items. Turing jump closure is necessary because $A'$ is $A$-r.e., so it is definable by a \re formula with parameter $A$.
+  The proof is similar to that of \rca\ for the first three items. Turing jump closure is necessary because $A'$ is $A$-r.e., so it is definable by a \re formula with parameter $A$.
 
-  % TODO: double check re join
   Conversely, assume $\varphi$ is \re, so it defines a set $X$ from parameters $A_1, A_2, \ldots, A_n$. Let $A = A_1 \oplus A_2 \oplus \ldots \oplus A_n$, then $X$ is $A$-r.e. By \Cref{thm:turing-jump-properties}, this means $X \le_m A'$, so $X \le_T A'$ and therefore $X \in \mathcal{S}$. Since \re comprehension implies arithmetical comprehension by \Cref{remark:aca-re-comprehension}, it is enough to prove this for \re formulas.
 \end{proof}
 
@@ -403,13 +402,13 @@ Just as we did for the case of \rca, we will give here a characterization of the
 
 \subsection{First order part}
 
-In this case, the first order part of \aca is the Peano arithmetic, or PA, which in turn is a friendly name for $Z_1$. To see why, first note that all of the axioms of $Z_1$ are either axioms or theorems of \aca, since the first order axiom scheme of induction of $Z_1$ follows from the arithmetical comprehension axiom and the second order axiom scheme of induction. Therefore if any sentence in the language of $L_1, \sigma$, is a theorem of $Z_1$ then it is also a theorem of \aca.
+In this case, the first order part of \aca\ is the Peano arithmetic, or PA, which in turn is a friendly name for $Z_1$. To see why, first note that all of the axioms of $Z_1$ are either axioms or theorems of \aca, since the first order axiom scheme of induction of $Z_1$ follows from the arithmetical comprehension axiom and the second order axiom scheme of induction. Therefore if any sentence in the language of $L_1, \sigma$, is a theorem of $Z_1$ then it is also a theorem of \aca.
 
 Conversely, consider a model $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ of $Z_1$. Then there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$. In particular, we can consider $\mathcal{S}_M$ to be the collection of sets definable in the $Z_1$ model using parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in PA if, and only if, it is provable in \aca, since by Gödel's completeness theorem
 
 \[ PA \vdash \uppsi \iff PA \vDash \uppsi \iff \text{ACA}_0 \vDash \uppsi \iff \text{ACA}_0 \vdash \uppsi. \]
 
-Therefore, we can conclude the first order part of \aca is PA.
+Therefore, we can conclude the first order part of \aca\ is PA.
 
 \subsection{Theorems of \aca}
 
