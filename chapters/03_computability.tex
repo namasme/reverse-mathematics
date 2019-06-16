@@ -755,7 +755,7 @@ This is actually the definition of the Turing jump:
 
   Let $A, B \subseteq N$. Then:
 
-  \begin{enumerate}
+  \begin{enumerate}[label=(\roman*), ref=(\roman*)]
   \item\label{item:a'-a-re} $A'$ is $A$-r.e.
   \item\label{item:a'-complete} A set $B$ is $A$-r.e. if and only if $B \le_m A'$.
   \item $A \le_T A'$, but $A' \not\le_T A$.
@@ -763,7 +763,7 @@ This is actually the definition of the Turing jump:
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  \begin{enumerate}
+  \begin{enumerate}[label=(\roman*), ref=(\roman*)]
   \item Assume we have an oracle for $A$. Then to answer $k \in A'$ we just need to:
     \begin{enumerate}
     \item Compute $e, n$ such that $(e, n) = k$ (if they exist),
