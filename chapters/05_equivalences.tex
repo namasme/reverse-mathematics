@@ -287,8 +287,13 @@ In this section we will prove the equivalence, over \rca, of a number of theorem
 
   Take $m = i + n_0 + 1$ for given $\varepsilon$. It follows that, for $n > m$
 
-  % TODO: fix equation
-  \[ |x - x_n| = |x - x_{g(n)} + x_{g(n)} - x_n| \le |x - x_{g(n)}| + |x_{g(n)} - x_n| < \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0} + x_{n_0} - x_n| \le \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0}| + |x_{n_0} - x_n| < \frac{\varepsilon}{2} + \frac{\varepsilon}{4} + \frac{\varepsilon}{4} = \varepsilon. \]
+  \begin{equation*}
+    \begin{split}
+      |x - x_n| & = |x - x_{g(n)} + x_{g(n)} - x_n| \le |x - x_{g(n)}| + |x_{g(n)} - x_n| \\
+      & < \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0} + x_{n_0} - x_n| \\
+      & \le \frac{\varepsilon}{2} + |x_{g(n)} - x_{n_0}| + |x_{n_0} - x_n| < \frac{\varepsilon}{2} + \frac{\varepsilon}{4} + \frac{\varepsilon}{4} = \varepsilon.
+    \end{split}
+  \end{equation*}
 
   Therefore, the original sequence also converges to $x$.
 \end{proof}

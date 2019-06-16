@@ -208,9 +208,12 @@ For the introduction of the system \wkl we will need some additional definitions
   \item $lh(s)$ is the \textbf{length} of $s$ or $X$, defined as the $l$ in \Cref{def:finite-sequence}.
   \item For all $i < lh(s)$, $s(i)$ is the $i$-th element of $X$, i.e., the unique $j$ such that $(i, j) \in X$.
   \item Given $t$ also in Seq, the \textbf{concatenation} of $s$ and $t$, $s \frown t$, is the code for the finite sequence
-    \[ \{(0, s(0)), (1, s(1)), \ldots, (lh(s) - 1, s(lh(s) - 1)), (lh(s), t(0)), (lh(s) + 1, t(1)), \ldots, (lh(s) + lh(t) - 1, t(lh(t) - 1))\}. \]
+    \[ \{(0, s(0)), \ldots, (lh(s) - 1, s(lh(s) - 1)),
+      (lh(s), t(0)), \ldots, (lh(s) + lh(t) - 1, t(lh(t) - 1))\}. \]
     Therefore, $lh(s \frown t) = lh(s) + lh(t)$.
-  \item $t$ is an \textbf{initial segment} of $s$, written $t \subset s$, whenever $lh(t) \le lh(s) \land \forall (i < lh(t)) (t(i) = s(i))$.
+  \item $t$ is an \textbf{initial segment} of $s$, written $t \subset s$, whenever
+
+    \[ lh(t) \le lh(s) \land \forall (i < lh(t)) (t(i) = s(i)). \]
   \end{itemize}
 \end{definition}
 

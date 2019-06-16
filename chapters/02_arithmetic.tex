@@ -33,6 +33,7 @@ We shall also use some common abbreviations in order to alleviate the verbosity 
 Next, we need to discuss the concept of a \textbf{model} or \textbf{structure}, of our language. A model for $L_2$ is a septuple $M = (|M|, S_M, +_M, \cdot_M, 0_M, 1_M, <_M)$, where $|M|$ is a \textit{set} (in a metatheoretical sense, so we cannot speak about its nature from within our theory) which serves as the range of the number variables, $S_M$ is a set of subsets of $|M|$ serving as the range of the set variables, $+_M$ and $\cdot_M$ represent the operations of addition and product on $|M|$, $0_M$ and $1_M$ are distinguished elements of $|M|$, and $<_M$ is a binary relation on $|M|$. Thus, the interpretation of an $L_2$ formula in $M$ is straight-forward. \\
 
 The intended model for $L_2$ will be no other than
+
 \[
   (\omega, \mathcal{P}(\omega), +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})
 \]
@@ -159,14 +160,14 @@ Thanks to the prenex form, we can be sure that every arithmetical formula is ass
 Of course, we can extend this notion to sets:
 
 \begin{definition}
-  A set $X$ is said to be \textbf{arithmetically definable}, or arithmetical, if there is a formula $\varphi$ such that $\forall n (n \in X \iff \varphi(n))$. In this case, we also say that $X$ is defined by $\varphi$.
+  A set $X$ is said to be \textbf{arithmetically definable}, or arithmetical, if there is an arithmetical formula $\varphi$ such that $\forall n (n \in X \iff \varphi(n))$. In this case, we also say that $X$ is defined by $\varphi$.
 \end{definition}
 
 \begin{definition}
   A set $X$ is said to be \esigma{n}{0} (respectively \fapi{n}{0}) if it is defined by a \esigma{n}{0} (respectively \fapi{n}{0}) formula.
 \end{definition}
 
-The \textbf{arithmetical hierarchy} is the classification of arithmetically definable sets with respect to the \textit{complexity} of the (simplest) formula that describes them. In the next section we will explore the astounding relationship between this concept and computability theory.
+The \textbf{arithmetical hierarchy} is the classification of arithmetically definable sets with respect to the \textit{complexity} of the (simplest) formula that describes them. In the next chapter we will explore the astounding relationship between this concept and computability theory.
 
 \section{The axiom system RCA$_0$}
 
@@ -354,14 +355,14 @@ We define $\Q \subset \Z \times \Z^+ \subset \Z \times \Z \subset (\N \times \N)
 
 \begin{definition}
   The \textbf{absolute value} of a rational number $q$, denoted by $|q|$, is defined as follows:
-  \begin{equation}
+  \begin{equation*}
     |q| := \left\{
     \begin{array}{lr}
       q & \text{if } 0 \le q \text{,} \\
       -q & \text{if } q < 0
     \end{array}
     \right.
-  \end{equation}
+  \end{equation*}
 \end{definition}
 
 \begin{definition}
