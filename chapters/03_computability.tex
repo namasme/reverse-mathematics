@@ -319,8 +319,28 @@ Then we have the following:
   \end{itemize}
 \end{proof}
 
-% TODO: number TMs
-% TODO: halting problem undecidable
+\subsection{Enumerating Turing machines}
+
+It turns out that if we want to keep studying the nature of Turing machines and some of their most interesting properties we need to enumerate them. This can be accomplished in a number of ways, one of the most common being Gödel numberings. Although we will not provide the details here, the idea is very similar to that of \Cref{thm:turing-implies-recursive}.
+
+Making some simplifications over the Turing machine definition (such as the tape alphabet being binary) that \textbf{do not} change the class of functions that are Turing computable (in the sense that any general Turing machine can be \textit{translated} to this new subset), we only need to encode the program of the machine (i.e., its transition function) to uniquely represent it. In order to do this we can make use of the fundamental theorem of arithmetic and encode using a finite number of prime powers. If this is done properly, given the code for a Turing machine we just need to check how many times each of those primes divides the code and translate accordingly.
+
+Assume we already have such an encoding called $gn$ (for Gödel numbering) that takes the description of a Turing machine program and returns a unique natural number. Then we can define
+
+\begin{definition}
+  The \textbf{$e^\text{th}$} Turing machine program is given by
+
+  \[ P_e =
+    \begin{cases}
+      P & \text{if } gn^{-1}(e) \halts = P, \\
+      \varnothing & \text{otherwise.}
+    \end{cases}
+  \]
+
+  That is, if $e$ is the code for a program then $P_e$ is defined as that unique program, otherwise $P_e$ is the empty program. Note that by our input/output conventions this means it computes the successor function, but we could just as well replace it by any other program.
+
+  The \textbf{$e^{\text{th}}$} Turing machine, $T_e$, is then the Turing machine with program $P_e$. Similarly, the \textbf{$e^{\text{th}}$} partial recursive function, $\varphi_e$, is the function computed by $T_e$.
+\end{definition}
 
 Then we have the following useful result:
 
