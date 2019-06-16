@@ -799,12 +799,51 @@ We have finally arrived at what represents the pinnacle of the connection betwee
   Given a collection $\mathcal{X} \subseteq \mathcal{P}(\N)$, a set $A \in \mathcal{X}$ is said to be $m$-complete for $\mathcal{X}$ (or just $\mathcal{X}$-complete) if $X \le_m A$ for all $X \in \mathcal{X}$.
 \end{definition}
 
+We will not prove the following since a rigorous proof would require the formalization of Turing machines in arithmetic, which we have only hinted.
+
 \begin{theorem}[Post's theorem]
   \begin{enumerate}
   \item A set $A$ is \esigma{n + 1}{0} if and only if $A$ is r.e. in $\varnothing^{(n)}$ or, in other words, $A \le_m \varnothing^{(n + 1)}$.
   \item $\varnothing^{(n)}$ is \esigma{n}{0} complete for every $n > 0$.
   \end{enumerate}
 \end{theorem}
+
+However, we can prove this practical corollary:
+
+\begin{corollary}
+  \begin{enumerate}[label=(\roman*), ref=(\roman*)]
+  \item A set $A$ is r.e. if, and only if, it is \re\ with no set parameters.
+  \item \label{item:core} A set $B$ is co-r.e. if, and only if, it is \core\ with no set parameters.
+  \item \label{item:rec} A set $C$ is computable if, and only if, it is \rec\ with no set parameters.
+  \end{enumerate}
+\end{corollary}
+\begin{proof}
+  \begin{itemize}
+  \item Assume $A$ is r.e. Let $f$ be a function such that $\text{range}(f) = A$. Then
+    \[ \forall n (n \in A \iff \exists m (f(m) = n)). \]
+    Therefore, $A$ is \re\ with no set parameters.
+  \item Assume now $A$ is \re\ with no set parameters, so it is given by some \re\ formula $\varphi(n)$ which is in turn equivalent to $\exists j \uppsi(n, j)$ for some \esigma{0}{0} formula $\uppsi$, where both $\varphi$ and $\uppsi$ have no set parameters. Using the Church-Turing thesis, define the following partial computable function
+
+    \[ f(n) =
+      \begin{cases}
+        0 & \text{if } \varphi(n), \\
+        \diverges & \text{otherwise.}
+      \end{cases}
+    \]
+
+    For every $n$, we can compute $f(n)$ by checking in order $\uppsi(n, 0), \uppsi(n, 1), \ldots$. Since $\uppsi$ is \esigma{0}{0} it can only contain equations and bounded quantifiers, which clearly are computable. Then it follows
+
+    \[ \forall n (n \in A \iff f(n) = 0 \iff f(n) \halts). \]
+
+    But that means $A$ is the domain of $f$, which is a partial computable function. By theorem \Cref{thm:normal-form-re}, we have that $A$ is r.e.
+  \end{itemize}
+
+  Now \ref{item:core} follows because if $B$ is defined by $\varphi$ then
+
+  \[ B \text{ is co-r.e.} \iff \N \setminus B \text{ is r.e.} \iff \neg\varphi \text{ is \re} \iff \varphi \text{ is \core}. \]
+
+  Similarly for \ref{item:rec}, $C$ is computatable if, and only if, it is both r.e. and co-r.e., if, and only if, it is both \re\ and \core.
+\end{proof}
 
 \end{document}
 
