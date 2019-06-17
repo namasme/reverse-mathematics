@@ -25,8 +25,8 @@ We reproduce here the \Cref{def:rca-intro} we made back in \Cref{sec:rca-intro} 
 
   \begin{enumerate}
   \item the basic axioms of $Z_2$,
-  \item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
-  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
+  \item \re-induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
+  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec\ and $X$ does not occur freely in it
   \end{enumerate}
 \end{definition}
 
@@ -118,7 +118,7 @@ In this subsection we turn our attention to the models of \rca. In particular, w
   \item Assuming $A$ and $B$ are in the model we can use them as parameters of a formula. Namely, let
     \[ \varphi(n) \iff \exists (m \le n) ((n = 2m \land m \in A) \lor (n = 2m + 1 \land m \in B)) \]
     which is a \esigma{0}{0}$ \subset $\esigma{1}{0}$ \cap $\fapi{1}{0} formula. It is clear that $\forall n (n \in A \oplus B \iff \varphi(n))$, so $A \oplus B$ is definable in \rca\ and so it must be in the model.
-  \item If $B \le_T A$ we know $B$ is computable in $A$ or, in other words, \rec with parameter $A$ (sometimes noted $\Delta_{1}^{0,A}$), so \rca\ can prove $B$ exists. Therefore, the model must contain it and hence $B \in \mathcal{S}$.
+  \item If $B \le_T A$ we know $B$ is computable in $A$ or, in other words, \rec\ with parameter $A$ (sometimes noted $\Delta_{1}^{0,A}$), so \rca\ can prove $B$ exists. Therefore, the model must contain it and hence $B \in \mathcal{S}$.
   \end{enumerate}
 
   For sufficiency, assume a collection $\mathcal{S}$ with the aforementioned properties. Let $\varphi$ be a $\Delta_{1}^{0}$ formula. If it uses no parameters it defines a computable set, which is Turing reducible to any other set, so it must be in $\mathcal{S}$. If it uses a parameter, the resulting set is computable in the parameter, so for any possible $X \in \mathcal{S}$ we have that $\varphi_X := \{n \in \N: \varphi^X(n)\}$ is computable in $X$, where $\varphi^X$ is $\varphi$ with its parameter interpreted as $X$. Therefore, $\varphi_X \le_T X$, so $\varphi_X \in \mathcal{S}$. Finally, if $\varphi$ uses parameters $A_1, A_2, \ldots, A_k$ then $\varphi^{\{A_i: 1 \le i \le k\}}$ is computable in $A_1 \oplus A_2 \oplus \ldots \oplus A_k$, which is also in $\mathcal{S}$ by \ref{item:join-closure}, so $\varphi^{\{A_i: 1 \le i \le k\}} \le_T A_1 \oplus A_2 \oplus \ldots \oplus A_k$ and thus $\varphi^{\{A_i: 1 \le i \le k\}} \in \mathcal{S}$.
@@ -133,7 +133,7 @@ In this subsection we turn our attention to the models of \rca. In particular, w
 
 \subsection{First order part}
 
-The first order part of a given model $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$ is just the structure $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$, that is, removing the collection of subsets of $|M|$ over which second order formulas are allowed to range, since first order formulas only quantify elements of the model (natural numbers in the case of $\omega$-models). Similarly, first order formulas can only have elements of the model $|M|$ as parameters. We call \re-PA the system resulting from taking first order arithmetic (with the usual axioms for arithmetic) plus \re induction, i.e.,
+The first order part of a given model $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$ is just the structure $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$, that is, removing the collection of subsets of $|M|$ over which second order formulas are allowed to range, since first order formulas only quantify elements of the model (natural numbers in the case of $\omega$-models). Similarly, first order formulas can only have elements of the model $|M|$ as parameters. We call \re-PA the system resulting from taking first order arithmetic (with the usual axioms for arithmetic) plus \re-induction, i.e.,
 
 \[ (\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n (\varphi(n)), \]
 
@@ -185,7 +185,7 @@ For the introduction of the system \wkl\ we will need some additional definition
   The set of all codes for finite sets, Fin, exists in \rca.
 \end{theorem}
 \begin{proof}
-  Fin is just the set of all \textit{triples} of the form $(k, (m, n))$ for $k, m, n \in \omega$ since, given $k, m, n$, they necessarily define a finite set by \rec-comprehension
+  Fin is just the set of all \textit{triples} of the form $(k, (m, n))$ for $k, m, n \in \omega$ since, given $k, m, n$, they necessarily define a finite set by \rec\ comprehension
 
   \[ \exists X \forall i (i \in X \iff (i < k \land (m(i + 1) + 1) \vert n)). \]
 
@@ -215,7 +215,7 @@ For the introduction of the system \wkl\ we will need some additional definition
 
   \[ \exists (k \le x) \exists (r \le x) (\forall (n \le k) \exists (i \le k) \exists (j \le k) (x = (k, r) \land (n \in X \iff n = (i, j)))). \]
 
-  Hence, by bounding all the quantifiers in the three conditions we can conclude that Seq exists by \rec-comprehension.
+  Hence, by bounding all the quantifiers in the three conditions we can conclude that Seq exists by \rec\ comprehension.
 \end{proof}
 
 \begin{definition}
@@ -239,7 +239,7 @@ For the introduction of the system \wkl\ we will need some additional definition
 
   \[ \forall n (n \in 2^{<\omega} \iff \forall (i \le n) (n \in \text{Seq} \land (i < lh(n) \implies n(i) < 2))). \]
 
-  Hence, $2^{<\omega}$ exists in \rca\ by \esigma{0}{0}-comprehension.
+  Hence, $2^{<\omega}$ exists in \rca\ by \esigma{0}{0} comprehension.
 
   A \textbf{binary tree} is a subset $T \subseteq 2^{<\omega}$ satisfying:
 
@@ -379,7 +379,7 @@ In this subsection we will just state without proof some of the theorems of \wkl
 
 \begin{remark}
   \label{remark:aca-re-comprehension}
-  It turns out that arithmetical comprehension -- or \esigma{0}{1} comprehension, as it is sometimes called -- is actually equivalent to just \re comprehension. Note the swap of the subindex and the superindex: \esigma{0}{1} is, roughly speaking, $\bigcup_{n}$ \esigma{n}{0}, i.e., all of the arithmetical formulas/sets. A proof of this equivalence can be found in \cite{simpson}.
+  It turns out that arithmetical comprehension -- or \esigma{0}{1} comprehension, as it is sometimes called -- is actually equivalent to just \re\ comprehension. Note the swap of the subindex and the superindex: \esigma{0}{1} is, roughly speaking, $\bigcup_{n}$ \esigma{n}{0}, i.e., all of the arithmetical formulas/sets. A proof of this equivalence can be found in \cite{simpson}.
 \end{remark}
 
 \subsection{Characterization of $\omega$-models}
@@ -397,9 +397,9 @@ Just as we did for the case of \rca, we will give here a characterization of the
   \end{enumerate}
 \end{theorem}
 \begin{proof}
-  The proof is similar to that of \rca\ for the first three items. Turing jump closure is necessary because $A'$ is $A$-r.e., so it is definable by a \re formula with parameter $A$.
+  The proof is similar to that of \rca\ for the first three items. Turing jump closure is necessary because $A'$ is $A$-r.e., so it is definable by a \re\ formula with parameter $A$.
 
-  Conversely, assume $\varphi$ is \re, so it defines a set $X$ from parameters $A_1, A_2, \ldots, A_n$. Let $A = A_1 \oplus A_2 \oplus \ldots \oplus A_n$, then $X$ is $A$-r.e. By \Cref{thm:turing-jump-properties}, this means $X \le_m A'$, so $X \le_T A'$ and therefore $X \in \mathcal{S}$. Since \re comprehension implies arithmetical comprehension by \Cref{remark:aca-re-comprehension}, it is enough to prove this for \re formulas.
+  Conversely, assume $\varphi$ is \re, so it defines a set $X$ from parameters $A_1, A_2, \ldots, A_n$. Let $A = A_1 \oplus A_2 \oplus \ldots \oplus A_n$, then $X$ is $A$-r.e. By \Cref{thm:turing-jump-properties}, this means $X \le_m A'$, so $X \le_T A'$ and therefore $X \in \mathcal{S}$. Since \re\ comprehension implies arithmetical comprehension by \Cref{remark:aca-re-comprehension}, it is enough to prove this for \re\ formulas.
 \end{proof}
 
 \begin{corollary}

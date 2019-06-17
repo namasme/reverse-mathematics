@@ -81,7 +81,7 @@ Now that we have established the limits of second order arithmetic, we turn our 
 \section{Arithmetical definability and arithmetical hierarchy}
 
 \begin{definition}
-  A formula $\varphi$ is said to be \re if it is equivalent to
+  A formula $\varphi$ is said to be \re\ if it is equivalent to
   \[
     \exists x_1 (\exists x_2 (\ldots (\exists x_n \uppsi(x_1, x_2, \ldots, x_n)))))
   \]
@@ -89,7 +89,7 @@ Now that we have established the limits of second order arithmetic, we turn our 
 \end{definition}
 
 \begin{definition}
-  A formula $\varphi$ is said to be \core if it is equivalent to
+  A formula $\varphi$ is said to be \core\ if it is equivalent to
   \[
     \forall x_1 (\forall x_2 (\ldots (\forall x_n \uppsi(x_1, x_2, \ldots, x_n)))))
   \]
@@ -189,8 +189,8 @@ Before proceeding any further, we need to establish the ground upon which we wil
 
   \begin{enumerate}
   \item the basic axioms of $Z_2$,
-  \item \re  induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
-  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec and $X$ does not occur freely in it
+  \item \re-induction, i.e., $(\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n \varphi(n)$ where $\varphi$ is \re, and
+  \item recursive, or \rec, comprehension, i.e., $\exists X \forall n (n \in X \iff \varphi(n))$ where $\varphi$ is \rec\ and $X$ does not occur freely in it
   \end{enumerate}
 \end{definition}
 
@@ -198,7 +198,7 @@ Recursive comprehension is also usually defined as
 \[
   \forall n (\varphi(n) \iff \uppsi(n)) \implies \exists X \forall n (n \in X \iff \varphi(n))
 \]
-where $\varphi$ is \re, $\uppsi$ is \core and $X$ does not occur freely in $\varphi$. \\
+where $\varphi$ is \re, $\uppsi$ is \core\ and $X$ does not occur freely in $\varphi$. \\
 
 Based on this, we define the \textit{inner} natural numbers, $\Bbb{N}$, as the (unique) set such that $\forall n (n \in \Bbb{N} \iff n = n)$, which obviously implies $\forall n (n \in \Bbb{N})$. Now we state an important fact about this \textit{newly} found system that will be needed for the upcoming definitions:
 
@@ -230,7 +230,7 @@ Before getting to the real numbers, however, we must first find how to work with
   \item Now assume $n^2 \ge n$ for $n \ge 1$. Then, by lemma \ref{lemma:square-gte-id}, $(n + 1)^2 > n(n + 1) > n^2 \ge n$. Therefore $\varphi(n) \implies \varphi(n + 1)$.
   \end{itemize}
 
-  Finally, applying \re  induction we obtain the desired result $\forall n (n^2 \ge n)$.
+  Finally, applying \re-induction we obtain the desired result $\forall n (n^2 \ge n)$.
 \end{proof}
 
 \begin{corollary}

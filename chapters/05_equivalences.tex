@@ -63,7 +63,7 @@ Using \Cref{def:continuous-function-rca} for continuous functions, we state:
 
   \[ \varphi(q) \iff \phi(q) < 0 \iff \uppsi(q), \]
 
-  where $\varphi(q)$ is \re\ and $\uppsi(q)$ is \core. By \rec-comprehension, there exists $\phi^-$, the set of all rationals in $[0, 1]$ where $\phi$ is negative.
+  where $\varphi(q)$ is \re\ and $\uppsi(q)$ is \core. By \rec\ comprehension, there exists $\phi^-$, the set of all rationals in $[0, 1]$ where $\phi$ is negative.
 
   By primitive recursion using parameter $\phi^-$, we define the following sequences:
 
@@ -333,7 +333,7 @@ We will need a previous lemma for this theorem. This was mentioned in \Cref{rema
 
   \begin{enumerate}[label=(\roman*), ref=(\roman*)]
   \item \label{item:aca} arithmetical comprehension axiom,
-  \item \label{item:re-comprehension} \re-comprehension, and
+  \item \label{item:re-comprehension} \re\ comprehension, and
   \item \label{item:range-existence} For any one-to-one function $f: \N \to \N$ there exists a set $R$ such that
     \[ \forall n (n \in R \iff \exists m (f(m) = n)), \]
     i.e., $R$ is the range of $f$ and it exists.
@@ -349,14 +349,14 @@ We will need a previous lemma for this theorem. This was mentioned in \Cref{rema
     \[ \forall n (n \in X \iff \varphi(n)). \]
 
     Then $X$ is computable so it exists in \rca. Otherwise, let $\varphi(n)$ be equivalent to $\exists j \uppsi(n, j)$ for some \esigma{0}{0} formula $\uppsi$. By \esigma{0}{0} comprehension, let $Y$ be the set of all pairs $(n, j)$ such that $\uppsi(n, j)$ holds, which is infinite. Let $g: \N \to Y$ be a function that enumerates $Y$ in strictly increasing order. Then the range of $\pi_1 \circ g$, where $\pi_1$ denotes the first projection function (i.e., $\forall n \forall j (\pi_1((n, j)) = n)$), is exactly $X$, the set of all $n$ such that $\varphi(n)$ holds.
-  \item[\ref{item:re-comprehension} $\implies$ \ref{item:aca}] Since any arithmetical formula is \esigma{n}{0} for sufficiently large $n$, we just need to prove \re-comprehension implies \esigma{n}{0}-comprehension for every $n$. We proceed by induction:
+  \item[\ref{item:re-comprehension} $\implies$ \ref{item:aca}] Since any arithmetical formula is \esigma{n}{0} for sufficiently large $n$, we just need to prove \re\ comprehension implies \esigma{n}{0} comprehension for every $n$. We proceed by induction:
 
     \begin{enumerate}
-    \item Obviously, \re-comprehension implies \esigma{0}{0}-comprehension,
-    \item Assume now \re-comprehension implies \esigma{k}{0}-comprehension for some $k \in \omega$. Let $\varphi(n)$ be some \esigma{k + 1}{0} formula. Then $\varphi(n)$ is equivalent to $\exists j \uppsi(n, j)$ for some \fapi{k}{0} formula $\uppsi$, so $\neg \uppsi$ is \esigma{k}{0}. By \esigma{k}{0} comprehension, let $Y$ be the set of all the pairs $(n, j)$ such that $\neg \uppsi(n, j)$ holds. Then, by \re-comprehension, let $X$ be the set of all $n$ such that $\exists j ((n, j) \not\in Y)$. Then $n \in X \iff \varphi(n)$ and we have shown $X$ exists, so \re-comprehension also implies \esigma{k + 1}{0} comprehension.
+    \item Obviously, \re\ comprehension implies \esigma{0}{0} comprehension,
+    \item Assume now \re\ comprehension implies \esigma{k}{0} comprehension for some $k \in \omega$. Let $\varphi(n)$ be some \esigma{k + 1}{0} formula. Then $\varphi(n)$ is equivalent to $\exists j \uppsi(n, j)$ for some \fapi{k}{0} formula $\uppsi$, so $\neg \uppsi$ is \esigma{k}{0}. By \esigma{k}{0} comprehension, let $Y$ be the set of all the pairs $(n, j)$ such that $\neg \uppsi(n, j)$ holds. Then, by \re\ comprehension, let $X$ be the set of all $n$ such that $\exists j ((n, j) \not\in Y)$. Then $n \in X \iff \varphi(n)$ and we have shown $X$ exists, so \re\ comprehension also implies \esigma{k + 1}{0} comprehension.
     \end{enumerate}
 
-    By induction, this mean \re-comprehension proves \esigma{n}{0}-comprehension for every $n \in \omega$, so \re-comprehension proves arithmetical comprehension.
+    By induction, this mean \re\ comprehension proves \esigma{n}{0} comprehension for every $n \in \omega$, so \re\ comprehension proves arithmetical comprehension.
   \end{description}
 \end{proof}
 
