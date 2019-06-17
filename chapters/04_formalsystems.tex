@@ -99,7 +99,11 @@ Continuous functions as presented here share some of the properties of the commo
 
 \subsection{Characterization of $\omega$-models}
 
-In this subsection we turn our attention to the models of \rca. In particular, we will be concerned with $\mathbf{\omega}$\textbf{-models}, i.e., models of the form $(\omega, \mathcal{S}, +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega})$ where the operations and elements are fixed, but we allow different collections of subsets of $\omega$ over which set variables may range. Just as in the intended model for $L_2$ we had $\mathcal{S} = \mathcal{P}(\omega)$, this is certainly not the case for \rca. The intended model for \rca\ should have exactly those sets that are definable via the recursive comprehension axiom. Formally:
+In this subsection we turn our attention to the models of \rca. In particular, we will be concerned with $\mathbf{\omega}$\textbf{-models}, i.e., models of the form
+
+\[ (\omega, \mathcal{S}, +_{\omega}, \cdot_{\omega}, 0_{\omega}, 1_{\omega}, <_{\omega}) \]
+
+where the operations and elements are fixed, but we allow different collections of subsets of $\omega$ over which set variables may range. Just as in the intended model for $L_2$ we had $\mathcal{S} = \mathcal{P}(\omega)$, this is certainly not the case for \rca. The intended model for \rca\ should have exactly those sets that are definable via the recursive comprehension axiom. Formally:
 
 \begin{theorem}[$\omega$-models of \rca]
   A collection $\mathcal{S} \subseteq \mathcal{P}(\omega)$ of sets of natural numbers is an $\omega$-model of \rca\ if, and only if,
@@ -137,7 +141,11 @@ The first order part of a given model $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1
 
 \[ (\varphi(0) \land \forall n (\varphi(n) \implies \varphi(n + 1))) \implies \forall n (\varphi(n)), \]
 
-where $\varphi$ is any \re\ formula in the language of $L_1$. It is therefore clear that all the axioms of \re-PA are axioms of \rca. Conversely, given a model of \re-PA, $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$ is a model for \rca. In particular, we can consider $\mathcal{S}_M$ to be the collection of subsets of $|M|$ that are definable by a \rec formula allowing parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in \re-PA if, and only if, it is provable in \rca, since by Gödel's completeness theorem
+where $\varphi$ is any \re\ formula in the language of $L_1$. It is therefore clear that all the axioms of \re-PA are axioms of \rca. Conversely, given a model of \re-PA, $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that
+
+\[ (|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M) \]
+
+is a model for \rca. In particular, we can consider $\mathcal{S}_M$ to be the collection of subsets of $|M|$ that are definable by a \rec\ formula allowing parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in \re-PA if, and only if, it is provable in \rca, since by Gödel's completeness theorem
 
 \[ \Sigma_1^0\text{-PA} \vdash \uppsi \iff \Sigma_1^0\text{-PA} \vDash \uppsi \iff \text{RCA}_0 \vDash \uppsi \iff \text{RCA}_0 \vdash \uppsi. \]
 
@@ -413,7 +421,11 @@ Just as we did for the case of \rca, we will give here a characterization of the
 
 In this case, the first order part of \aca\ is the Peano arithmetic, or PA, which in turn is a friendly name for $Z_1$. To see why, first note that all of the axioms of $Z_1$ are either axioms or theorems of \aca, since the first order axiom scheme of induction of $Z_1$ follows from the arithmetical comprehension axiom and the second order axiom scheme of induction. Therefore if any sentence in the language of $L_1, \sigma$, is a theorem of $Z_1$ then it is also a theorem of \aca.
 
-Conversely, consider a model $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ of $Z_1$. Then there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that $(|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M)$. In particular, we can consider $\mathcal{S}_M$ to be the collection of sets definable in the $Z_1$ model using parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in PA if, and only if, it is provable in \aca, since by Gödel's completeness theorem
+Conversely, consider a model $(|M|, +_M, \cdot_M, 0_M, 1_M, <_M)$ of $Z_1$. Then there exists $\mathcal{S}_M \subseteq \mathcal{P}(|M|)$ such that
+
+\[ (|M|, \mathcal{S}_M, +_M, \cdot_M, 0_M, 1_M, <_M) \]
+
+is a model of \aca. In particular, we can consider $\mathcal{S}_M$ to be the collection of sets definable in the $Z_1$ model using parameters from $|M|$. This shows that, given any sentence $\uppsi$ in the language of $L_1$, $\uppsi$ is provable in PA if, and only if, it is provable in \aca, since by Gödel's completeness theorem
 
 \[ PA \vdash \uppsi \iff PA \vDash \uppsi \iff \text{ACA}_0 \vDash \uppsi \iff \text{ACA}_0 \vdash \uppsi. \]
 

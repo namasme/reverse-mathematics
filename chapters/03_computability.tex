@@ -117,11 +117,10 @@ It could also be asked why did we not begin by defining ($\mu$-)recursive functi
   where
   \begin{equation*}
     \mu m [g(x_1, \ldots, x_n, m) = 0] = k \overset{\Delta}{\iff}
-    \begin{array}{r@{}l}
-      g(x_1, \ldots, & x_n, k) = 0 \\
-      & \land \\
-      \forall (m < k) (g(x_1, \ldots, x_n, m) & \halts \land g(x_1, \ldots, x_n, m) \neq 0)
-    \end{array}
+    \begin{cases}
+      \; g(x_1, \ldots, x_n, k) = 0 \text{, and} \\
+      \; \forall (m < k) (g(x_1, \ldots, x_n, m) \halts \land g(x_1, \ldots, x_n, m) \neq 0)
+    \end{cases}
   \end{equation*}
 \end{definition}
 
@@ -153,13 +152,13 @@ In other words, the partial recursive functions are the smallest class of functi
 \begin{definition}[Recursive relations]
   Let $R(x_1, \ldots, x_k)$ be a relation and denote by $\chi_R$ its indicator or characteristic function, that is:
 
-  \begin{equation*}
+  \begin{align*}
     \chi_R(x_1, \ldots, x_k) := \left\{
     \begin{array}{lr}
-      1 & \text{if } R(x_1, \ldots, x_k) \text{holds,} \\
-      0 & \text{if } R(x_1, \ldots, x_k) \text{does not hold} \\
+      1 \quad \text{if } R(x_1, \ldots, x_k) \text{ holds,} \\
+      0 \quad \text{if } R(x_1, \ldots, x_k) \text{ does not hold} \\
     \end{array}\right.
-  \end{equation*}
+  \end{align*}
 
   $R$ is said to be recursive if $\chi_R$ is.
 \end{definition}
