@@ -125,12 +125,12 @@ We will subdivide the prove of the equivalence in two different theorems, one sh
 \begin{proof}
   We will assume that $c_i$ and $d_i$ are sequences of rational numbers for the moment. For each $s \in 2^{<\omega}$, let
 
-  \[ a_s = \sum_{i = 0}^{lh(s) - 1} \frac{s(i)}{2^{i + 1}}, \]
-  \[ b_s = a_s + 2^{-lh(s)}. \]
+  \[ a_s = \sum_{i = 0}^{\operatorname{lh}(s) - 1} \frac{s(i)}{2^{i + 1}}, \]
+  \[ b_s = a_s + 2^{-\operatorname{lh}(s)}. \]
 
   Intuitively, we can interpret any finite binary sequence $s \in 2^{<\omega}$ as a binary number $a_s$. Hence, $[a_s, b_s]$ represents a subinterval of the form $[\frac{m}{2^l}, \frac{m + 1}{2^l}]$, where $l$ is the length of $s$. Keeping this in mind, we build a binary tree $T$ where
 
-  \[ s \in T \iff \neg \exists (i \le lh(s)) (c_i < a_s < b_s < d_i). \]
+  \[ s \in T \iff \neg \exists (i \le \operatorname{lh}(s)) (c_i < a_s < b_s < d_i). \]
 
   In other words, we include a vertex of the full binary tree at level $n$ in $T$ whenever the interval it represents is not fully covered by some open interval $(c_i, d_i)$ with $i \le n$. Note that $T$ exists by \esigma{0}{0} comprehension.
 
@@ -140,11 +140,11 @@ We will subdivide the prove of the equivalence in two different theorems, one sh
 
   If we denote by $\pi[n]$ the initial segment $\{(0, \pi(0)), \ldots, (n, \pi(n))\}$, it is clear that $a_{\pi[n]} \le x \le b_{\pi[n]}$. Now since we assumed the open intervals $(c_i, d_i)$ cover $[0, 1]$, let $i$ be such that $c_i < x < d_i$. We can find $n$ as large as necessary so that $n > i$ and $2^{-n} < d_i - c_i$. Then $[a_{\pi[n]}, b_{\pi[n]}]$ is an interval of length $2^{-n - 1} < 2^{-n} < d_i - c_i$ that contains $x$, so $c_i < a_{\pi[n]} < b_{\pi[n]} < d_i$. Then $\pi[n] \not\in T$ because the associated interval is covered, so $\pi$ is not an infinite path. By weak König's lemma, that means $T$ is finite.
 
-  Now let $n$ be such that $\forall s (s \in T \implies lh(s) < n)$, i.e., some level after which $T$ has no more vertices, which must exist because $T$ is finite. Then
+  Now let $n$ be such that $\forall s (s \in T \implies \operatorname{lh}(s) < n)$, i.e., some level after which $T$ has no more vertices, which must exist because $T$ is finite. Then
 
-  \[ \forall s (lh(s) = n \implies s \not\in T \implies \exists (i \le n) (c_i < a_s < b_s < d_i)). \]
+  \[ \forall s (\operatorname{lh}(s) = n \implies s \not\in T \implies \exists (i \le n) (c_i < a_s < b_s < d_i)). \]
 
-  Since all the $[a_s, b_s]$ for $lh(s) = n$ cover $[0, 1]$ and $(c_i, d_i)$ cover each $[a_s, b_s]$, we conclude that the open intervals $(c_i, d_i)$ for $i \le n$ cover $[0, 1]$.
+  Since all the $[a_s, b_s]$ for $\operatorname{lh}(s) = n$ cover $[0, 1]$ and $(c_i, d_i)$ cover each $[a_s, b_s]$, we conclude that the open intervals $(c_i, d_i)$ for $i \le n$ cover $[0, 1]$.
 
   Finally, assume $c_i$ and $d_i$ are sequences of real numbers. Consider the \re\ formula
 
@@ -165,20 +165,20 @@ We will subdivide the prove of the equivalence in two different theorems, one sh
 
   For starters, consider a finite sequence $s \in 2^{<\omega}$. We define
 
-  \[ a_s = \sum_{i = 0}^{lh(s) - 1} \frac{2s(i)}{3^{i + 1}}, \]
-  \[ b_s = a_s + \frac{1}{3^{lh(s)}}. \]
+  \[ a_s = \sum_{i = 0}^{\operatorname{lh}(s) - 1} \frac{2s(i)}{3^{i + 1}}, \]
+  \[ b_s = a_s + \frac{1}{3^{\operatorname{lh}(s)}}. \]
 
-  These represent the intervals that are not eliminated from $C$ by stage $n$, where $n = lh(s)$. In other words, for any $n \in \N$, if we consider all the finite binary sequences $s$ such that $lh(s) = n$ (equivalently, all the paths in the full binary tree to vertices at level $n$), their associated intervals $[a_s, b_s]$ cover $C$. In fact, given some infinite path of the full binary tree $\pi$, the path represents the unique $x \in [0, 1]$ such that $\forall n (a_{\pi[n]} \le x \le b_{\pi[n]})$. However, we need open intervals in order to apply Heine-Borel, so we define
+  These represent the intervals that are not eliminated from $C$ by stage $n$, where $n = \operatorname{lh}(s)$. In other words, for any $n \in \N$, if we consider all the finite binary sequences $s$ such that $\operatorname{lh}(s) = n$ (equivalently, all the paths in the full binary tree to vertices at level $n$), their associated intervals $[a_s, b_s]$ cover $C$. In fact, given some infinite path of the full binary tree $\pi$, the path represents the unique $x \in [0, 1]$ such that $\forall n (a_{\pi[n]} \le x \le b_{\pi[n]})$. However, we need open intervals in order to apply Heine-Borel, so we define
 
-  \[ a'_s = a_s - \frac{1}{3^{lh(s) + 1}}, \]
-  \[ b'_s = b_s + \frac{1}{3^{lh(s) + 1}}. \]
+  \[ a'_s = a_s - \frac{1}{3^{\operatorname{lh}(s) + 1}}, \]
+  \[ b'_s = b_s + \frac{1}{3^{\operatorname{lh}(s) + 1}}. \]
 
   These intervals still cover $C$ in the sense described before, but they are open. More importantly, they are disjoint for different paths of the same length. Intuitively, we are extending each $[a_s, b_s]$ by a third of its length to the left and to the right. So, for example, $a_{\{(0, 0)\}} = 0, b_{\{(0, 0)\}} = \frac13$ is the left interval in the Cantor set after the first step, where $(\frac13, \frac23)$ is eliminated; whereas $a_{\{(0, 0)\}} = -\frac19, b_{\{(0, 0)\}} = \frac49$. Note that we are using the same notation for open intervals and for the pairing function. We will try to be explicit about what we mean each time, but the reader is free to replace it by the less used notation $]a, b[$ for open intervals.
 
   Similarly, we define
 
-  \[ \alpha_s := b_{s \frown \{(0, 0)\}} = a_s + \frac{1}{3^{lh(s) + 1}}, \]
-  \[ \beta_s := a_{s \frown \{(0, 1)\}} = a_s + \frac{2}{3^{lh(s) + 1}}. \]
+  \[ \alpha_s := b_{s \frown \{(0, 0)\}} = a_s + \frac{1}{3^{\operatorname{lh}(s) + 1}}, \]
+  \[ \beta_s := a_{s \frown \{(0, 1)\}} = a_s + \frac{2}{3^{\operatorname{lh}(s) + 1}}. \]
 
   These represent the endpoints of the subinterval removed from $[a_s, b_s]$ in the next step. For example, $\varnothing$ represents the path to the root of the full binary tree, which is the only node at level $0$. Then $(\alpha_{\varnothing}, \beta_{\varnothing}) = (\frac13, \frac23)$ is the subinterval removed at step $1$.
 

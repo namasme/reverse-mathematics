@@ -230,22 +230,22 @@ For the introduction of the system \wkl\ we will need some additional definition
   Let $s \in$ Seq be the code for some finite sequence $X$. We define:
 
   \begin{itemize}
-  \item $lh(s)$ is the \textbf{length} of $s$ or $X$, defined as the $l$ in \Cref{def:finite-sequence}.
-  \item For all $i < lh(s)$, $s(i)$ is the $i$-th element of $X$, i.e., the unique $j$ such that $(i, j) \in X$.
+  \item $\operatorname{lh}(s)$ is the \textbf{length} of $s$ or $X$, defined as the $l$ in \Cref{def:finite-sequence}.
+  \item For all $i < \operatorname{lh}(s)$, $s(i)$ is the $i$-th element of $X$, i.e., the unique $j$ such that $(i, j) \in X$.
   \item Given $t$ also in Seq, the \textbf{concatenation} of $s$ and $t$, $s \frown t$, is the code for the finite sequence
-    \[ \{(0, s(0)), \ldots, (lh(s) - 1, s(lh(s) - 1)),
-      (lh(s), t(0)), \ldots, (lh(s) + lh(t) - 1, t(lh(t) - 1))\}. \]
-    Therefore, $lh(s \frown t) = lh(s) + lh(t)$.
+    \[ \{(0, s(0)), \ldots, (\operatorname{lh}(s) - 1, s(\operatorname{lh}(s) - 1)),
+      (\operatorname{lh}(s), t(0)), \ldots, (\operatorname{lh}(s) + \operatorname{lh}(t) - 1, t(\operatorname{lh}(t) - 1))\}. \]
+    Therefore, $\operatorname{lh}(s \frown t) = \operatorname{lh}(s) + \operatorname{lh}(t)$.
   \item $t$ is an \textbf{initial segment} of $s$, written $t \subset s$, whenever
 
-    \[ lh(t) \le lh(s) \land \forall (i < lh(t)) (t(i) = s(i)). \]
+    \[ \operatorname{lh}(t) \le \operatorname{lh}(s) \land \forall (i < \operatorname{lh}(t)) (t(i) = s(i)). \]
   \end{itemize}
 \end{definition}
 
 \begin{definition}[Trees]
   The \textbf{full binary tree}, denoted $2^{<\omega}$, is the set of all finite sequences whose elements are only $0$ or $1$:
 
-  \[ \forall n (n \in 2^{<\omega} \iff \forall (i \le n) (n \in \text{Seq} \land (i < lh(n) \implies n(i) < 2))). \]
+  \[ \forall n (n \in 2^{<\omega} \iff \forall (i \le n) (n \in \text{Seq} \land (i < \operatorname{lh}(n) \implies n(i) < 2))). \]
 
   Hence, $2^{<\omega}$ exists in \rca\ by \esigma{0}{0} comprehension.
 
@@ -277,11 +277,11 @@ We are at last in position to state the axioms of \wkl
   \label{remark:wkl-formalization}
   Weak König's lemma can actually be expressed by a formula of $L_2$ (as a scheme with parameter $T$ an infinite binary tree). As a possible formulation, let
 
-  \[ Func(f) \iff \forall i \exists n \forall m ((i, n) \in f \land ((i, m) \in f \implies n = m)) \]
+  \[ \operatorname{Func}(f) \iff \forall i \exists n \forall m ((i, n) \in f \land ((i, m) \in f \implies n = m)) \]
 
   be a predicate of sets asserting a set is the code of a function. Then the weak König's lemma reads
 
-  \[ \exists \pi \forall n \exists \sigma (Func(\pi) \land ((n, 0) \in \pi \lor (n, 1) \in \pi) \land \sigma \in T \land lh(\sigma) = n + 1 \land \forall(k \le n) (\sigma(k) = \pi(k))). \]
+  \[ \exists \pi \forall n \exists \sigma (\operatorname{Func}(\pi) \land ((n, 0) \in \pi \lor (n, 1) \in \pi) \land \sigma \in T \land \operatorname{lh}(\sigma) = n + 1 \land \forall(k \le n) (\sigma(k) = \pi(k))). \]
 
   That is, there exists a function $\pi: \N \to \{0, 1\}$ such that all of its initial segments are in $T$. By definition, $\pi$ is an infinite path of $T$.
 \end{remark}
@@ -329,7 +329,7 @@ Now for the counterexample:
   There exists an infinite binary tree $T$ whose vertices constitute a computable set but whose infinite paths are all non-computable.
 \end{theorem}
 \begin{proof}
-  We construct $T$ by stages. Letting $A$ and $B$ be as in \Cref{lemma:recursively-inseparable}, it should be clear that both of them are r.e., so we can enumerate them also by stages. We may safely assume that the enumerations of $A$ and $B$ at any given stage $n$ list no numbers larger than $n$. The idea then is to use the result of the enumerations by stage $n$ to computably decide which vertices of the full binary tree at level $n$ we should include in $T$. For example, say by stage six we have found $1, 2, 3 \in A$ and $5 \in B$. Then every sequence of the form $111*0*$ should be put in $T$. Note that when we include new sequences in $T$ that determine level $n$, all of their initial segments have already been included in $T$ in previous stages, since they separated $A$ and $B$ up until that point in time. Therefore $T$ is a binary tree. Also, $T$ is computable for we can decide whether a given finite sequence $\sigma \in T$ by running the computation of $T$ for $lh(\sigma)$ stages.
+  We construct $T$ by stages. Letting $A$ and $B$ be as in \Cref{lemma:recursively-inseparable}, it should be clear that both of them are r.e., so we can enumerate them also by stages. We may safely assume that the enumerations of $A$ and $B$ at any given stage $n$ list no numbers larger than $n$. The idea then is to use the result of the enumerations by stage $n$ to computably decide which vertices of the full binary tree at level $n$ we should include in $T$. For example, say by stage six we have found $1, 2, 3 \in A$ and $5 \in B$. Then every sequence of the form $111*0*$ should be put in $T$. Note that when we include new sequences in $T$ that determine level $n$, all of their initial segments have already been included in $T$ in previous stages, since they separated $A$ and $B$ up until that point in time. Therefore $T$ is a binary tree. Also, $T$ is computable for we can decide whether a given finite sequence $\sigma \in T$ by running the computation of $T$ for $\operatorname{lh}(\sigma)$ stages.
 
   Now let $C$ be any separating set of $A$ and $B$, which we already know cannot be recursive. We can identify $C$ with $\chi_C$ and $\chi_C$ with an infinite path of the full binary tree. Note that $C$ being non-computable means that $\chi_C$ will not be computable either, so by $\chi_C$ we mean here the non-computable, total version of the indicator function of $C$. Finally, the initial segments of $\chi_C$ separate $A$ and $B$ up until stage $n$, so they are all in $T$. Therefore, $\chi_C$ is an infinite path of $T$.
 
