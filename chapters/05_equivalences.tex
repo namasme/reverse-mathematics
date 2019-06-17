@@ -17,8 +17,8 @@ In the present chapter we will cover some equivalences that can be proven in \rc
 
 \begin{itemize}
 \item \rca\ can prove the intermediate value theorem,
-\item \wkl\ is equivalent to the (sequential) Heine-Borel theorem, the Weierstra{\ss} theorem and uniform continuity of continuous functions on $[0, 1]$ over \rca, and
-\item \aca\ is equivalent to the (sequential) Bolzano-Weierstra{\ss} theorem, sequential least upper bound property, the monotone convergence theorem and the Cauchy convergence criterion over \rca.
+\item \wkl\ is equivalent to the (sequential) Heine-Borel theorem, and
+\item \aca\ is equivalent to the Bolzano-Weierstra{\ss} theorem, sequential least upper bound property, the monotone convergence theorem and the Cauchy convergence criterion over \rca.
 \end{itemize}
 
 \section{\rca}
@@ -197,7 +197,7 @@ In this section we will prove the equivalence, over \rca, of a number of theorem
 
 \begin{theorem}
   \label{thm:aca-bw}
-  \aca\ proves the sequential Bolzano-Weierstra{\ss} theorem: given a bounded sequence $\{x_i: i \in \N\}$ of real numbers, there exists a real number $x$ such that
+  \aca\ proves the Bolzano-Weierstra{\ss} theorem: given a bounded sequence $\{x_i: i \in \N\}$ of real numbers, there exists a real number $x$ such that
 
   \begin{enumerate}
   \item $\forall \varepsilon \exists n_0 \forall n ((\varepsilon > 0 \land n > n_0) \implies x_n < x + \varepsilon)$, i.e., $x$ is an eventual upper bound of $x_n$,
@@ -278,18 +278,18 @@ In this section we will prove the equivalence, over \rca, of a number of theorem
   This completes our proof that $x$ is indeed the supremum of the sequence.
 \end{proof}
 
-\subsection{Sequential Bolzano-Weierstra{\ss} proves Cauchy convergence criterion}
+\subsection{Bolzano-Weierstra{\ss} proves Cauchy convergence criterion}
 
 \begin{theorem}
   \label{thm:bw-cc}
-  \rca\ proves that the sequential Bolzano-Weierstra{\ss} theorem implies the Cauchy convergence criterion, i.e., given a sequence $\{x_i: i \in \N\}$, if it is Cauchy
+  \rca\ proves that the Bolzano-Weierstra{\ss} theorem implies the Cauchy convergence criterion, i.e., given a sequence $\{x_i: i \in \N\}$, if it is Cauchy
 
   \[ \forall \varepsilon \exists n_0 \forall n ((\varepsilon > 0 \land n > n_0) \implies (|x_{n_0} - x_n| < \varepsilon)), \]
 
   then it is convergent.
 \end{theorem}
 \begin{proof}
-  Assume the sequence is Cauchy. Take $\varepsilon = 1$ and let $n_0$ be such that the condition holds for said $\varepsilon$. Then $\{x_i: i \in \N\}$ is bounded for $i \le n_0$ because it is finite, and it is also bounded for $i > n_0$ because it is Cauchy. Therefore it is bounded, so we can apply the sequential Bolzano-Weierstra{\ss} theorem. Let $g$ be the increasing function such that $\{x_{g(i)}: i \in \N\}$ is convergent to $x$ and fix some $\varepsilon > 0$. Then:
+  Assume the sequence is Cauchy. Take $\varepsilon = 1$ and let $n_0$ be such that the condition holds for said $\varepsilon$. Then $\{x_i: i \in \N\}$ is bounded for $i \le n_0$ because it is finite, and it is also bounded for $i > n_0$ because it is Cauchy. Therefore it is bounded, so we can apply the Bolzano-Weierstra{\ss} theorem. Let $g$ be the increasing function such that $\{x_{g(i)}: i \in \N\}$ is convergent to $x$ and fix some $\varepsilon > 0$. Then:
 
   \[ \exists i \forall n (n > i \implies |x_{g(n)} - x| < \frac{\varepsilon}{2}, \]
   \[ \exists n_0 \forall n (n > n_0 \implies |x_n - x_{n_0}| < \frac{\varepsilon}{4}. \]
@@ -417,7 +417,7 @@ We are finally in position to state the complete theorem:
 
   \begin{enumerate}[label=(\roman*), ref=(\roman*)]
   \item \label{item:aca-2} arithmetical comprehension axiom,
-  \item \label{item:bw} the sequential Bolzano-Weierstra{\ss} theorem,
+  \item \label{item:bw} the Bolzano-Weierstra{\ss} theorem,
   \item \label{item:cc} the Cauchy convergence criterion,
   \item \label{item:mc} the monotone convergence theorem, and
   \item \label{item:lub} the sequential least upper bound property.
