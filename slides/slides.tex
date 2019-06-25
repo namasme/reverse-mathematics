@@ -1,0 +1,287 @@
+\documentclass[10pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage[spanish]{babel}
+\usetheme{metropolis}
+\usepackage{appendixnumberbeamer}
+\usepackage[spanish]{cleveref}
+
+\usepackage[backend=biber, sorting=none]{biblatex}
+\addbibresource{../bibliography/bibliography.bib}
+
+\captionsetup[figure]{font=scriptsize, labelfont=scriptsize}
+
+\newcommand{\ffigure}[2]{
+  \begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.6\textwidth]{images/#1.jpg}
+    \caption{#2}
+    \label{fig:#1}
+  \end{figure}
+}
+
+\title{Matemática inversa: axiomas y teoremas y viceversa}
+\date{\today}
+\author{Ignacio Mas Mesa}
+\institute{Universidad de Granada}
+
+\begin{document}
+
+\maketitle
+
+\section{Introducción}
+
+\begin{frame}[fragile]{¿Qué es la matemática inversa?}
+
+  \begin{quote}
+    When the theorem is proved from the right axioms, the axioms can be proved from the theorem.
+  \end{quote}
+  \flushright{--- Harvey Friedman}
+
+  \vfill
+
+  Algunos teoremas son equivalentes a ciertos axiomas.
+\end{frame}
+
+\begin{frame}[fragile]{Consideraciones}
+  Cualesquiera dos fórmulas verdaderas son \textbf{equivalentes} desde un punto de vista lógico.
+
+  \vfill
+
+  Necesitamos un sistema axiomático más débil para formalizar esta idea.
+\end{frame}
+
+\section{Aritmética y aritmetización}
+
+\begin{frame}[fragile]{El marco de trabajo}
+  El sistema $Z_2$ de la aritmética de segundo orden.
+
+  \begin{itemize}
+  \item Axiomas básicos de la aritmética ($n + 1 \ne 0$, $n + 0 = n$, etc).
+  \item Axioma de inducción
+    \[ (0 \in X \land (n \in X \implies n + 1 \in X)) \implies \forall n (n \in X). \]
+  \item Esquema de axioma de comprensión
+    \[ \exists X \forall n (n \in X \iff \varphi(n)). \]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]{Forma prenexa y jerarquía aritmética}
+  Toda fórmula es equivalente a una fórmula en forma prenexa, i.e., con todos los cuantificadores apareciendo al inicio.
+
+  La jerarquía aritmética permite asignar una medida de complejidad a una fórmula en función de cuántas veces alterna entre cuantificadores existenciales y universales.
+
+  \[ \exists m (n = 2 \cdot m) \in \Sigma_1^0, \]
+  \[ \forall n \exists m (n < m) \in \Pi_2^0, \]
+  \[ (n + 2) \cdot k > m - 3  \in \Sigma_0^0 = \Delta_0^0 = \Pi_0^0, \]
+\end{frame}
+
+\section{Computabilidad}
+
+\begin{frame}[fragile]{Funciones primitivas recursivas y parciales recursivas}
+  \begin{itemize}
+  \item Funciones iniciales: función cero, función sucesor y proyecciones.
+  \item Composición.
+  \item Recursión primitiva (codifica \texttt{reduce} y los bucles \texttt{for}).
+  \end{itemize}
+
+  La función de Ackermann es computable pero no primitiva recursiva
+
+  \[
+    A(m, n) :=
+    \begin{cases}
+      n + 1 & \text{si } m = 0, \\
+      A(m - 1, 1) & \text{si } m > 0 \text{ y } n = 0, \\
+      A(m - 1, A(m, n - 1)) & \text{en caso contrario.}
+    \end{cases}
+  \]
+
+  Hace falta incluir el operador $\mu$ de minimización o búsqueda no acotada.
+\end{frame}
+
+\begin{frame}[fragile]{Máquinas de Turing}
+  Tienen su propio formalismo matemático, pero conceptualmente representan una máquina, con un programa pregrabado, que puede leer y escribir sobre una cinta infinita, para lo cual se ayuda de estados.
+
+  \ffigure{turing-machine}{Diagrama de una máquina de Turing}
+
+  Son equivalentes en \emph{poder} a las funciones parciales recursivas, pero más \emph{intuitivas} que estas o que el cálculo $\lambda$. Constituyeron la base de los primeros ordenadores y aún hoy se identifican semejanzas.
+\end{frame}
+
+\begin{frame}[fragile]{Tesis de Church-Turing}
+  Toda función para la cual existe un procedimiento intuitivamente efectivo para calcular sus valores es computable.
+\end{frame}
+
+\begin{frame}[fragile]{Enumerando máquinas de Turing}
+  Dada una máquina de Turing, podemos asignarle un único número identificador de forma computable. Dado el número, podemos recuperar la máquina de Turing también de forma computable.
+
+  Turing advirtió la importancia de esto: existe una máquina \alert{universal} de Turing. Este descubrimiento ayudó a establecer el paradigma del programa almacenado en disco.
+
+  Existen problemas que no pueden ser resueltos por una máquina de Turing, como el \alert{problema de la parada}.
+\end{frame}
+
+\begin{frame}[fragile]{Reducibilidad, oráculos y grados de Turing (I)}
+  La \alert{reducibilidad} nos permite comparar la dificultad relativa de dos conjuntos o problemas. Estudiamos las reducciones muchos-a-uno y las reducciones de Turing.
+
+  Una máquina de Turing con \alert{oráculo} puede hacer preguntas de problemas que no se pueden resolver y usar las respuestas para resolver problemas aún más difíciles.
+
+  Se puede generalizar el problema de la parada para obtener la operación \alert{salto de Turing}.
+\end{frame}
+
+\begin{frame}[fragile]{Reducibilidad, oráculos y grados de Turing (II)}
+  La reducibilidad induce una relación de equivalencia sobre los conjuntos que da lugar a los \alert{grados de Turing}.
+
+  El teorema de Post relaciona íntimamente la estructura de los grados de Turing con la de la jerarquía aritmética. En particular:
+
+  \begin{itemize}
+  \item $\Sigma_1^0$ es lo mismo que recursivamente enumerable,
+  \item $\Pi_1^0$ es lo mismo que co-recursivamente enumerable,
+  \item $\Delta_1^0$ es lo mismo que computable.
+  \end{itemize}
+\end{frame}
+
+\section{Subsistemas de $Z_2$}
+
+\begin{frame}[fragile]{El subsistema base: RCA$_0$}
+  \begin{itemize}
+  \item Axiomas básicos de la aritmética ($n + 1 \ne 0$, $n + 0 = n$, etc).
+  \item Restringe el axioma de inducción a fórmulas $\Sigma_1^0$.
+  \item Restringe el esquema de axioma de comprensión a fórmulas $\Delta_1^0$ (computables).
+  \end{itemize}
+
+  Permite definir $\mathbb{N}$, así como $\mathbb{Z}$ y $\mathbb{Q}$ por clases de equivalencia.
+
+  Los números reales son sucesiones de racionales de Cauchy con ciertas propiedades adicionales.
+\end{frame}
+
+\begin{frame}[fragile]{WKL$_0$}
+  El lema débil de König asegura que todo árbol binario infinito debe tener una rama infinita.
+
+  El sistema WKL$_0$ añade el lema débil de König a los axiomas de RCA$_0$.
+
+  Es propiamente más fuerte que RCA$_0$.
+\end{frame}
+
+\begin{frame}[fragile]{ACA$_0$}
+  El sistema ACA$_0$ añade a los axiomas de RCA$_0$
+
+  \begin{enumerate}
+  \item el axioma de inducción de segundo orden,
+  \item comprensión aritmética.
+  \end{enumerate}
+
+  Es propiamente más fuerte que WKL$_0$.
+\end{frame}
+
+\section{Resultados}
+
+\begin{frame}[fragile]{Equivalencias en RCA$_0$}
+  \begin{itemize}
+  \item RCA$_0$ demuestra el teorema de Bolzano,
+  \item En RCA$_0$ son equivalentes el lema débil de König y el teorema de Heine-Borel,
+  \item En RCA$_0$ equivalen
+    \begin{enumerate}[(i)]
+    \item comprensión aritmética,
+    \item teorema de Bolzano-Weierstra{\ss},
+    \item teorema de la convergencia monótona,
+    \item criterio de convergencia de Cauchy y
+    \item existencia de supremo para sucesiones acotadas.
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\section{Conclusiones y trabajo futuro}
+
+\begin{frame}[fragile]
+  La matemática inversa es una potente herramienta para el estudio fundacional de las matemáticas, que permite comparar la \textit{fuerza relativa} de dos teoremas formalizando esta noción.
+
+  \vfill
+
+  En caso de continuar con el proyecto podríamos considerar estudiar los sistemas ATR$_0$ y $\Pi_1^1$-CA$_0$, propiedades de los modelos de los sistemas que hemos escogido o profundizar en la estructura de los grados de Turing.
+\end{frame}
+
+\section{Ejemplo de matemática inversa: WKL$_0$ y el teorema de Heine-Borel}
+
+\begin{frame}[fragile]{WKL$_0$ implica el teorema de Heine-Borel (I)}
+  Sea $\{(a_i, b_i): i \in \mathbb{N}\}$ una sucesión de intervalos abiertos que recubre el intervalo $[0, 1]$.
+
+  \ffigure{non-covered-intervals}{Construcción de $T$}
+
+  Construimos un árbol binario $T$ en el que incluimos los intervalos $[\frac{m}{2^n}, \frac{m + 1}{2^n}]$ si dicho intervalo no está completamente recubierto $(a_1, b_1), \ldots, (a_n, b_n)$.
+\end{frame}
+
+\begin{frame}[fragile]{WKL$_0$ implica el teorema de Heine-Borel (II)}
+  Para cada $x \in [0, 1]$, existe $i$ tal que $x \in (a_i, b_i)$ y $n$ suficientemente grande tal que
+
+  \[ x \in \left[\frac{m}{2^n}, \frac{m + 1}{2^n}\right] \subset (a_i, b_i). \]
+
+  Por tanto, $T$ no puede tener ramas infinitas, luego es finito. Entonces podemos encontrar un subrecubrimiento de $[0, 1]$
+
+  \[ (a_1, b_1), \ldots, (a_r, b_r) \]
+
+  para un $r$ apropiado.
+\end{frame}
+
+\begin{frame}[fragile]{El conjunto de Cantor}
+  Para la demostración del recíproco haremos uso del conjunto de Cantor, $C$.
+
+  \ffigure{cantor-set}{Conjunto de Cantor}
+
+  Cada punto del mismo se puede identificar con una rama infinita del árbol binario completo.
+  Además, la sucesión de intervalos $(\frac13, \frac23), (\frac19, \frac29), (\frac79, \frac89), (\frac{1}{27}, \frac{2}{27}), \ldots$ recubre $[0, 1] \setminus C$.
+
+\end{frame}
+
+\begin{frame}[fragile]{El teorema de Heine-Borel implica WKL$_0$ (I)}
+  Asociaremos a cada vértice del árbol binario completo un intervalo abierto de forma que recubran $C$.
+
+  \ffigure{covering-intervals}{Intervalos recubridores de $C$}
+
+\end{frame}
+
+\begin{frame}[fragile]{El teorema de Heine-Borel implica WKL$_0$ (II)}
+  Sea $T$ un árbol binario sin ramas infinitas. Consideramos los intervalos asociados a sus hojas caídas, que recubren $C$.
+
+  \ffigure{fallen-leaves}{Hojas caídas de $T$}
+
+
+  Si unimos esta sucesión de intervalos a los que recubren $[0, 1] \setminus C$, obtenemos un recubrimiento de $[0, 1]$ por abiertos.
+\end{frame}
+
+\begin{frame}[fragile]{El teorema de Heine-Borel implica WKL$_0$ (III)}
+  Por el teorema de Heine-Borel, podemos quedarnos con un subrecubrimiento finito. Sin embargo, ninguno de los intervalos que recubren $[0, 1] \setminus C$ contiene ningún elemento de $C$. Por tanto, existe un número finito de intervalos asociados a hojas caídas que recubre $C$.
+
+  \vfill
+
+  Por la construcción de los intervalos, esto significa que $T$ tiene un número finito de hojas caídas y por tanto es finito.
+\end{frame}
+
+\begin{frame}[standout]
+  Preguntas
+
+  \vfill
+
+  \normalsize \url{https://github.com/cronos2/reverse-mathematics}
+\end{frame}
+
+\appendix
+
+\begin{frame}[fragile]{Referencias}
+  \Cref{fig:turing-machine}: \textit{Turing machine} por Nynexman4464. \url{https://commons.wikimedia.org/wiki/File:Turing_machine_2b.svg}
+
+  \vfill
+
+  \Cref{fig:non-covered-intervals}, \Cref{fig:cantor-set}, \Cref{fig:covering-intervals}, \Cref{fig:fallen-leaves}: Stillwell, J. (2019) \textit{Reverse Mathematics: Proofs from the Inside Out}. Princeton University Press (pp. 137, 138, 141), fig.
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Bibliografía}
+  \nocite{*}
+  \printbibliography[heading=none]
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
