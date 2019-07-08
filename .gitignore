@@ -3,7 +3,6 @@
 *.bcf
 *.blg
 *.log
-*.pdf
 *.toc
 *.out
 *.run.xml
